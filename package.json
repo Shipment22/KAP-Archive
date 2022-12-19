@@ -1,0 +1,15 @@
+{
+  "name": "kap-archive",
+  "module": "index.jsx",
+  "type": "module",
+  "devDependencies": {
+    "bun-types": "^0.2.0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "scripts": {
+    "dev": "nodemon -x bun index.jsx & sass --watch --scss scss/:css/"
+  }
+}
