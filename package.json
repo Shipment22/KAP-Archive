@@ -10,6 +10,6 @@
     "react-dom": "^18.2.0"
   },
   "scripts": {
-    "dev": "nodemon -x bun index.jsx & sass --watch --scss scss/:css/"
+    "dev": "nodemon -x bun src/index.jsx & sass --watch --scss src/scss/:src/css/"
   }
 }
