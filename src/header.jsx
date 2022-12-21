@@ -12,7 +12,7 @@ function Header() {
 					KAP Archive
 				</a>
 			</div>
-			<div className="main-nav_container">
+			<div className="main-nav_wrapper">
 				<nav className="main-nav" aria-label="Main navigation">
 					<ul>
 						<li><a href="/browse">Browse</a></li>
