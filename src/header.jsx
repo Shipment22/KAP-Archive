@@ -1,9 +1,10 @@
 const images = {
 	logo: '/assets/logo.svg',
-	adminLogin: '/assets/key.svg'
+	adminLogin: '/assets/key.svg',
+	admin: '/assets/view-private.svg'
 }
 
-function Header() {
+function Header(props) {
 	return (
 		<header className="Header">
 			<div>
@@ -22,10 +23,19 @@ function Header() {
 					</ul>
 				</nav>
 			</div>
-			<div>
+			<div> 
 				<a href="/admin" className="blue">
-					Admin Login
-					<img src={images.adminLogin} alt="Admin login image" width="48" />
+					{props.loggedIn == "true" ? (
+						<span>
+							Admin Menu
+							<img src={images.admin} alt="Admin menu image" width="48" />
+						</span>
+					) : (
+						<span>
+							Admin Login
+							<img src={images.adminLogin} alt="Admin login image" width="48" />
+						</span>
+					)}
 				</a>
 			</div>
 		</header>

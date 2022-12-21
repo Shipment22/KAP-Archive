@@ -11,7 +11,7 @@ function Footer() {
 					<li><a href="/about">About</a></li>
 					<li><a href="/admin">Admin</a></li>
 				</ul>
-				<h2>Other similar, cool, or useful projects</h2>
+				<h2>Other similar and cool projects</h2>
 				<ul>
 					<li><a href="https://willard.fun">Willard.fun</a></li>
 					<li><a href="https://khanalytics.bhavjit.com/">Khanalytics</a></li>
