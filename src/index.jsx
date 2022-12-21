@@ -5,7 +5,7 @@ import Footer from './footer'
 import Home from './home'
 
 const pages = {
-    home: { head: () => <link rel="stylesheet" href="/css/home.css"/>, body: Home }
+    home: { title: 'Khan Academy Program Archive', stylesheet: '/css/home.css', body: Home }
 }
 
 async function renderPage(page) {
@@ -13,9 +13,8 @@ async function renderPage(page) {
     await renderToReadableStream(
     <html>
         <head>
-            <title>KAP Archive</title>
-            <link rel="stylesheet" href="/css/index.css"/>
-            <page.head />
+            <title>{page.title ?? 'KAP Archive'}</title>
+            <link rel="stylesheet" href={page.stylesheet || '/css/index.css'}/>
         </head>
         <body>
             <Header />
@@ -35,7 +34,9 @@ export default {
         const { pathname } = new URL(url);
         // Get archive index html with file method.
         if (method === "GET") {
-            if (pathname === "/") {
+            if (pathname === "/favicon.ico") {
+                return new Response(Bun.file('assets/favicon.ico'))
+            } else if (pathname === "/") {
                 // return pages.home();
                 return renderPage(pages.home)
             } else if (pathname.match(/assets\/[a-z0-9-_]+\.(svg|png|jpeg|ico)/i) || pathname.match(/css\/[a-z0-9-_]+\.css/i)) {
