@@ -2,7 +2,7 @@ const infoIcon = '/assets/info.svg'
 
 function Form() {
 	return (
-	<form className="search_form" action="/search">
+	<form className="search-form" action="/search">
         <div className="inputs-wrapper">
             <label htmlFor="title">Title</label>
             <input type="text" name="title" className="input" placeholder="The program's title" />
