@@ -20,8 +20,8 @@ function Footer() {
 				<h2>Credits</h2>
 				<ul>
 					<li><a href="https://iconarchive.com/show/flatastic-1-icons-by-custom-icon-design/information-icon.html">Info Icon</a> (<a href="http://www.customicondesign.com/">Custom Icon Design</a>)</li>
-					<li><a href="https://iconarchive.com/show/small-n-flat-icons-by-paomedia/key-icon.html">Key Icon</a>(<a href="http://www.paomedia.com/">paomedia</a>, <a href="https://github.com/paomedia">Github</a>)</li>
-					<li><a href="https://iconarchive.com/show/papirus-status-icons-by-papirus-team/view-private-icon.html">View private Icon</a>(<a href="https://github.com/PapirusDevelopmentTeam">Papirus Development Team</a>)</li>
+					<li><a href="https://iconarchive.com/show/small-n-flat-icons-by-paomedia/key-icon.html">Key Icon</a> (<a href="http://www.paomedia.com/">paomedia</a>, <a href="https://github.com/paomedia">Github</a>)</li>
+					<li><a href="https://iconarchive.com/show/papirus-status-icons-by-papirus-team/view-private-icon.html">View private Icon</a> (<a href="https://github.com/PapirusDevelopmentTeam">Papirus Development Team</a>)</li>
 				</ul>
 			</div>
 		</footer>
