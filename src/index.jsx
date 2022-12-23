@@ -26,10 +26,24 @@ db.run(`CREATE TABLE IF NOT EXISTS programs
     hidden_from_hotlist INT,
     restricted_posting INT,
     by_child INT,
-    creator__nick TEXT,
-    creator__name TEXT,
-    creator__id TEXT,
-    creator__profileaccess TEXT
+    author__nick TEXT,
+    author__name TEXT,
+    author__id TEXT,
+    author__profile_access TEXT
+    )`)
+db.run(`CREATE TABLE IF NOT EXISTS users (db__id INTEGER PRIMARY KEY AUTOINCREMENT,
+    db__added INT,
+    db__updated INT,
+    badge_counts TEXT,
+    nick TEXT,
+    name TEXT,
+    id TEXT,
+    bio TEXT,
+    child INT,
+    joined INT,
+    energy_points INT,
+    profile_access TEXT,
+    videos_complete INT
     )`)
 
 import { renderToReadableStream } from "react-dom/server"
@@ -55,7 +69,7 @@ async function renderPage(page, request) {
     await renderToReadableStream(
     <html>
         <head>
-            <meta charset="UTF-8" />
+            <meta charSet="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>{page.title ?? 'KAP Archive'}</title>
             <link rel="stylesheet" href={page.stylesheet || '/css/index.css'}/>
