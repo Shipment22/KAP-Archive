@@ -11,6 +11,7 @@ db.run(`CREATE TABLE IF NOT EXISTS programs
     title TEXT, 
     code BLOB,
     folds BLOB,
+    thumbnail BLOB,
     fork INT,
     key TEXT,
     upvoted INT,
