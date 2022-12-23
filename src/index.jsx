@@ -1,3 +1,37 @@
+import { Database } from "bun:sqlite"
+
+let db = new Database('database.sqlite')
+db.run(`CREATE TABLE IF NOT EXISTS programs 
+    (db__id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    db__added INT,
+    db__updated INT,
+    created INT,
+    updated INT, 
+    id TEXT, 
+    title TEXT, 
+    code BLOB,
+    folds BLOB,
+    fork INT,
+    key TEXT,
+    upvoted INT,
+    votes INT,
+    spinoffs INT,
+    type TEXT,
+    width INT,
+    height INT,
+    flagged_by TEXT,
+    user_flagged INT,
+    flags TEXT,
+    origin_scratchpad TEXT,
+    hidden_from_hotlist INT,
+    restricted_posting INT,
+    by_child INT,
+    creator__nick TEXT,
+    creator__name TEXT,
+    creator__id TEXT,
+    creator__profileaccess TEXT
+    )`)
+
 import { renderToReadableStream } from "react-dom/server"
 
 import Header from './header'
@@ -21,6 +55,8 @@ async function renderPage(page, request) {
     await renderToReadableStream(
     <html>
         <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>{page.title ?? 'KAP Archive'}</title>
             <link rel="stylesheet" href={page.stylesheet || '/css/index.css'}/>
         </head>
