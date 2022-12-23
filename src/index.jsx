@@ -8,7 +8,15 @@ const pages = {
     home: { title: 'Khan Academy Program Archive', stylesheet: '/css/home.css', body: Home }
 }
 
-async function renderPage(page) {
+function checkLoggedin(request) {
+    if (request.headers.get('cookie') === null || request.headers.get('cookie').match(/key=[^;]+/) === null) {
+        return null
+    }
+    return (Bun.hash(request.headers.get('cookie').match(/key=[^;]+/)[0].slice(4)) === 62864701388280) ? "true" : null
+}
+
+async function renderPage(page, request) {
+    const loggedIn = checkLoggedin(request)
     return new Response(
     await renderToReadableStream(
     <html>
@@ -17,7 +25,7 @@ async function renderPage(page) {
             <link rel="stylesheet" href={page.stylesheet || '/css/index.css'}/>
         </head>
         <body>
-            <Header />
+            <Header loggedIn={loggedIn} />
             <page.body />
             <Footer />
         </body>
@@ -37,8 +45,7 @@ export default {
             if (pathname === "/favicon.ico") {
                 return new Response(Bun.file('assets/favicon.ico'))
             } else if (pathname === "/") {
-                // return pages.home();
-                return renderPage(pages.home)
+                return renderPage(pages.home, request)
             } else if (pathname.match(/assets\/[a-z0-9-_]+\.(svg|png|jpeg|ico)/i) || pathname.match(/css\/[a-z0-9-_]+\.css/i)) {
                 return new Response(Bun.file(pathname.slice(1)))
             }
