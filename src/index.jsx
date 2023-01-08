@@ -222,8 +222,8 @@ function getProgram(id) {
     return formatOutput(db.query("SELECT * FROM programs WHERE id = $id").get({ $id: id }))
 }
 function getPrograms(limit, offset = 0) {
+    if (Number(limit) === NaN || Number(offset) === NaN) return 400
     const archiveData = db.query(`SELECT * FROM programs LIMIT ${limit} OFFSET ${offset}`).all()
-
     return JSON.stringify(archiveData)
 }
 
