@@ -163,6 +163,7 @@ function formatOutput(sqliteOut) {
         db__id,
         db__added,
         db__updated,
+        id,
         created,
         updated,
         title,
@@ -192,6 +193,7 @@ function formatOutput(sqliteOut) {
             added: db__added,
             updated: db__updated
         },
+        id,
         created,
         updated,
         title,
@@ -210,7 +212,7 @@ function formatOutput(sqliteOut) {
         hiddenFromHotlist: hidden_from_hotlist === 1,
         restrictedPosting: restricted_posting === 1,
         byChild: by_child === 1,
-        authoer: {
+        author: {
             nick: author__nick,
             name: author__name,
             id: author__id,
