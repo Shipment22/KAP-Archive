@@ -34,6 +34,14 @@ img {
 	max-height: 100%;
 }
 
+a {
+    color: #94e2d5;
+}
+
+a:visited {
+	color: $peach;
+}
+
 .input, .button {
     margin: .4rem;
     border-radius: .4rem;
@@ -70,14 +78,6 @@ a.button:visited {
 .info img {
     float: left;
     margin-right: .3rem;
-}
-
-a {
-    color: #94e2d5;
-}
-
-a:visited {
-	color: $peach;
 }
 
 
