@@ -55,15 +55,12 @@ import Home from './home'
 const pages = {
     home: { title: 'Khan Academy Program Archive', stylesheet: '/css/home.css', body: Home }
 }
-
 function checkLoggedin(request) {
     if (request.headers.get('cookie') === null || request.headers.get('cookie').match(/key=[^;]+/) === null) {
         return null
     }
     return (Bun.hash(request.headers.get('cookie').match(/key=[^;]+/)[0].slice(4)) === 62864701388280) ? "true" : null
 }
-
-
 async function getProgramThumbnail(id) {
     return await fetch(`https://www.khanacademy.org/computer-programming/_/${id}/latest.png`)
     .then(async response => {return { mime: response.headers.get('content-type'), buffer: await response.arrayBuffer() }})
@@ -72,8 +69,6 @@ async function getProgramThumbnail(id) {
         return `data:${data.mime};base64,${base64}`
     })
 }
-
-
 const insertProgram = db.prepare(`INSERT INTO programs (${programColumnsListText}) VALUES (${('?'.repeat(programColumnsListText.split(',').length).split('').join(', '))})`)
 async function saveProgram(id) {
     if (id.match(/[0-9]+/) === null) {
@@ -231,7 +226,6 @@ function getPrograms($limit, $offset = 0) {
     for (let i in archiveData) { archiveData[i] = formatOutput(archiveData[i]); } // Structure the JSON
     return JSON.stringify(archiveData); // Stringify and return the data
 }
-
 async function renderPage(page, request) {
     const loggedIn = checkLoggedin(request)
     return new Response(
@@ -241,6 +235,10 @@ async function renderPage(page, request) {
             <meta charSet="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>{page.title ?? 'KAP Archive'}</title>
+            <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=1" />
+            <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=1" />
+            <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=1" />
+            <link rel="manifest" href="/site.webmanifest" />
             <link rel="stylesheet" href={page.stylesheet || '/css/index.css'}/>
         </head>
         <body>
@@ -272,7 +270,6 @@ async function renderError(error, request) {
     ),
     );
 }
-
 export default {
     async fetch(request) {
         // Get Url and method from request.
@@ -307,6 +304,18 @@ export default {
         } else if (method === "GET") {
             if (pathname === "/favicon.ico") {
                 return new Response(Bun.file('assets/favicon.ico'))
+            } else if (pathname === "/android-chrome-512x512.png") {
+                return new Response(Bun.file('assets/android-chrome-512x512.png'))
+            } else if (pathname === "/android-chrome-192x192.png") {
+                return new Response(Bun.file('assets/android-chrome-192x192.png'))
+            } else if (pathname === "/apple-touch-icon.png") {
+                return new Response(Bun.file('assets/apple-touch-icon.png'))
+            } else if (pathname === "/favicon-16x16.png") {
+                return new Response(Bun.file('assets/favicon-16x16.png'))
+            } else if (pathname === "/favicon-32x32.png") {
+                return new Response(Bun.file('assets/favicon-32x32.png'))
+            } else if (pathname === "/site.webmanifest") {
+                return new Response(Bun.file('assets/site.webmanifest'))
             } else if (pathname === "/") {
                 return renderPage(pages.home, request)
             } else if (pathname.match(/assets\/[a-z0-9-_]+\.(svg|png|jpeg|ico)/i) || pathname.match(/css\/[a-z0-9-_]+\.css/i)) {
