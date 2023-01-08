@@ -13,16 +13,13 @@ db.run(`CREATE TABLE IF NOT EXISTS programs
     folds BLOB,
     thumbnail BLOB,
     fork INT,
-    key TEXT,
-    upvoted INT,
+    "key" TEXT,
     votes INT,
     spinoffs INT,
     type TEXT,
     width INT,
     height INT,
-    flagged_by TEXT,
     user_flagged INT,
-    flags TEXT,
     origin_scratchpad TEXT,
     hidden_from_hotlist INT,
     restricted_posting INT,
@@ -32,6 +29,7 @@ db.run(`CREATE TABLE IF NOT EXISTS programs
     author__id TEXT,
     author__profile_access TEXT
     )`)
+let programColumnsListText = 'db__added, db__updated, created, updated, id, title, code, folds, thumbnail, fork, "key", votes, spinoffs, type, width, height, user_flagged, origin_scratchpad, hidden_from_hotlist, restricted_posting, by_child, author__nick, author__name, author__id, author__profile_access'
 db.run(`CREATE TABLE IF NOT EXISTS users (db__id INTEGER PRIMARY KEY AUTOINCREMENT,
     db__added INT,
     db__updated INT,
@@ -51,6 +49,7 @@ import { renderToReadableStream } from "react-dom/server"
 
 import Header from './header'
 import Footer from './footer'
+import ErrorPage from './error'
 import Home from './home'
 
 const pages = {
@@ -62,6 +61,170 @@ function checkLoggedin(request) {
         return null
     }
     return (Bun.hash(request.headers.get('cookie').match(/key=[^;]+/)[0].slice(4)) === 62864701388280) ? "true" : null
+}
+
+
+async function getProgramThumbnail(id) {
+    return await fetch(`https://www.khanacademy.org/computer-programming/_/${id}/latest.png`)
+    .then(async response => {return { mime: response.headers.get('content-type'), buffer: await response.arrayBuffer() }})
+    .then(data => {
+        const base64 = Buffer.from(Array.from(new Uint8Array(data.buffer)).map(c => String.fromCharCode(c)).join(''), 'binary').toString('base64')
+        return `data:${data.mime};base64,${base64}`
+    })
+}
+
+
+const insertProgram = db.prepare(`INSERT INTO programs (${programColumnsListText}) VALUES (${('?'.repeat(programColumnsListText.split(',').length).split('').join(', '))})`)
+async function saveProgram(id) {
+    if (id.match(/[0-9]+/) === null) {
+        return 'Invalid ID'
+    }
+    const programData = await fetch("https://www.khanacademy.org/api/internal/graphql/programQuery?lang=en", {
+        "credentials": "include",
+        "headers": {
+            "Accept": "*/*",
+            "Accept-Language": "en-US,en;q=0.5",
+            "content-type": "application/json",
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-origin",
+            "Sec-GPC": "1"
+        },
+        "referrer": "https://www.khanacademy.org/computer-programming/i/"+id,
+        "body": "{\"operationName\":\"programQuery\",\"query\":\"query programQuery($programId: String!) {\\n  programById(id: $programId) {\\n    byChild\\n    category\\n    created\\n    creatorProfile: author {\\n      id\\n      nickname\\n      profileRoot\\n      profile {\\n        accessLevel\\n        __typename\\n      }\\n      __typename\\n    }\\n    deleted\\n    description\\n    spinoffCount: displayableSpinoffCount\\n    docsUrlPath\\n    flags\\n    flaggedBy: flaggedByKaids\\n    flaggedByUser: isFlaggedByCurrentUser\\n    height\\n    hideFromHotlist\\n    id\\n    imagePath\\n    isProjectOrFork: originIsProject\\n    isOwner\\n    kaid: authorKaid\\n    key\\n    newUrlPath\\n    originScratchpad: originProgram {\\n      deleted\\n      translatedTitle\\n      url\\n      __typename\\n    }\\n    restrictPosting\\n    revision: latestRevision {\\n      id\\n      code\\n      configVersion\\n      created\\n      editorType\\n      folds\\n      __typename\\n    }\\n    slug\\n    sumVotesIncremented\\n    title\\n    topic: parentCurationNode {\\n      id\\n      nodeSlug: slug\\n      relativeUrl\\n      slug\\n      translatedTitle\\n      __typename\\n    }\\n    translatedTitle\\n    url\\n    userAuthoredContentType\\n    upVoted\\n    width\\n    __typename\\n  }\\n}\\n\",\"variables\":{\"programId\":\""+id+"\"}}",
+        "method": "POST",
+        "mode": "cors"
+    }).then(res => res.json())
+    .then(json => json.data.programById)
+    .then(async p => {
+        return {
+            archive: {
+                added: Date.now(), // needs to be fixed for when archives can be updated 
+                updated: Date.now()
+            },
+            created: new Date(p.created).getTime(),
+            updated: 404,
+            id: p.id,
+            title: p.title,
+            code: p.revision.code,
+            folds: p.revision.folds,
+            thumbnail: await getProgramThumbnail(p.id),
+            fork: p.isProjectOrFork,
+            key: p.key,
+            votes: p.sumVotesIncremented,
+            spinoffs: p.spinOffCount,
+            type: p.userAuthoredContentType,
+            width: p.width,
+            height: p.height,
+            userFlagged: p.flaggedByUser,
+            originScratchpad: p.originScratchpad,
+            hiddenFromHotlist: p.hideFromHotlist,
+            restrictedPosting: p.restrictPosting,
+            byChild: p.byChild,
+            author: {
+                nick: p.creatorProfile.nickname,
+                name: p.creatorProfile.profileRoot.split('/').reverse()[1],
+                id: p.creatorProfile.kaid,
+                profileAccess: p.creatorProfile.profile.accessLevel,
+            }
+        }
+    });
+    (d => {insertProgram.run([
+        d.archive.added,
+        d.archive.updated,
+        d.created,
+        d.updated,
+        d.id,
+        d.title,
+        d.code + '',
+        d.folds + '',
+        d.thumbnail,
+        d.fork,
+        d.key,
+        d.votes,
+        d.spinoffs,
+        d.type,
+        d.width,
+        d.height,
+        d.userFlagged,
+        d.originScratchpad,
+        d.hiddenFromHotlist,
+        d.restrictedPosting,
+        d.byChild,
+        d.author.nick,
+        d.author.name,
+        d.author.id,
+        d.author.profileAccess
+    ])})(programData)
+    return programData
+}
+function formatOutput(sqliteOut) {
+    const {
+        db__id,
+        db__added,
+        db__updated,
+        created,
+        updated,
+        title,
+        code,
+        folds,
+        thumbnail,
+        fork,
+        key,
+        votes,
+        spinoffs,
+        type,
+        width,
+        height,
+        user_flagged,
+        origin_scratchpad,
+        hidden_from_hotlist,
+        restricted_posting,
+        by_child,
+        author__nick,
+        author__name,
+        author__id,
+        author__profile_access
+    } = sqliteOut
+    return {
+        arhcive: {
+            id: db__id,
+            added: db__added,
+            updated: db__updated
+        },
+        created,
+        updated,
+        title,
+        code,
+        folds,
+        thumbnail,
+        fork: fork === 1,
+        key,
+        votes,
+        spinoffs,
+        type,
+        width,
+        height,
+        userFlagged: user_flagged === 1,
+        originScratchpad: origin_scratchpad,
+        hiddenFromHotlist: hidden_from_hotlist === 1,
+        restrictedPosting: restricted_posting === 1,
+        byChild: by_child === 1,
+        authoer: {
+            nick: author__nick,
+            name: author__name,
+            id: author__id,
+            profileAccess: author__profile_access
+        }
+    };
+}
+function getProgram(id) {
+    return formatOutput(db.query("SELECT * FROM programs WHERE id = $id").get({ $id: id }))
+}
+function getPrograms(limit, offset = 0) {
+    const archiveData = db.query(`SELECT * FROM programs LIMIT ${limit} OFFSET ${offset}`).all()
+
+    return JSON.stringify(archiveData)
 }
 
 async function renderPage(page, request) {
@@ -84,15 +247,55 @@ async function renderPage(page, request) {
     ),
     );
 }
+async function renderError(error, request) {
+    const loggedIn = checkLoggedin(request)
+    return new Response(
+    await renderToReadableStream(
+    <html>
+        <head>
+            <meta charSet="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>{error + ' | KAP Archive'}</title>
+            <link rel="stylesheet" href='/css/index.css'/>
+        </head>
+        <body>
+            <Header loggedIn={loggedIn} />
+            <ErrorPage error={error} />
+            <Footer />
+        </body>
+    </html>,
+    ),
+    );
+}
 
 export default {
-    fetch(request) {
+    async fetch(request) {
         // Get Url and method from request.
         const { url, method } = request;
         // Get Pathname form url.
         const { pathname } = new URL(url);
-        // Get archive index html with file method.
-        if (method === "GET") {
+        if (pathname.match(/^\/s\/[0-9]+/i)) {
+            return new Response(JSON.stringify(await saveProgram(pathname.split('/').reverse()[0])), {
+                headers: { "content-type": "application/json" }
+            })
+        } if (pathname.match(/^\/g\/[0-9]+/i)) {
+            return new Response(JSON.stringify(await getProgram(pathname.split('/').reverse()[0])), {
+                headers: { "content-type": "application/json" }
+            })
+        } else if (pathname.match(/^\/(s|g)\/[^\/]+/i)) {
+            if (method === 'GET') {
+                return renderError('Invalid Program ID', request)
+            } else {
+                return new Response('Error: Invalid program id', {
+                    status: 400
+                })
+            }
+        } else if (pathname.match(/\/programs\/[0-9]+(\/)([0-9]+)(\/)/i)) {
+            let splitPath = pathname.split('/')
+            return new Response(getPrograms(splitPath[2], Number(splitPath[3]) !== NaN ? splitPath[3] : 0), {
+                headers: { "content-type": "application/json" }
+            })
+        } else if (method === "GET") {
             if (pathname === "/favicon.ico") {
                 return new Response(Bun.file('assets/favicon.ico'))
             } else if (pathname === "/") {
@@ -100,7 +303,8 @@ export default {
             } else if (pathname.match(/assets\/[a-z0-9-_]+\.(svg|png|jpeg|ico)/i) || pathname.match(/css\/[a-z0-9-_]+\.css/i)) {
                 return new Response(Bun.file(pathname.slice(1)))
             }
+            return renderError('404 Not Found', request)
         }
-        return new Response('404 not found', { status: 404})
+        return new Response('Error: 404 not found', { status: 404})
     },
 }
