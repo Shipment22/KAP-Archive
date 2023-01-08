@@ -170,3 +170,6 @@ dist
 
 # Sass
 .sass-cache
+
+# SQLite
+database.sqlite
