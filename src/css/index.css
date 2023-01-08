@@ -79,7 +79,7 @@ a.button {
   text-decoration: none; }
 
 a.button:visited {
-  background-color: #a6e3a1; }
+  background-color: #a6e3a1 !important; }
 
 .info {
   color: #a6adc8; }
