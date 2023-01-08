@@ -8,7 +8,7 @@ export default function(props) {
 	    }}>
 	        <div className="main_inner-wrapper">
 	            <h1>{props.error}</h1>
-	            <p>If you think something is wrong with KAP Arhive make an <a href="https://github.com/shipment22/kap-archive/issues">issue on Github.</a></p>
+	            <p>If you think something is wrong with KAP Archive make an <a href="https://github.com/shipment22/kap-archive/issues">issue on Github.</a></p>
 	        </div>
 	      </main>
 	)
