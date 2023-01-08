@@ -188,7 +188,7 @@ function formatOutput(sqliteOut) {
         author__profile_access
     } = sqliteOut
     return {
-        arhcive: {
+        archive: {
             id: db__id,
             added: db__added,
             updated: db__updated
