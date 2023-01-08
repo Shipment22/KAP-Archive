@@ -59,6 +59,9 @@ a.button {
 	margin-block: .25rem;
 	text-decoration: none;
 }
+a.button:visited {
+    background-color: #a6e3a1;
+}
 
 .info {
     color: #a6adc8;
@@ -109,16 +112,18 @@ a:visited {
 
 .programs-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 	gap: 1rem;
 
 	.program {
 		padding: .7rem;
 		border-radius: .7rem;
 		background-color: $crust;
+		display: grid;
 
 		img {
 			border-radius: .5rem;
+			width: 100%;
 		}
 
 		h3 {
@@ -133,10 +138,12 @@ a:visited {
 		.program_view-code-wrapper {
 			margin-top: .4rem;
 			display: flex;
+			align-items: center;
 			gap: .5rem;
 			.button {
 				flex-grow: 1;
 				margin: 0;
+				text-align: center;
 			}
 		}
 	}
