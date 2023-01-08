@@ -270,6 +270,10 @@ async function renderError(error, request) {
     ),
     );
 }
+// Input a path and outputs a response with image headers
+function serveImage(path) {
+    return new Response(Bun.file(path), { headers: { "content-type": "image/"+path.split('.').reverse()[0] } });
+}
 export default {
     async fetch(request) {
         // Get Url and method from request.
@@ -303,17 +307,17 @@ export default {
             })
         } else if (method === "GET") {
             if (pathname === "/favicon.ico") {
-                return new Response(Bun.file('assets/favicon.ico'))
+                return serveImage('assets/favicon.ico')
             } else if (pathname === "/android-chrome-512x512.png") {
-                return new Response(Bun.file('assets/android-chrome-512x512.png'))
+                return serveImage('assets/android-chrome-512x512.png');
             } else if (pathname === "/android-chrome-192x192.png") {
-                return new Response(Bun.file('assets/android-chrome-192x192.png'))
+                return serveImage('assets/android-chrome-192x192.png');
             } else if (pathname === "/apple-touch-icon.png") {
-                return new Response(Bun.file('assets/apple-touch-icon.png'))
+                return serveImage('assets/apple-touch-icon.png');
             } else if (pathname === "/favicon-16x16.png") {
-                return new Response(Bun.file('assets/favicon-16x16.png'))
+                return serveImage('assets/favicon-16x16.png')
             } else if (pathname === "/favicon-32x32.png") {
-                return new Response(Bun.file('assets/favicon-32x32.png'))
+                return serveImage('assets/favicon-32x32.png')
             } else if (pathname === "/site.webmanifest") {
                 return new Response(Bun.file('assets/site.webmanifest'))
             } else if (pathname === "/") {
