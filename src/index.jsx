@@ -86,7 +86,7 @@ export default {
         if (pathname.match(/^\/s\/[0-9]+/i)) {
             const program = await saveProgram(pathname.split('/').reverse()[0]);
             console.log(program)
-            if (typeof program !== 'Object') {
+            if (typeof program !== 'object') {
                 if (method === 'GET') {
                     return renderError('Program not found', request)
                 } else {
