@@ -11,6 +11,6 @@
   },
   "scripts": {
     "dev": "cd src/; nodemon -x bun index.jsx & sass --watch --scss scss/:css/",
-    "start": "cd src/; bun index.jsx"
+    "start": "cd src/; node index.jsx"
   }
 }
