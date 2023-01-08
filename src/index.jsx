@@ -218,13 +218,16 @@ function formatOutput(sqliteOut) {
         }
     };
 }
-function getProgram(id) {
-    return formatOutput(db.query("SELECT * FROM programs WHERE id = $id").get({ $id: id }))
-}
-function getPrograms(limit, offset = 0) {
-    if (Number(limit) === NaN || Number(offset) === NaN) return 400
-    const archiveData = db.query(`SELECT * FROM programs LIMIT ${limit} OFFSET ${offset}`).all()
-    return JSON.stringify(archiveData)
+// Create Queries for getting a program by id and getting multiple by index
+const retrieveById = db.query("SELECT * FROM programs WHERE id = $id"), 
+      retrievePrograms = db.query("SELECT * FROM programs LIMIT $limit OFFSET $offset");
+function getProgram(id) { return formatOutput(retrieveById.get({ $id: id })); } // Retrieve and return the program by id
+function getPrograms($limit, $offset = 0) {
+    $limit = Number($limit); $offset = Number($offset); // Make sure the limit and offset are numbers if they aren't return 400
+    if ($limit === NaN || $offset === NaN) return 400;
+    const archiveData = retrievePrograms.all({ $limit, $offset }); // Get data from archive
+    for (let i in archiveData) { archiveData[i] = formatOutput(archiveData[i]); } // Structure the JSON
+    return JSON.stringify(archiveData); // Stringify and return the data
 }
 
 async function renderPage(page, request) {
