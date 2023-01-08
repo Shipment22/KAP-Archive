@@ -290,8 +290,12 @@ export default {
                     status: 400
                 })
             }
-        } else if (pathname.match(/\/programs\/[0-9]+(\/)([0-9]+)(\/)/i)) {
+        } else if (pathname.match(/\/programs\/[0-9]+(\/|([0-9]+|))(\/|)/i)) {
             let splitPath = pathname.split('/')
+            if (splitPath[splitPath.length-1] === '') {
+                splitPath.splice(-1, 1)
+            }
+            console.log(splitPath)
             return new Response(getPrograms(splitPath[2], Number(splitPath[3]) !== NaN ? splitPath[3] : 0), {
                 headers: { "content-type": "application/json" }
             })
