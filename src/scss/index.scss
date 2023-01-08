@@ -67,8 +67,8 @@ a.button {
 	margin-block: .25rem;
 	text-decoration: none;
 }
-a.button:visited {
-    background-color: #a6e3a1!important;
+a:visited.button {
+    color: #11111b;
 }
 
 .info {
