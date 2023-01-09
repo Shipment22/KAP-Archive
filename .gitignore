@@ -173,3 +173,8 @@ dist
 
 # SQLite
 database.sqlite
+
+# Replit stuff
+.replit
+replit.nix
+replit-bun.cfg
