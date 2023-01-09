@@ -4,10 +4,10 @@ import Program from './program'
 import saveAndRetrieve from './saveAndRetrieve'
 const { getProgramsNoString } = saveAndRetrieve
 
-const programs = getProgramsNoString(16)
 
 function Page() {
-  return (
+    const programs = getProgramsNoString(16)
+    return (
     <main className="Main">
         <h1>Khan Academy Program Archive</h1>
         <div className="search surface">
@@ -21,7 +21,6 @@ function Page() {
         <div className="recently-added">
             <h2>Recently Added</h2>
             <div className="programs-grid">
-
                 {programs.map(program => (
                     <Program 
                         key={program.archive.id} 
@@ -37,7 +36,7 @@ function Page() {
             </div>
         </div>
     </main>
-  );
+    );
 }
 
 export default Page

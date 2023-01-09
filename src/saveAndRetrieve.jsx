@@ -84,7 +84,7 @@ async function saveProgram(id) {
                 updated: Date.now()
             },
             created: new Date(p.created).getTime(),
-            updated: 404,
+            updated: new Date(p.revision.created).getTime(),
             id: p.id,
             title: p.title,
             code: p.revision.code,
@@ -93,7 +93,7 @@ async function saveProgram(id) {
             fork: p.isProjectOrFork,
             key: p.key,
             votes: p.sumVotesIncremented,
-            spinoffs: p.spinOffCount,
+            spinoffs: p.spinoffCount,
             type: p.userAuthoredContentType,
             width: p.width,
             height: p.height,
