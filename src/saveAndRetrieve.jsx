@@ -140,6 +140,20 @@ async function saveProgram(id) {
     ])})(programData)
     return programData
 }
+
+/*
+ * Name:   savePrograms
+ * Input:  Array, a list of program IDs
+ * Output: Array, the data for each program
+*/
+async function savePrograms(ids) {
+    let data = new Array(ids.length)                 // Create a new array to hold all the data
+    for (let i in ids) {
+        const programData = await saveProgram(ids[i])// Get the data for each program
+        data[i] = programData                        // Add the program data to the data array
+    }
+    return data                                      // Output all of the program data
+}
 function formatOutput(sqliteOut) {
     const {
         db__id,
@@ -221,6 +235,7 @@ export default ({
     getProgramThumbnail,
     insertProgram,
     saveProgram,
+    savePrograms,
     formatOutput,
     retrieveById,
     retrievePrograms,

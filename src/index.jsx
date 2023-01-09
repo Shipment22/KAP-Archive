@@ -12,6 +12,7 @@ const {
     getProgramThumbnail,
     insertProgram,
     saveProgram,
+    savePrograms,
     formatOutput,
     retrieveById,
     retrievePrograms,
@@ -134,6 +135,13 @@ export default {
                 return serveImage('assets/favicon-32x32.png')
             } else if (pathname === "/site.webmanifest") {
                 return new Response(Bun.file('assets/site.webmanifest'))
+            } else if (pathname === "/add") {
+                const params = URLSearchParams(url.split('?')[1])
+                return (async params => {
+                    return new Response(JSON.stringify(await savePrograms(params.get('ids').match(/[0-9]+(\n|,|)/gi))), {
+                        headers: { 'content-type': 'application/json' }
+                    })
+                })(params)
             } else if (pathname === "/") {
                 return renderPage(pages.home, request)
             } else if (pathname.match(/assets\/[a-z0-9-_]+\.(svg|png|jpeg|ico)/i) || pathname.match(/css\/[a-z0-9-_]+\.css/i)) {
