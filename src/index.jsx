@@ -89,9 +89,9 @@ export default {
             console.log(program)
             if (typeof program !== 'object') {
                 if (method === 'GET') {
-                    return renderError('Program not found', request)
+                    return renderError(program, request)
                 } else {
-                    return new Response('Error: Program not found', {
+                    return new Response('Error: ' + program, {
                         status: 404
                     })
                 }
