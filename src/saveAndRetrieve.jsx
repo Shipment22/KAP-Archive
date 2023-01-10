@@ -54,11 +54,36 @@ async function getProgramThumbnail(id) {
         return `data:${data.mime};base64,${base64}`
     })
 }
-const insertProgram = db.prepare(`INSERT INTO programs (${programColumnsListText}) VALUES (${('?'.repeat(programColumnsListText.split(',').length).split('').join(', '))})`)
+const insertProgram = db.prepare(`INSERT INTO programs (${programColumnsListText}) VALUES (${('?'.repeat(programColumnsListText.split(',').length).split('').join(', '))})`),
+      updateProgram = db.prepare(`UPDATE programs SET 
+        db__updated = $archiveUpdated,
+        updated = $updated, 
+        title = $title, 
+        code = $code,
+        folds = $folds,
+        thumbnail = $thumbnail,
+        votes = $votes,
+        spinoffs = $spinoffs,
+        width = $width,
+        height = $height,
+        user_flagged = $userFlagged,
+        hidden_from_hotlist = $hiddenFromHotlist,
+        restricted_posting = $restrictedPosting,
+        author__nick = $nick,
+        author__name = $name,
+        author__profile_access = $profileAccess
+        WHERE id = $id`)
+/*
+ * Name:   saveProgram
+ * Input:  Program ID
+ * Output: A JSON variant of the data it saved
+*/
 async function saveProgram(id) {
+    // Make sure the id only has digets if not return
     if (id.match(/[0-9]+/) === null) {
         return 'Invalid program ID'
     }
+    // Fetch the program
     const programData = await fetch("https://www.khanacademy.org/api/internal/graphql/programQuery?lang=en", {
         "credentials": "include",
         "headers": {
@@ -77,10 +102,11 @@ async function saveProgram(id) {
     }).then(res => res.json())
     .then(json => json.data.programById)
     .then(async p => {
-        if (!p) return 404;
+        if (!p) return 404; // If the expected data doesn't exist return 404
+        // Return the program data
         return {
             archive: {
-                added: Date.now(), // needs to be fixed for when archives can be updated 
+                added: Date.now(),
                 updated: Date.now()
             },
             created: new Date(p.created).getTime(),
@@ -110,7 +136,33 @@ async function saveProgram(id) {
             }
         }
     });
-    if (programData === 404) return 'Program not found';
+    // Check if the program was found if not return an error message
+    if (programData === 404) return 'Program not found on Khan Academy'; 
+    // Check if the program exists in the database and if it does update it
+    const oldData = getProgram(id)
+    if (typeof oldData === 'object') {
+        (d => {updateProgram.run({
+            $archiveUpdated: d.archive.updated,
+            $updated: d.updated,
+            $title: d.title,
+            $code: d.code + '',
+            $folds: d.folds + '',
+            $thumbnail: d.thumbnail,
+            $votes: d.votes,
+            $spinoffs: d.spinoffs,
+            $width: d.width,
+            $height: d.height,
+            $userFlagged: d.userFlagged,
+            $hiddenFromHotlist: d.hiddenFromHotlist,
+            $restrictedPosting: d.restrictedPosting,
+            $nick: d.author.nick,
+            $name: d.author.name,
+            $profileAccess: d.author.profileAccess
+        })})(programData)
+        programData.archive.added = oldData.archive.added
+        return programData
+    }
+    // Destructure the data, insert it to the database, and return it
     (d => {insertProgram.run([
         d.archive.added,
         d.archive.updated,
@@ -140,11 +192,10 @@ async function saveProgram(id) {
     ])})(programData)
     return programData
 }
-
 /*
  * Name:   savePrograms
  * Input:  Array, a list of program IDs
- * Output: Array, the data for each program
+ * Output: Array, the JSON data for each program that it saved
 */
 async function savePrograms(ids) {
     let data = new Array(ids.length)                 // Create a new array to hold all the data
@@ -155,6 +206,7 @@ async function savePrograms(ids) {
     return data                                      // Output all of the program data
 }
 function formatOutput(sqliteOut) {
+    if (!sqliteOut) return "Error: Recieved no data from the database"
     const {
         db__id,
         db__added,
