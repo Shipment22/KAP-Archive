@@ -138,6 +138,8 @@ a:visited.button {
         flex-grow: 1;
         margin: 0;
         text-align: center; }
+  .programs-grid .program.error {
+    background-color: #911; }
 
 .Header {
   padding: .2rem;
