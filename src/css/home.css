@@ -77,7 +77,8 @@ a:visited {
   padding: .5rem;
   background-color: #a6e3a1;
   color: #11111b;
-  font-weight: 700; }
+  font-weight: 700;
+  cursor: pointer; }
 
 a.button {
   display: inline-block;
