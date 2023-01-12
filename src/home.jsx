@@ -6,7 +6,7 @@ const { getProgramsNoString } = saveAndRetrieve
 
 
 function Page() {
-    const programs = getProgramsNoString(16)
+    const programs = getProgramsNoString(12)
     return (
     <main className="Main">
         <h1>Khan Academy Program Archive</h1>
@@ -22,18 +22,11 @@ function Page() {
             <h2>Recently Added</h2>
             <div className="programs-grid">
                 {programs.map(program => (
-                    <Program 
-                        key={program.archive.id} 
-                        title={program.title}
-                        created={program.created}
-                        author={program.author.nick}
-                        thumb={program.thumbnail}
-                        updated={program.updated}
-                        votes={program.votes}
-                        spinoffs={program.spinoffs}
-                    />
+                    <Program {...program}/>
                 ))}
             </div>
+            <br />
+            <a className="button" style={{width: 100+'%',textAlign:'center',margin:'0'}} href="/browse/new">See more</a>
         </div>
     </main>
     );
