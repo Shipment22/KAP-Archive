@@ -6,6 +6,7 @@ import Header from './header'
 import Footer from './footer'
 import ErrorPage from './error'
 import Home from './home'
+import Add from './add'
 
 import saveAndRetrieve from './saveAndRetrieve.jsx'
 const {
@@ -20,9 +21,7 @@ const {
     getPrograms
 } = saveAndRetrieve
 
-const pages = {
-    home: { title: 'Khan Academy Program Archive', stylesheet: '/css/home.css', body: Home }
-}
+
 function checkLoggedin(request) {
     if (request.headers.get('cookie') === null || request.headers.get('cookie').match(/key=[^;]+/) === null) {
         return null
@@ -47,7 +46,8 @@ async function renderPage(page, request) {
         </head>
         <body>
             <Header loggedIn={loggedIn} />
-            <page.body />
+            {page.props ? (<page.body {...page.props}/>) : (<page.body />) }
+            
             <Footer />
         </body>
     </html>,
@@ -135,14 +135,56 @@ export default {
             } else if (pathname === "/site.webmanifest") {
                 return new Response(Bun.file('assets/site.webmanifest'))
             } else if (pathname === "/add") {
-                const params = URLSearchParams(url.split('?')[1])
-                return (async params => {
-                    return new Response(JSON.stringify(await savePrograms(params.get('ids').match(/[0-9]+(\n|,|)/gi))), {
-                        headers: { 'content-type': 'application/json' }
-                    })
-                })(params)
+                const params = URLSearchParams(url.split('?')[1]) // Get URL parameters
+                return (async (params, request) => {
+                    let props = {}; // Will be passed as props to the Add component
+                    // Check if the program has either an id or ids URL parameter
+                    if (params.has('ids') || params.has('id')) {
+                        let ids;
+                        // Get the program IDs from either the id or ids URL param
+                        ids = params.get('ids');
+                        if (!params.has('ids')) ids = params.get('id');
+                        // Make sure there's actually program ids if not return an error page
+                        if (!ids || ids.length === 0) return renderError('No program IDs given', request);
+                        ids = ids.replace(/\r\n/g, '\n'); // Fix DOS new-lines
+                        ids = ids.match(/[^,\n]+/gi); // Get array of IDs by splitting the string by commas and new-lines
+                        // Remove duplicates
+                        let duplicates = [], unique = []
+                        for (var i = ids.length - 1; i >= 0; i--) {
+                            for (var j = i - 1; j >= 0; j--) {
+                                // console.log(i, j)
+                                if (ids[i] === ids[j]) {
+                                    duplicates.push(ids[j]);
+                                    ids.splice(j, 1);
+                                }
+                            }
+                        }
+                        // Save programs
+                        const programs = await savePrograms(ids);
+                        // Add duplicates back as error programs
+                        for (let i in duplicates) {
+                            let dupeText = '';
+                            for (let j in programs) {
+                                if (programs[j].id === duplicates[i]) {
+                                    dupeText =` "${programs[j].title}" was input more than once.` ;
+                                }
+                            }
+                            programs.unshift({
+                                status: 400,
+                                message: 'This is a duplicate' + dupeText,
+                                id: duplicates[i]
+                            });
+                            ids.unshift(duplicates[i]);
+                        }
+                        // Sort programs so errors go first and add programs to props
+                        programs.sort((a,b) => b.status - (a.status + b.message.length));
+                        props.programs = programs;
+                    }
+                    // Render and return the add page
+                    return await renderPage({ title: 'Results | KAP Archive', stylesheet: '/css/add.css', body: Add, props }, request);
+                })(params, request)
             } else if (pathname === "/") {
-                return renderPage(pages.home, request)
+                return renderPage({ title: 'Khan Academy Program Archive', stylesheet: '/css/home.css', body: Home }, request)
             } else if (pathname.match(/assets\/[a-z0-9-_]+\.(svg|png|jpeg|ico)/i) || pathname.match(/css\/[a-z0-9-_]+\.css/i)) {
                 return new Response(Bun.file(pathname.slice(1)))
             }

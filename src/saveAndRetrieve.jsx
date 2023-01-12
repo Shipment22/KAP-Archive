@@ -79,9 +79,12 @@ const insertProgram = db.prepare(`INSERT INTO programs (${programColumnsListText
  * Output: A JSON variant of the data it saved
 */
 async function saveProgram(id) {
+    id = id.replace(/[,\n]/gi,'') // Remove any spaces or newlines
+    // Change program URLs to program IDs
+    id = id.replace(/http(s|):\/\/[a-z0-9]+\.khanacademy\.org\/(computer-programming|cs)\/[a-z0-9-_]+\//g, '')
     // Make sure the id only has digets if not return
     if (id.match(/[0-9]+/) === null) {
-        return 'Invalid program ID'
+        return { status: 400, message: 'Invalid program ID', id, severe: true }
     }
     // Fetch the program
     const programData = await fetch("https://www.khanacademy.org/api/internal/graphql/programQuery?lang=en", {
@@ -105,6 +108,8 @@ async function saveProgram(id) {
         if (!p) return 404; // If the expected data doesn't exist return 404
         // Return the program data
         return {
+            status: 200,
+            message: 'Data seems to be good',
             archive: {
                 added: Date.now(),
                 updated: Date.now()
@@ -137,7 +142,7 @@ async function saveProgram(id) {
         }
     });
     // Check if the program was found if not return an error message
-    if (programData === 404) return 'Program not found on Khan Academy'; 
+    if (programData === 404) return { status: 404, message: 'Program not found', id, severe: true }; 
     // Check if the program exists in the database and if it does update it
     const oldData = getProgram(id)
     if (typeof oldData === 'object') {
@@ -236,6 +241,8 @@ function formatOutput(sqliteOut) {
         author__profile_access
     } = sqliteOut
     return {
+        status: 200,
+        message: 'Sucessfully formatted the database output',
         archive: {
             id: db__id,
             added: db__added,
@@ -272,7 +279,8 @@ function formatOutput(sqliteOut) {
 const retrieveById = db.query("SELECT * FROM programs WHERE id = $id"), 
       retrievePrograms = db.query("SELECT * FROM programs LIMIT $limit OFFSET $offset");
 function getProgram(id) { return formatOutput(retrieveById.get({ $id: id })); } // Retrieve and return the program by id
-function getProgramsNoString($limit, $offset = 0) {
+function getProgramsNoString($limit = 50, $offset = 0) {
+    if ($limit > 1000) $limit = 1000; // Make sure limit is under 1000
     $limit = Number($limit); $offset = Number($offset); // Make sure the limit and offset are numbers if they aren't return 400
     if ($limit === NaN || $offset === NaN) return 400;
     const archiveData = retrievePrograms.all({ $limit, $offset }); // Get data from archive
