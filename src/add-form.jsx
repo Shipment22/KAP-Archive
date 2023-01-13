@@ -4,6 +4,7 @@ const infoIcon = '/assets/info.svg'
 function AddForm() {
 	return (
 		<form action="/add" className="add-form">
+			<label for="ids">Program IDs</label>
 			<textarea name="ids" className="input" rows="6"></textarea>
 	        <div className="info">
 	            <img src={infoIcon} alt="Information Icon" width="24"/>
