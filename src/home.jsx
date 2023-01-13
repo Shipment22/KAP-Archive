@@ -1,5 +1,5 @@
-import SearchForm from "./search-form"
-import AddForm from "./add-form"
+import SearchForm from "./searchForm"
+import AddForm from "./addForm"
 import Program from './program'
 import saveAndRetrieve from './saveAndRetrieve'
 const { getProgramsNoString } = saveAndRetrieve
