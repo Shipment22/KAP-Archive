@@ -2,8 +2,8 @@
  * Name:   Add
  * For:    Main tag in the /add endpoint
 */
-import AddForm from './addForm';
-import Program from './program';
+import AddForm from '../components/addForm';
+import Program from '../components/program';
 function Add(props) {
 	return (
 <main className="Main">

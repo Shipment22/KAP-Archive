@@ -1,9 +1,8 @@
-import SearchForm from "./searchForm"
-import AddForm from "./addForm"
-import Program from './program'
-import saveAndRetrieve from './saveAndRetrieve'
-const { getProgramsNoString } = saveAndRetrieve
-
+import SearchForm from "../components/searchForm";
+import AddForm from "../components/addForm";
+import Program from '../components/program';
+import saveAndRetrieve from '../libs/saveAndRetrieve';
+const { getProgramsNoString } = saveAndRetrieve;
 
 function Page() {
     const programs = getProgramsNoString(12)

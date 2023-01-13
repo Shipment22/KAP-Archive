@@ -2,13 +2,13 @@
 
 import { renderToReadableStream } from "react-dom/server"
 
-import Header from './header'
-import Footer from './footer'
-import ErrorPage from './error'
-import Home from './home'
-import Add from './add'
+import Header from './components/header'
+import Footer from './components/footer'
+import ErrorPage from './pages/error'
+import Home from './pages/home'
+import Add from './pages/add'
 
-import saveAndRetrieve from './saveAndRetrieve.jsx'
+import saveAndRetrieve from './libs/saveAndRetrieve.jsx'
 const {
     getProgramThumbnail,
     insertProgram,

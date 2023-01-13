@@ -3,7 +3,7 @@
  * Input:  Object: props (i.e. program data)
  * Output: Component: Rendered grid program GUI
 */
-import relativeDate from './relativeDate'
+import relativeDate from '../libs/relativeDate'
 function renderProgram(props) {
 	// Get the crated and updated dates
 	const created = new Date(props.created),
