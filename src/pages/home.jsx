@@ -1,8 +1,7 @@
 import SearchForm from "../components/searchForm";
 import AddForm from "../components/addForm";
 import Program from '../components/program';
-import saveAndRetrieve from '../libs/retrievePrograms';
-const { getProgramsNoString } = saveAndRetrieve;
+import { getProgramsNoString } from '../libs/retrievePrograms';
 
 function Page() {
     const programs = getProgramsNoString(12)

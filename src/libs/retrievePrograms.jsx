@@ -7,7 +7,7 @@ const db = new Database('database.sqlite', {
 const retrieveById = db.query("SELECT * FROM programs WHERE id = $id"), 
       retrievePrograms = db.query("SELECT * FROM programs ORDER BY db__added DESC LIMIT $limit OFFSET $offset");
 // Retrieve and return the program by id
-function getProgram(id) { return formatOutput(retrieveById.get({ $id: id })); } 
+function getProgram(id) { return formatOutput(retrieveById.get({ $id: id })); }
 // Get programs without stringifying the output
 function getProgramsNoString($limit = 50, $offset = 0) {
     if ($limit > 1000) $limit = 1000; // Make sure limit is under 1000
@@ -97,9 +97,11 @@ function formatOutput(sqliteOut) {
     };
 }
 
-export default {
+export {
   getProgram,
   getPrograms,
   getProgramsNoString,
-  formatProgramFromDatabase: formatOutput
-}
+  formatOutput as formatProgramFromDatabase
+};
+
+export default getProgram;
