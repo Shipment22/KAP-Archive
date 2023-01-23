@@ -10,7 +10,7 @@
     "react-dom": "^18.2.0"
   },
   "scripts": {
-    "dev": "cd src/; nodemon -x bun index.jsx & sass --watch --scss scss/:css/",
-    "start": "cd src/; bun index.jsx"
+    "dev": "cd src/; bun init.jsx; sass --watch --scss scss/:css/ & nodemon -x bun index.jsx",
+    "start": "cd src/; bun init.jsx; bun index.jsx"
   }
 }
