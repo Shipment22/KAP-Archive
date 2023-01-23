@@ -1,26 +1,13 @@
+import { renderToReadableStream } from "react-dom/server";
 
+import Header from './components/header';
+import Footer from './components/footer';
+import ErrorPage from './pages/error';
+import Home from './pages/home';
+import Add from './pages/add';
 
-import { renderToReadableStream } from "react-dom/server"
-
-import Header from './components/header'
-import Footer from './components/footer'
-import ErrorPage from './pages/error'
-import Home from './pages/home'
-import Add from './pages/add'
-
-import saveAndRetrieve from './libs/saveAndRetrieve.jsx'
-const {
-    getProgramThumbnail,
-    insertProgram,
-    saveProgram,
-    savePrograms,
-    formatOutput,
-    retrieveById,
-    retrievePrograms,
-    getProgram,
-    getPrograms
-} = saveAndRetrieve
-
+import { saveProgram, savePrograms } from './libs/archivePrograms.jsx';
+import { getProgram, getPrograms } from './libs/retrievePrograms.jsx';
 
 function checkLoggedin(request) {
     if (request.headers.get('cookie') === null || request.headers.get('cookie').match(/key=[^;]+/) === null) {
@@ -147,6 +134,9 @@ export default {
                         // Make sure there's actually program ids if not return an error page
                         if (!ids || ids.length === 0) return renderError('No program IDs given', request);
                         ids = ids.replace(/\r\n/g, '\n'); // Fix DOS new-lines
+                        // Split any urls into IDs separated by a comma
+                        // (so people can just drag a ton of urls in and not have to worry about separating them)
+                        ids = ids.replace(/(http(s))(:)(\/\/)khanacademy.org\/[^\/]+\/[^\/]+\//gi, ',');
                         ids = ids.match(/[^,\n]+/gi); // Get array of IDs by splitting the string by commas and new-lines
                         // Remove duplicates
                         let duplicates = [], unique = []
