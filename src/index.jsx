@@ -54,11 +54,14 @@ async function renderError(error, request) {
         </head>
         <body>
             <Header loggedIn={loggedIn} />
-            <ErrorPage error={error} />
+            <ErrorPage error={error.message} />
             <Footer />
         </body>
     </html>,
-    ),
+    ), 
+    {
+        status: error.status
+    }
     );
 }
 // Input a path and outputs a response with image headers
@@ -73,12 +76,13 @@ export default {
         const { pathname } = new URL(url);
         if (pathname.match(/^\/s\/[0-9]+/i)) {
             const program = await saveProgram(pathname.split('/').reverse()[0]);
-            if (typeof program !== 'object') {
+            console.log(program)
+            if (program.status !== 200) {
                 if (method === 'GET') {
                     return renderError(program, request)
                 } else {
-                    return new Response('Error: ' + program, {
-                        status: 404
+                    return new Response('Error: ' + program.message, {
+                        status: program.status
                     })
                 }
             }
@@ -91,7 +95,7 @@ export default {
             })
         } else if (pathname.match(/^\/(s|g)\/[^\/]+/i)) {
             if (method === 'GET') {
-                return renderError('Invalid Program ID', request)
+                return renderError({ status: 400, message: 'Invalid Program ID' }, request)
             } else {
                 return new Response('Error: Invalid program id', {
                     status: 400
@@ -132,7 +136,7 @@ export default {
                         ids = params.get('ids');
                         if (!params.has('ids')) ids = params.get('id');
                         // Make sure there's actually program ids if not return an error page
-                        if (!ids || ids.length === 0) return renderError('No program IDs given', request);
+                        if (!ids || ids.length === 0) return renderError({ status: 400, message: 'No program IDs given' }, request);
                         ids = ids.replace(/\r\n/g, '\n'); // Fix DOS new-lines
                         // Split any urls into IDs separated by a comma
                         // (so people can just drag a ton of urls in and not have to worry about separating them)
@@ -178,7 +182,7 @@ export default {
             } else if (pathname.match(/assets\/[a-z0-9-_]+\.(svg|png|jpeg|ico)/i) || pathname.match(/css\/[a-z0-9-_]+\.css/i)) {
                 return new Response(Bun.file(pathname.slice(1)))
             }
-            return renderError('404 Not Found', request)
+            return renderError({ status: 404, message: '404 Not Found' }, request)
         }
         return new Response('Error: 404 not found', { status: 404})
     },
