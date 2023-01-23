@@ -4,8 +4,8 @@ const db = new Database('database.sqlite', {
   readonly: true
 });
 // Create Queries for getting a program by id and getting multiple by index
-const retrieveById = db.query("SELECT * FROM programs WHERE id = $id"), 
-      retrievePrograms = db.query("SELECT * FROM programs ORDER BY db__added DESC LIMIT $limit OFFSET $offset");
+const retrieveById = db.prepare("SELECT * FROM programs WHERE id = $id"), 
+      retrievePrograms = db.prepare("SELECT * FROM programs ORDER BY archive__added DESC LIMIT $limit OFFSET $offset");
 // Retrieve and return the program by id
 function getProgram(id) { return formatOutput(retrieveById.get({ $id: id })); }
 // Get programs without stringifying the output
@@ -19,7 +19,7 @@ function getProgramsNoString($limit = 50, $offset = 0) {
 }
 // Get programs stringified
 function getPrograms() {
-    return JSON.stringify(getProgramsNoString(...args))
+    return JSON.stringify(getProgramsNoString(...arguments))
 }
 // Take in the output from the sqlite database and retern a formatted JSON version
 function formatOutput(sqliteOut) {
@@ -33,9 +33,8 @@ function formatOutput(sqliteOut) {
     }
     // Get variables from sqlite data
     const {
-        db__id,
-        db__added,
-        db__updated,
+        archive__added,
+        archive__updated,
         id,
         created,
         updated,
@@ -65,9 +64,8 @@ function formatOutput(sqliteOut) {
         status: 200,
         message: 'Sucessfully formatted the database output',
         archive: {
-            id: db__id,
-            added: db__added,
-            updated: db__updated
+            added: archive__added,
+            updated: archive__updated
         },
         id,
         created,
