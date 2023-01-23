@@ -2,9 +2,9 @@ import { Database } from "bun:sqlite"
 
 let db = new Database('database.sqlite')
 db.run(`CREATE TABLE IF NOT EXISTS programs 
-    (db__id INTEGER PRIMARY KEY AUTOINCREMENT, 
-    db__added INT,
-    db__updated INT,
+    (archive__id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    archive__added INT,
+    archive__updated INT,
     created INT,
     updated INT, 
     id TEXT, 
@@ -29,10 +29,10 @@ db.run(`CREATE TABLE IF NOT EXISTS programs
     author__id TEXT,
     author__profile_access TEXT
     )`)
-let programColumnsListText = 'db__added, db__updated, created, updated, id, title, code, folds, thumbnail, fork, "key", votes, spinoffs, type, width, height, user_flagged, origin_scratchpad, hidden_from_hotlist, restricted_posting, by_child, author__nick, author__name, author__id, author__profile_access'
-db.run(`CREATE TABLE IF NOT EXISTS users (db__id INTEGER PRIMARY KEY AUTOINCREMENT,
-    db__added INT,
-    db__updated INT,
+let programColumnsListText = 'archive__added, archive__updated, created, updated, id, title, code, folds, thumbnail, fork, "key", votes, spinoffs, type, width, height, user_flagged, origin_scratchpad, hidden_from_hotlist, restricted_posting, by_child, author__nick, author__name, author__id, author__profile_access'
+db.run(`CREATE TABLE IF NOT EXISTS users (archive__id INTEGER PRIMARY KEY AUTOINCREMENT,
+    archive__added INT,
+    archive__updated INT,
     badge_counts TEXT,
     nick TEXT,
     name TEXT,
@@ -44,7 +44,7 @@ db.run(`CREATE TABLE IF NOT EXISTS users (db__id INTEGER PRIMARY KEY AUTOINCREME
     profile_access TEXT,
     videos_complete INT
     )`)
-db.run('CREATE TABLE IF NOT EXISTS program_hashes (db__id INTEGER PRIMARY KEY AUTOINCREMENT, hash TEXT)')
+db.run('CREATE TABLE IF NOT EXISTS program_hashes (archive__id INTEGER PRIMARY KEY AUTOINCREMENT, hash TEXT)')
 
 async function getProgramThumbnail(id) {
     return await fetch(`https://www.khanacademy.org/computer-programming/_/${id}/latest.png`)
@@ -56,7 +56,7 @@ async function getProgramThumbnail(id) {
 }
 const insertProgram = db.prepare(`INSERT INTO programs (${programColumnsListText}) VALUES (${('?'.repeat(programColumnsListText.split(',').length).split('').join(', '))})`),
       updateProgram = db.prepare(`UPDATE programs SET 
-        db__updated = $archiveUpdated,
+        archive__updated = $archiveUpdated,
         updated = $updated, 
         title = $title, 
         code = $code,
@@ -213,9 +213,9 @@ async function savePrograms(ids) {
 function formatOutput(sqliteOut) {
     if (!sqliteOut) return "Error: Recieved no data from the database"
     const {
-        db__id,
-        db__added,
-        db__updated,
+        archive__id,
+        archive__added,
+        archive__updated,
         id,
         created,
         updated,
@@ -244,9 +244,9 @@ function formatOutput(sqliteOut) {
         status: 200,
         message: 'Sucessfully formatted the database output',
         archive: {
-            id: db__id,
-            added: db__added,
-            updated: db__updated
+            id: archive__id,
+            added: archive__added,
+            updated: archive__updated
         },
         id,
         created,
