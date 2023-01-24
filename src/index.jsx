@@ -6,9 +6,10 @@ import Footer from './components/footer';
 import ErrorPage from './pages/error';
 import Home from './pages/home';
 import Add from './pages/add';
+import Browse from './pages/browse';
 // Import library functions for saving and retrieving
 import { saveProgram, savePrograms } from './libs/archivePrograms.jsx';
-import { getProgram, getPrograms } from './libs/retrievePrograms.jsx';
+import { getProgram, getPrograms, getProgramsNoString } from './libs/retrievePrograms.jsx';
 
 function checkLoggedin(request) {
     // Check the key cookie's hash and if it's right return true
@@ -178,6 +179,20 @@ export default {
                     // Render and return the add page
                     return await renderPage({ title: 'Results | KAP Archive', stylesheet: '/css/add.css', body: Add, props }, request);
                 })(params, request)
+            }
+            // Browse page
+            if (pathname === "/browse") {
+                const params = URLSearchParams(url.split('?')[1]) // Get URL parameters
+                // Get the page number
+                let page = 1;
+                if (params.has('page')) page = params.get('page') || 1;
+                // Render and send the browse page
+                return renderPage({
+                    body: Browse,
+                    title: 'Browse Projects | KAP Archive',
+                    stylesheet: '/css/home.css',
+                    props: { page }
+                }, request);
             }
             // GUI 404 page
             return renderError({ status: 404, message: '404 Not Found' }, request)
