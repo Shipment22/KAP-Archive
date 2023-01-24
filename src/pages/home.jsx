@@ -20,7 +20,7 @@ function Page() {
             <h2>Recently Added</h2>
             <ProgramsGrid {programs}/>
             <br />
-            <a className="button" style={{width: 100+'%',textAlign:'center',margin:'0'}} href="/browse/new">See more</a>
+            <a className="button" style={{width: 100+'%',textAlign:'center',margin:'0'}} href="/browse">See more</a>
         </div>
     </main>
     );
