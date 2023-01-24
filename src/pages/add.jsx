@@ -3,6 +3,7 @@
  * For:    Main tag in the /add endpoint
 */
 import AddForm from '../components/addForm';
+import ProgramsGrid from '../components/programsGrid';
 import Program from '../components/program';
 function Add(props) {
 	return (
@@ -10,9 +11,7 @@ function Add(props) {
 	<h1>Program Adding Results</h1>
 	<div className="surface">
 		{props.programs?(
-			<div className="programs-grid">
-				{props.programs.map(program => (<Program key={program.id} {...program}/>))}
-			</div>
+			<ProgramsGrid programs={props.programs}/>
 		):(<AddForm />)}
 	</div>
 </main>)
