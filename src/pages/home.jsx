@@ -1,6 +1,6 @@
 import SearchForm from "../components/searchForm";
 import AddForm from "../components/addForm";
-import Program from '../components/program';
+import ProgramsGrid from '../components/programsGrid';
 import { getProgramsNoString } from '../libs/retrievePrograms';
 
 function Page() {
@@ -18,11 +18,7 @@ function Page() {
         </div>
         <div className="recently-added">
             <h2>Recently Added</h2>
-            <div className="programs-grid">
-                {programs.map(program => (
-                    <Program {...program}/>
-                ))}
-            </div>
+            <ProgramsGrid {programs}/>
             <br />
             <a className="button" style={{width: 100+'%',textAlign:'center',margin:'0'}} href="/browse/new">See more</a>
         </div>
