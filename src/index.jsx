@@ -49,7 +49,7 @@ async function renderError(error, request) {
         <head>
             <meta charSet="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <title>{error + ' | KAP Archive'}</title>
+            <title>{error.message + ' | KAP Archive'}</title>
             <link rel="stylesheet" href='/css/index.css'/>
         </head>
         <body>
