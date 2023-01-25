@@ -1,30 +1,6 @@
 import { Database } from "bun:sqlite";
 import { getProgram } from "./retrievePrograms";
 
-let db = new Database('database.sqlite');
-
-const 
-insertProgram = db.prepare(`INSERT INTO programs VALUES (?${',?'.repeat(24)})`),
-programColumnsListText = 'archive__added, archive__updated, created, updated, id, title, code, folds, thumbnail, fork, "key", votes, spinoffs, type, width, height, user_flagged, origin_scratchpad, hidden_from_hotlist, restricted_posting, by_child, author__nick, author__name, author__id, author__profile_access',
-// insertProgram = db.prepare(`INSERT INTO programs (${programColumnsListText}) VALUES (${('?'.repeat(programColumnsListText.split(',').length).split('').join(', '))})`),
-updateProgram = db.prepare(`UPDATE programs SET 
-archive__updated = $archive__updated,
-updated = $updated, 
-title = $title, 
-code = $code,
-folds = $folds,
-thumbnail = $thumbnail,
-votes = $votes,
-spinoffs = $spinoffs,
-width = $width,
-height = $height,
-user_flagged = $user_flagged,
-hidden_from_hotlist = $hidden_from_hotlist,
-restricted_posting = $restricted_posting,
-author__nick = $author__nick,
-author__name = $author__name,
-author__profile_access = $author__profile_access
-WHERE id = $id`)
 const getProgramThumbnail = async id => {
 	// Fetch thumbnail turn it into base64 and return it
 	return await fetch("https://www.khanacademy.org/computer-programming/_/" + id + "/latest.png")
@@ -37,7 +13,6 @@ const getProgramThumbnail = async id => {
 const saveProgram = async id => {
 	id = id.replace(/[\s,"[\]{}]/g,''); // Remove any whitespace, commas, quotation marks, and brackets
 	// Remove anything from a URL that's not the id
-	console.log(id)
 	id = id.replace(/http(s|):\/\/([a-z0-9]+\.|)khanacademy\.org\/[^\/]+\/[^\/]+\//gi, '');
 	id = id.replace(/\/[^/]+\.png/gi, ''); 		// For things like /latest.png
 	id = id.replace(/\?.+/gi, ''); 	// For URL params
@@ -75,6 +50,13 @@ const saveProgram = async id => {
     			message: 'Program not found',
     			id, severe: true
     		};
+    	}
+    	console.log('Retrieved data from Khan ' + id)
+    	if (p.originScratchpad) {
+    		const origin = p.originScratchpad;
+    		const id = origin.url.split('/').reverse()[0], official = origin.url.split('/')[1] === 'computing';
+    		// p.originScratchpad = `id:${id}\ntitle:${origin.translatedTitle}\ndeleted:${origin.deleted}\nofficial:${official}`;
+    		p.originScratchpad = Math.floor(Math.random() * 999999999)
     	}
 		// Return the program data
 		return {
@@ -116,24 +98,70 @@ const saveProgram = async id => {
     // Check if the program exists in the database already
     const oldData = await getProgram(id);
     if (oldData.status < 300) {
+    	// Set added date to the old one so the data sent after saving is accurate
+    	programData.archive.added = oldData.archive.added;
     	try {
+    		console.log('Updating program ' + id)
 	    	// The timeout is to avoid calling update and qeury on the table at the same time
 	        setTimeout(() => {
 	    		// If it does exist update it
+	        	let good = true;
 	        	const d = programData;
-	        	updateProgram.run({
-		            $archive__updated: d.archive.updated, $updated: d.updated,
-		            $title: d.title, $code: String(d.code), $folds: String(d.folds),
-		            $thumbnail: d.thumbnail, $votes: d.votes, $spinoffs: d.spinoffs,
-		            $width: d.width, $height: d.height, $user_flagged: d.userFlagged,
-		            $hidden_from_hotlist: d.hiddenFromHotlist,
-		            $restricted_posting: d.restrictedPosting,
-		            $author__nick: d.author.nick, $author__name: d.author.name,
-		            $author__profile_access: d.author.profileAccess
-	        	})
-	        }, 10);
+	        	try {
+					const db = new Database('database.sqlite');
+		        	db.run(`UPDATE programs SET 
+		        		archive__updated = $archive__updated,
+		        		updated = $updated,
+		        		title = $title,
+		        		code = $code,
+		        		folds = $folds,
+		        		thumbnail = $thumbnail,
+		        		votes = $votes,
+		        		spinoffs = $spinoffs,
+		        		width = $width,
+		        		height = $height,
+		        		user_flagged = $user_flagged,
+		        		hidden_from_hotlist = $hidden_from_hotlist,
+		        		restricted_posting = $restricted_posting,
+		        		origin_scratchpad = $origin_scratchpad,
+		        		author__nick = $author__nick,
+		        		author__name = $author__name,
+		        		author__profile_access = $author__profile_access
+		        		WHERE id = $id`, {
+		        		$id: id,
+			            $archive__updated: d.archive.updated, 
+			            $updated: d.updated,
+			            $title: d.title, 
+			            $code: String(d.code), 
+			            $folds: String(d.folds),
+			            $thumbnail: d.thumbnail, 
+			            $votes: d.votes, 
+			            $spinoffs: d.spinoffs,
+			            $width: d.width, 
+			            $height: d.height, 
+			            $user_flagged: d.userFlagged,
+			            $hidden_from_hotlist: d.hiddenFromHotlist,
+			            $restricted_posting: d.restrictedPosting,
+			            $origin_scratchpad: d.originScratchpad,
+			            $author__nick: d.author.nick, 
+			            $author__name: d.author.name,
+			            $author__profile_access: d.author.profileAccess
+		        	})
+		        	db.close();
+	        	} catch(e) {
+	        		// Error handling
+	        		console.error(e);
+	        		good = false;
+				}
+				if (good) {
+					// Log when a program was updated without errors
+					console.log('Updated program ' + d.title + ' ' + id)
+				}	
+	        },200);
     	} catch(e) {
     		// Catch any errors
+    		console.error('Error while updating program. ' + e);
+    		console.log(programData);
     		return {
     			status: 500,
     			message: 'Error while updating program. ' + e,
@@ -141,10 +169,13 @@ const saveProgram = async id => {
     		}
     	}
     } else {
+    	let good = true;
 	    try {
+    		console.log('Saving program ' + id);
 	    	// Destructure and insert the data into the database
 		    (d => {
-		    	insertProgram.run([ 
+		    	const db = new Database('database.sqlite');
+		    	db.run(`INSERT INTO programs VALUES (?${',?'.repeat(24)})`,[ 
 		    		d.archive.added, d.archive.updated, d.created, d.updated, d.id, 
 		    		d.title, String(d.code), String(d.folds), d.thumbnail, d.fork, 
 		    		d.key, d.votes, d.spinoffs, d.type, d.width, d.height, 
@@ -152,15 +183,23 @@ const saveProgram = async id => {
 		    		d.restrictedPosting, d.byChild, d.author.nick, d.author.name,
 			        d.author.id, d.author.profileAccess
 		    	]);
+		    	db.close();
 		    })(programData);
     	} catch(e) {
     		// Catch any errors
+    		console.error('Error while saving program. ' + e);
+    		console.log(programData);
+    		good = false;
     		return {
     			status: 500,
     			message: 'Error while saving program. ' + e,
     			id, severe: true
     		}
     	}
+		if (good) {
+    		// Log when a program was saved without errors
+			console.log('Saved program ' + programData.title + ' ' + id)
+		}
     }
     return programData; // Return the saved data
 };
