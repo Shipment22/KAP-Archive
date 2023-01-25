@@ -22,7 +22,7 @@ function Form() {
             <input type="number" name="limit" className="input" placeholder="Limit of programs to search (Does not effect raw search)"  />
         </div>
         <div className="info">
-            <img src={infoIcon} alt="Information Icon" width="24"/>
+            <img src={infoIcon} alt="Information Icon" width="22px" height="22px" />
             <p>
                 <i>Only one field needs to be filled to search</i>
             </p>

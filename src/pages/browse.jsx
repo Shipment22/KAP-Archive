@@ -11,7 +11,7 @@ function Browse(props) {
 	<h1>Browse Programs</h1>
 	<ProgramsGrid programs={getProgramsNoString(24, (page-1 ?? 0) * 24)}/>
     <br />
-    <a className="button" style={{width: 100+'%',textAlign:'center',margin:'0'}} href={nextHref}>See more</a>
+    <a className="button" style={{width: 100+'%',textAlign:'center',margin:'0'}} href={nextHref}>Next Page</a>
 </main>)
 }
 

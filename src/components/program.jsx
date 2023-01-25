@@ -12,12 +12,12 @@ function renderProgram(props) {
 	if (props.status !== 200) {
 		return (<div className="program">
 		<div className="program_thumbnail-wrapper">
-			{props.severe ? (<img src="/assets/error.svg" alt="Error image" className="program_thumbnail" />) : (
-				<img src="/assets/warning.svg" alt="Warning image" className="program_thumbnail" />
+			{props.severe ? (<img src="/assets/error.svg" alt="Error image" width="250px" height="250px" className="program_thumbnail" />) : (
+				<img src="/assets/warning.svg" alt="Warning image" width="250px" height="250px" className="program_thumbnail" />
 			)}
 		</div>
 		<div>
-		    <h3 className="program_title">{props.message}</h3>
+		    <div className="program_title">{props.message}</div>
 		    Program ID: <b>{props.id}</b>
 		</div>
 		</div>)
@@ -25,10 +25,10 @@ function renderProgram(props) {
 	// Return grid program
 	return (<div className="program">
 	<div className="program_thumbnail-wrapper">
-	    <img src={props.thumbnail} alt="Program thumbnail" className="program_thumbnail" />
+	    <img src={props.thumbnail} alt="Program thumbnail" width="200px" height="200px" className="program_thumbnail" />
 	</div>
 	<div>
-	    <h3 className="program_title">{props.title}</h3>
+	    <div className="program_title">{props.title}</div>
 	    <div className="program_author">Author: {props.author.nick}</div>
 	    <div className="program_created-updated-wrapper">
 	        <span className="program_created" title={created.toUTCString()}>Created: {relativeDate(Date.parse(created))}</span>

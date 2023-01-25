@@ -25,6 +25,13 @@ async function renderPage(page, request) {
         <head>
             <meta charSet="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <meta name="description"
+              content={ page.description || `KAP Archive is a site for archiving programs from Khan's 
+                       CS section. The programs on Khan's CS section often get 
+                       hidden or deleted even when they follow the Khan Guidelines,
+                       that's why KAP Archive is here to save the programs and your time.
+                       :)` } />
+            <meta name="theme-color" content="#11111A"/>
             <title>{page.title ?? 'KAP Archive'}</title>
             <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=1" />
             <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=1" />
@@ -41,13 +48,17 @@ async function renderPage(page, request) {
     ),);
 }
 async function renderError(error, request) {
-    const loggedIn = checkLoggedin(request)
+    const loggedIn = checkLoggedin(request);
     return new Response(
     await renderToReadableStream(
     <html>
         <head>
             <meta charSet="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <meta name="description"
+              content={'KAP Archive encountered an error. ' + error.message + 
+              '  If you think there\'s a problem with the site feel free to make an issue on Github.'} />
+            <meta name="theme-color" content="#11111A"/>
             <title>{error.message + ' | KAP Archive'}</title>
             <link rel="stylesheet" href='/css/index.css'/>
         </head>
