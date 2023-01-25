@@ -124,9 +124,13 @@ a:visited.button {
     display: grid; }
     .programs-grid .program img {
       border-radius: .5rem;
-      width: 100%; }
-    .programs-grid .program h3 {
-      margin-block: .2rem; }
+      width: 100%;
+      height: auto; }
+    .programs-grid .program .program_title {
+      margin-block: .2rem;
+      color: #a6e3a1;
+      font-size: 1.2rem;
+      font-weight: 700; }
     .programs-grid .program .program_updated::before, .programs-grid .program .program_spinoffs::before {
       content: '-';
       margin-inline: .2rem; }
@@ -183,9 +187,12 @@ a:visited.button {
     .Footer .footer_inner-wrapper ul {
       height: 20vh;
       padding-left: .4rem;
-      margin-bottom: 2rem; }
+      margin-bottom: 4rem; }
       .Footer .footer_inner-wrapper ul li {
-        list-style: none; }
+        list-style: none;
+        font-size: 1.3rem; }
+      .Footer .footer_inner-wrapper ul a {
+        text-decoration: none; }
   .Footer h2 {
     font-size: 1rem; }
 
@@ -202,6 +209,7 @@ a:visited.button {
       flex-grow: 1; } }
 @media screen and (min-width: 880px) {
   .Header {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     grid-template-columns: 210px 1fr 210px;
