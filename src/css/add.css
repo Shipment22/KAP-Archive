@@ -121,7 +121,8 @@ a:visited.button {
     padding: .7rem;
     border-radius: .7rem;
     background-color: #11111b;
-    display: grid; }
+    display: grid;
+    word-break: break-all; }
     .programs-grid .program img {
       border-radius: .5rem;
       width: 100%;
