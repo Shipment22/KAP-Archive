@@ -71,7 +71,7 @@ export default {
         // Get Pathname form url.
         const { pathname } = new URL(url);
         // /s/id endpoint
-        if (pathname.match(/^\/s\/[0-9]+/i)) {
+        if (pathname.match(/^\/s\/[a-z0-9-_\/:.]+/i)) {
             // Save the program
             const program = await saveProgram(pathname.split('/').reverse()[0]);
             // Handle errors
@@ -87,14 +87,14 @@ export default {
                 headers: { "content-type": "application/json" }});       
         }
         // /g/id endpoint
-        if (pathname.match(/^\/g\/[0-9]+/i)) {
+        if (pathname.match(/^\/g\/[a-z0-9-_\/:.]+/i)) {
             // Get the program from the database and send it on it's way
             const program = await getProgram(pathname.split('/').reverse()[0]);
             return new Response(JSON.stringify(program), { 
                 headers: { "content-type": "application/json" }});
         }
         // /s/id and /g/id invalid ID catching endpoint
-        if (pathname.match(/^\/(s|g)\/[^\/]+/i)) {
+        if (pathname.match(/^\/(s|g)\/.+/i)) {
             // GUI error page
             if (method === 'GET') return renderError({ status: 400, message: 'Invalid Program ID' }, request);
             // Non-GUI error message
