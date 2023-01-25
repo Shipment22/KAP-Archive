@@ -42,3 +42,4 @@ db.run(`CREATE TABLE IF NOT EXISTS users (db__id INTEGER PRIMARY KEY AUTOINCREME
     profile_access TEXT,
     videos_complete INT
     )`);
+db.close();
