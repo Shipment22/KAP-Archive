@@ -1,15 +1,22 @@
 import { Database } from "bun:sqlite"; // Import bun:sqlite
-// Load the database as readonly
-const db = new Database('database.sqlite', {
-  readonly: true
-});
-// Create Queries for getting a program by id and getting multiple by index
-const retrieveById = db.prepare("SELECT * FROM programs WHERE id = $id"), 
-      retrievePrograms = db.prepare("SELECT * FROM programs ORDER BY archive__added DESC LIMIT $limit OFFSET $offset");
 // Retrieve and return the program by id
-function getProgram(id) { return formatOutput(retrieveById.get({ $id: id })); }
+function getProgram(id) { 
+    // Load the database as readonly
+    const db = new Database('database.sqlite', {
+      readonly: true });
+    // Create Queries for getting a program by id and getting multiple by index
+    const retrieveById = db.query("SELECT * FROM programs WHERE id = $id");
+    const output = formatOutput(retrieveById.get({ $id: id }));
+    db.close();
+    return output;
+}
 // Get programs without stringifying the output
 function getProgramsNoString($limit = 50, $offset = 0) {
+    // Load the database as readonly
+    const db = new Database('database.sqlite', {
+      readonly: true });
+    // Create Queries for getting a program by id and getting multiple by index
+    const retrievePrograms = db.query("SELECT * FROM programs ORDER BY archive__added DESC LIMIT $limit OFFSET $offset");
     if ($limit > 1000) $limit = 1000; // Make sure limit is under 1000
     $limit = Number($limit); $offset = Number($offset); // Make sure the limit and offset are numbers if they aren't return 400
     if ($limit === NaN || $offset === NaN) return 400;
@@ -58,7 +65,14 @@ function formatOutput(sqliteOut) {
         author__name,
         author__id,
         author__profile_access
-    } = sqliteOut
+    } = sqliteOut;
+    // Convert the origin sratchpad data back to an object
+    if (origin_scratchpad) {
+        const origin = origin_scratchpad;
+        origin_scratchpad = {
+            
+        }
+    }
     // Format and return JSON data
     return {
         status: 200,
