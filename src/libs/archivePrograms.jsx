@@ -55,8 +55,7 @@ const saveProgram = async id => {
     	if (p.originScratchpad) {
     		const origin = p.originScratchpad;
     		const id = origin.url.split('/').reverse()[0], official = origin.url.split('/')[1] === 'computing';
-    		// p.originScratchpad = `id:${id}\ntitle:${origin.translatedTitle}\ndeleted:${origin.deleted}\nofficial:${official}`;
-    		p.originScratchpad = Math.floor(Math.random() * 999999999)
+    		p.originScratchpad = `${id}\n${origin.translatedTitle}\n${origin.deleted}\n${official}`;
     	}
 		// Return the program data
 		return {
@@ -98,8 +97,6 @@ const saveProgram = async id => {
     // Check if the program exists in the database already
     const oldData = await getProgram(id);
     if (oldData.status < 300) {
-    	// Set added date to the old one so the data sent after saving is accurate
-    	programData.archive.added = oldData.archive.added;
     	try {
     		console.log('Updating program ' + id)
 	    	// The timeout is to avoid calling update and qeury on the table at the same time
@@ -108,7 +105,7 @@ const saveProgram = async id => {
 	        	let good = true;
 	        	const d = programData;
 	        	try {
-					const db = new Database('database.sqlite');
+					var db = new Database('database.sqlite');
 		        	db.run(`UPDATE programs SET 
 		        		archive__updated = $archive__updated,
 		        		updated = $updated,
@@ -174,7 +171,7 @@ const saveProgram = async id => {
     		console.log('Saving program ' + id);
 	    	// Destructure and insert the data into the database
 		    (d => {
-		    	const db = new Database('database.sqlite');
+		    	var db = new Database('database.sqlite');
 		    	db.run(`INSERT INTO programs VALUES (?${',?'.repeat(24)})`,[ 
 		    		d.archive.added, d.archive.updated, d.created, d.updated, d.id, 
 		    		d.title, String(d.code), String(d.folds), d.thumbnail, d.fork, 
@@ -201,7 +198,8 @@ const saveProgram = async id => {
 			console.log('Saved program ' + programData.title + ' ' + id)
 		}
     }
-    return programData; // Return the saved data
+    // return programData; // Return the saved data
+    return getProgram(id); // Send the data from the database (to ensure you're sending what you saved)
 };
 const savePrograms = async ids => {
 	// Create an array to hold the data, loop through the ids and add the data to the array
