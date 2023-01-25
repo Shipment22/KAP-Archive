@@ -2,7 +2,7 @@ import { Database } from "bun:sqlite"; // Import bun:sqlite
 // Retrieve and return the program by id
 function getProgram(id) { 
     // Load the database as readonly
-    const db = new Database('database.sqlite', {
+    var db = new Database('database.sqlite', {
       readonly: true });
     // Create Queries for getting a program by id and getting multiple by index
     const retrieveById = db.query("SELECT * FROM programs WHERE id = $id");
@@ -13,7 +13,7 @@ function getProgram(id) {
 // Get programs without stringifying the output
 function getProgramsNoString($limit = 50, $offset = 0) {
     // Load the database as readonly
-    const db = new Database('database.sqlite', {
+    var db = new Database('database.sqlite', {
       readonly: true });
     // Create Queries for getting a program by id and getting multiple by index
     const retrievePrograms = db.query("SELECT * FROM programs ORDER BY archive__added DESC LIMIT $limit OFFSET $offset");
@@ -39,7 +39,7 @@ function formatOutput(sqliteOut) {
       }
     }
     // Get variables from sqlite data
-    const {
+    let {
         archive__added,
         archive__updated,
         id,
@@ -68,10 +68,14 @@ function formatOutput(sqliteOut) {
     } = sqliteOut;
     // Convert the origin sratchpad data back to an object
     if (origin_scratchpad) {
-        const origin = origin_scratchpad;
+        const origin = origin_scratchpad.split('\n');
         origin_scratchpad = {
-            
+            id:       origin[0],
+            title:    origin[1],
+            deleted:  origin[2],
+            official: origin[3]
         }
+        console.log('spinoff of: ' + JSON.stringify(origin_scratchpad))
     }
     // Format and return JSON data
     return {
