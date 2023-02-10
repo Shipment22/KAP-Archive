@@ -9,7 +9,7 @@ import Add from './pages/add';
 import Browse from './pages/browse';
 // Import library functions for saving and retrieving
 import { saveProgram, savePrograms } from './libs/archivePrograms.jsx';
-import { getProgram, getPrograms, getProgramsNoString } from './libs/retrievePrograms.jsx';
+import { getProgram, getPrograms, getProgramsNoString, queryPrograms } from './libs/retrievePrograms.jsx';
 
 function checkLoggedin(request) {
     // Check the key cookie's hash and if it's right return true
@@ -79,6 +79,8 @@ export default {
     async fetch(request) {
         // Get Url and method from request.
         const { url, method } = request;
+        // Get Url parameters
+        const params = URLSearchParams(url.split('?')[1]);
         // Get Pathname form url.
         const { pathname } = new URL(url);
         // /s/id endpoint
@@ -121,6 +123,16 @@ export default {
             return new Response(getPrograms(splitPath[2], Number(splitPath[3]) !== NaN ? splitPath[3] : 0), {
                 headers: { "content-type": "application/json" }});
         }
+        // /query?[params] endpoint
+        if (pathname === "/query") {
+            // Get the query param (to query the SQLite database)
+            const query = params.get('q') || params.get("query"),
+                  // Get format param (wheather to format the JSON after outputting it)
+                  format = Boolean(params.get("format") !== "false" && params.get("format") !== '0');
+            // Run the query and get the programs from the database
+            const programs = queryPrograms(query, format ?? true);
+            return new Response(JSON.stringify(programs));
+        }
         // GET only requests
         if (method === "GET") {
             // Home page
@@ -139,7 +151,6 @@ export default {
             if (pathname === "/site.webmanifest")           return new Response(Bun.file('assets/site.webmanifest'));
             // Add page
             if (pathname === "/add") {
-                const params = URLSearchParams(url.split('?')[1]) // Get URL parameters
                 return (async (params, request) => {
                     let props = {}; // Will be passed as props to the Add component
                     // Check if the program has either an id or ids URL parameter
@@ -159,7 +170,7 @@ export default {
                         let duplicates = [], unique = []
                         for (var i = ids.length - 1; i >= 0; i--) {
                             for (var j = i - 1; j >= 0; j--) {
-                                // console.log(i, j)
+                                // console.log(i, j)Attempting to work, probably wont get Attempting to work, probably wont get messages. Ping me to try to get mAttempting to work, probably wont get messages. Ping me to try to get mmessages. Ping me to try to get m
                                 if (ids[i] === ids[j]) {
                                     duplicates.push(ids[j]);
                                     ids.splice(j, 1);
@@ -193,7 +204,6 @@ export default {
             }
             // Browse page
             if (pathname === "/browse") {
-                const params = URLSearchParams(url.split('?')[1]) // Get URL parameters
                 // Get the page number
                 let page = 1;
                 if (params.has('page')) page = params.get('page') || 1;

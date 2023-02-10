@@ -28,6 +28,33 @@ function getProgramsNoString($limit = 50, $offset = 0) {
 function getPrograms() {
     return JSON.stringify(getProgramsNoString(...arguments))
 }
+// Query programs database (readonly)
+function queryPrograms(query, format = true) {
+    let data;
+    try {
+        // Load the database as readonly
+        var db = new Database('database.sqlite', {
+          readonly: true });
+        // Qeury and close out of the database
+        data = db.query(query).all();
+        db.close();
+        if (format) {
+            // Format the JSON
+            for (var i in data) {
+                data[i] = formatOutput(data[i]);
+            }
+        }
+    } catch (e) {
+        // Handle any errors
+        const errMsg = 'Error while querying database (queryPrograms): ' + e;
+        console.error(errMsg);
+        return {
+            status: 500,
+            message: errMsg
+        };
+    }
+    return data;
+}
 // Take in the output from the sqlite database and retern a formatted JSON version
 function formatOutput(sqliteOut) {
     // Make sure there's an sqlite output
@@ -75,7 +102,7 @@ function formatOutput(sqliteOut) {
             deleted:  origin[2],
             official: origin[3]
         }
-        console.log('spinoff of: ' + JSON.stringify(origin_scratchpad))
+        // console.log('spinoff of: ' + JSON.stringify(origin_scratchpad))
     }
     // Format and return JSON data
     return {
@@ -117,6 +144,7 @@ export {
   getProgram,
   getPrograms,
   getProgramsNoString,
+  queryPrograms,
   formatOutput as formatProgramFromDatabase
 };
 
