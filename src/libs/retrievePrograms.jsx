@@ -29,20 +29,109 @@ function getPrograms() {
     return JSON.stringify(getProgramsNoString(...arguments))
 }
 // Query programs database (readonly)
-function queryPrograms(query, format = true) {
+function queryPrograms(params) {
     let data;
     try {
         // Load the database as readonly
         var db = new Database('database.sqlite', {
           readonly: true });
+
+
         // Qeury and close out of the database
-        data = db.query(query).all();
+        // data = db.query(query).all();
+
+        // const paramsKeys = [
+        //         "archive__added_min",
+        //         "archive__added_max",
+        //         "archive__updated_min",
+        //         "archive__updated_max",
+        //         "id",
+        //         "created_min",
+        //         "created_max",
+        //         "updated_min",
+        //         "updated_max",
+        //         "title",
+        //         "code",
+        //         "thumbnail",
+        //         "fork",
+        //         "key",
+        //         "votes_min",
+        //         "votes_max",
+        //         "spinoffs_min",
+        //         "spinoffs_max",
+        //         "type",
+        //         "width",
+        //         "height",
+        //         "user_flagged",
+        //         "origin_scratchpad",
+        //         "hidden_from_hotlist",
+        //         "restricted_posting",
+        //         "by_child",
+        //         "author__nick",
+        //         "author__name",
+        //         "author__id",
+        //         "author__profile_access",
+        //         "limit",
+        //         "ordering",
+        //         "offset"
+        //     ];
+
+        // for (const param of params) {
+        //     // if (param[0] === author) param[0] = author__nick;
+        //     console.log(param);
+        //     const index = paramsKeys.indexOf(param[0]);
+        //     if (index >= 0) {
+        //         console.log(index);
+
+        //     }
+        //     else console.log(':P');
+        // }
+        // console.log(params.entries())
+        // for (const [key, value] of params) {
+        //     console.log(key, value)
+        //     switch (key) {
+        //     case: 'title':
+
+        //     }
+        //     console.log('\n')
+        // }
+
+        // console.log('limit', params.get('limit'))
+
+        // Get the limit and set the default to 50 then the maximum to 1000
+        let limit = params.get('limit');
+        if (!limit) limit = 50;
+        if (limit > 1000) limit = 1000;
+        // Query the database for the data
+        data = db.query(`SELECT * FROM programs WHERE ($id = "null" OR id LIKE $id) 
+            AND ($title = "%null%" OR title LIKE $title) 
+            AND ($author = "%null%" OR author__nick LIKE $author OR author__name LIKE $author)
+            AND ($votes_min = "null" OR votes > $votes_min)
+            AND ($votes_max = "null" OR votes < $votes_max)
+            AND ($spinoffs_min = "null" OR spinoffs > $spinoffs_min)
+            AND ($spinoffs_max = "null" OR spinoffs < $spinoffs_max)
+            LIMIT $limit`).all({
+            $id: `${params.get('id') || 'null'}`,
+            $title: `%${params.get('title') || 'null'}%`,
+            $author: `%${params.get('author') || 'null'}%`,
+            $votes_min: `${params.get('votes_min') || 'null'}`,
+            $votes_max: `${params.get('votes_max') || 'null'}`,
+            $spinoffs_min: `${params.get('spinoffs_min') || 'null'}`,
+            $spinoffs_max: `${params.get('spinoffs_max') || 'null'}`,
+            $limit: limit
+        });
+        // Close the database when done
         db.close();
-        if (format) {
-            // Format the JSON
-            for (var i in data) {
-                data[i] = formatOutput(data[i]);
+
+            // console.log(data)
+            for (let i in data) {
+                console.log(data[i].title)
             }
+        // console.log(params.entries())
+
+        // Format the JSON
+        for (var i in data) {
+            data[i] = formatOutput(data[i]);
         }
     } catch (e) {
         // Handle any errors
@@ -55,6 +144,32 @@ function queryPrograms(query, format = true) {
     }
     return data;
 }
+// function queryPrograms(query, format = true) {
+//     let data;
+//     try {
+//         // Load the database as readonly
+//         var db = new Database('database.sqlite', {
+//           readonly: true });
+//         // Qeury and close out of the database
+//         data = db.query(query).all();
+//         db.close();
+//         if (format) {
+//             // Format the JSON
+//             for (var i in data) {
+//                 data[i] = formatOutput(data[i]);
+//             }
+//         }
+//     } catch (e) {
+//         // Handle any errors
+//         const errMsg = 'Error while querying database (queryPrograms): ' + e;
+//         console.error(errMsg);
+//         return {
+//             status: 500,
+//             message: errMsg
+//         };
+//     }
+//     return data;
+// }
 // Take in the output from the sqlite database and retern a formatted JSON version
 function formatOutput(sqliteOut) {
     // Make sure there's an sqlite output
