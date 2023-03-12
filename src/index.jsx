@@ -7,6 +7,7 @@ import ErrorPage from './pages/error';
 import Home from './pages/home';
 import Add from './pages/add';
 import Browse from './pages/browse';
+import Search from './pages/search';
 // Import library functions for saving and retrieving
 import { saveProgram, savePrograms } from './libs/archivePrograms.jsx';
 import { getProgram, getPrograms, getProgramsNoString, queryPrograms } from './libs/retrievePrograms.jsx';
@@ -124,19 +125,37 @@ export default {
                 headers: { "content-type": "application/json" }});
         }
         // /query?[params] endpoint
-        if (pathname === "/query") {
-            // Get the query param (to query the SQLite database)
-            const query = params.get('q') || params.get("query"),
-                  // Get format param (wheather to format the JSON after outputting it)
-                  format = Boolean(params.get("format") !== "false" && params.get("format") !== '0');
-            // Run the query and get the programs from the database
-            const programs = queryPrograms(query, format ?? true);
-            return new Response(JSON.stringify(programs));
+        // ! CLARIFICATION: this is only for testing purposes
+        // if (pathname === "/query") {
+        //     // Get the query param (to query the SQLite database)
+        //     const query = params.get('q') || params.get("query"),
+        //           // Get format param (wheather to format the JSON after outputting it)
+        //           format = Boolean(params.get("format") !== "false" && params.get("format") !== '0');
+        //     // Run the query and get the programs from the database
+        //     const programs = queryPrograms(query, format ?? true);
+        //     return new Response(JSON.stringify(programs));
+        // }
+        // /search?[title,author,created,etc.]
+        if (pathname === "/search") {
+            const data = queryPrograms(params);
+            // Render and send the search page
+            if (method === "GET")  return renderPage({
+                    body: Search,
+                    title: 'search Projects | KAP Archive',
+                    stylesheet: '/css/home.css',
+                    props: { programs: data }
+                }, request);
+            else return new Response(JSON.stringify(data), {
+                headers: { "content-type": "application/json" }});
         }
         // GET only requests
         if (method === "GET") {
             // Home page
-            if (pathname === "/") return renderPage({ title: 'Khan Academy Program Archive', stylesheet: '/css/home.css', body: Home }, request);
+            if (pathname === "/") return renderPage({ 
+                    title: 'Khan Academy Program Archive', 
+                    stylesheet: '/css/home.css', 
+                    body: Home 
+                }, request);
             // Any image in the assets folder
             if (pathname.match(/assets\/[a-z0-9-_]+\.(svg|png|jpeg|ico)/i) || pathname.match(/css\/[a-z0-9-_]+\.css/i)) {
                 return new Response(Bun.file(pathname.slice(1)));
