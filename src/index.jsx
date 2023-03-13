@@ -139,7 +139,7 @@ export default {
         if (pathname === "/search") {
             const data = queryPrograms(params);
             // Render and send the search page
-            if (method === "GET")  return renderPage({
+            if (method === "GET" && !params.get('raw'))  return renderPage({
                     body: Search,
                     title: 'search Projects | KAP Archive',
                     stylesheet: '/css/home.css',

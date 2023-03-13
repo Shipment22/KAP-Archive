@@ -33,7 +33,7 @@ function Form() {
                 <input type="submit" name="search" value="Search" className="button" />
             </div>
             <div className="right">
-                <input type="button" name="raw" value="Raw Search" className="button" />
+                <input type="submit" name="raw" value="Raw Search" className="button" />
             </div>
         </div>
     </form>)
