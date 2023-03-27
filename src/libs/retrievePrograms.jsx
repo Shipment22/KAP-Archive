@@ -36,73 +36,37 @@ function queryPrograms(params) {
         var db = new Database('database.sqlite', {
           readonly: true });
 
-
-        // Qeury and close out of the database
-        // data = db.query(query).all();
-
-        // const paramsKeys = [
-        //         "archive__added_min",
-        //         "archive__added_max",
-        //         "archive__updated_min",
-        //         "archive__updated_max",
-        //         "id",
-        //         "created_min",
-        //         "created_max",
-        //         "updated_min",
-        //         "updated_max",
-        //         "title",
-        //         "code",
-        //         "thumbnail",
-        //         "fork",
-        //         "key",
-        //         "votes_min",
-        //         "votes_max",
-        //         "spinoffs_min",
-        //         "spinoffs_max",
-        //         "type",
-        //         "width",
-        //         "height",
-        //         "user_flagged",
-        //         "origin_scratchpad",
-        //         "hidden_from_hotlist",
-        //         "restricted_posting",
-        //         "by_child",
-        //         "author__nick",
-        //         "author__name",
-        //         "author__id",
-        //         "author__profile_access",
-        //         "limit",
-        //         "ordering",
-        //         "offset"
-        //     ];
-
-        // for (const param of params) {
-        //     // if (param[0] === author) param[0] = author__nick;
-        //     console.log(param);
-        //     const index = paramsKeys.indexOf(param[0]);
-        //     if (index >= 0) {
-        //         console.log(index);
-
-        //     }
-        //     else console.log(':P');
-        // }
-        // console.log(params.entries())
-        // for (const [key, value] of params) {
-        //     console.log(key, value)
-        //     switch (key) {
-        //     case: 'title':
-
-        //     }
-        //     console.log('\n')
-        // }
-
-        // console.log('limit', params.get('limit'))
+        const p = {
+          id           :  params.get('id'),
+          title        :  params.get('title'),
+          author       :  params.get('author'),
+          votes_min    :  params.get('votes_min'),
+          votes_max    :  params.get('votes_max'),
+          spinoffs_min :  params.get('spinoffs_min'),
+          spinoffs_max :  params.get('spinoffs_max')
+        };
+        
+        // Make sure at least one exists
+        let oneOrMore = false;
+        for (var i in p) {
+          if (p[i] && p[i].match(/\S/)) {
+            oneOrMore = true;
+            console.log(p[i]);
+            break;
+          }
+        }
+        if (!oneOrMore) return data = [
+          {
+            noQuery: true
+          }
+        ];
 
         // Get the limit and set the default to 50 then the maximum to 1000
         let limit = params.get('limit');
         if (!limit) limit = 50;
         if (limit > 1000) limit = 1000;
         // Query the database for the data
+        const n = 'null';
         data = db.query(`SELECT * FROM programs WHERE ($id = "null" OR id LIKE $id) 
             AND ($title = "%null%" OR title LIKE $title) 
             AND ($author = "%null%" OR author__nick LIKE $author OR author__name LIKE $author)
@@ -111,22 +75,22 @@ function queryPrograms(params) {
             AND ($spinoffs_min = "null" OR spinoffs > $spinoffs_min)
             AND ($spinoffs_max = "null" OR spinoffs < $spinoffs_max)
             LIMIT $limit`).all({
-            $id: `${params.get('id') || 'null'}`,
-            $title: `%${params.get('title') || 'null'}%`,
-            $author: `%${params.get('author') || 'null'}%`,
-            $votes_min: `${params.get('votes_min') || 'null'}`,
-            $votes_max: `${params.get('votes_max') || 'null'}`,
-            $spinoffs_min: `${params.get('spinoffs_min') || 'null'}`,
-            $spinoffs_max: `${params.get('spinoffs_max') || 'null'}`,
-            $limit: limit
+              $id           : p.id || n,
+              $title        : `%${p.title || n}%`,
+              $author       : `%${params.get('author') || n}%`,
+              $votes_min    : p.votes_min || n,
+              $votes_max    : p.votes_min || n,
+              $spinoffs_min : p.spinoffs_min || n,
+              $spinoffs_max : p.spinoffs_max || n,
+              $limit        : limit
         });
         // Close the database when done
         db.close();
 
-            // console.log(data)
-            for (let i in data) {
-                console.log(data[i].title)
-            }
+        // console.log(data)
+        for (let i in data) {
+            console.log(data[i].title)
+        }
         // console.log(params.entries())
 
         // Format the JSON

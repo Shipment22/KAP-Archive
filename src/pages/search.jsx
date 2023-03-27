@@ -7,6 +7,18 @@ function Search(props) {
 	if (page < 0 || page == NaN) page = 0;
 	// Get the next page's href
 	const nextHref = "/browse?page=" + ((page || 1) + 1);
+  if (props.programs[0] && props.programs[0].noQuery) {
+    return (
+  <main className="Main">
+    <h1>Search Programs</h1>
+    {/* The search form with a message at the top asking you to search again */}
+		<div className="surface">
+			<h2>Search the archive here!</h2>
+			<SearchForm/>
+		</div>
+</main>
+    );
+  }
 	return (
 	<main className="Main">
 		<h1>Search Programs</h1>
