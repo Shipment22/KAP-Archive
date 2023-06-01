@@ -254,4 +254,36 @@ a:visited.button {
   max-width: 1440px;
   margin-inline: auto; }
 
-/*# sourceMappingURL=home.css.map */
+.title-and-code-button {
+  margin-block-end: 2rem;
+  z-index: 5;
+  position: relative; }
+
+@media screen and (min-width: 900px) {
+  .title-and-code-button {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    transform: translateY(100px); }
+
+  .code-button {
+    position: absolute;
+    top: 0;
+    right: 0; } }
+h1 {
+  text-shadow: 0 5px 7px #0b0b11; }
+
+.code-button, .program-info-thumbnail-wrapper {
+  box-shadow: 0 5px 7px #0b0b11; }
+
+.program-info-surface {
+  margin-block-start: 100px;
+  padding-block-start: 25px; }
+
+.program-info-thumbnail-wrapper {
+  position: absolute;
+  top: calc(-150px - 1rem);
+  left: 50%;
+  transform: translateX(-50%); }
+
+/*# sourceMappingURL=view.css.map */

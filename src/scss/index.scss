@@ -157,6 +157,32 @@ a:visited.button {
 	}
 }
 
+.table {
+	padding: .7rem;
+	border-radius: .5rem;
+	background-color: $crust;
+	width: 100%;
+	table-layout: fixed;
+	border-spacing: 1rem .3rem;
+	tr {
+		text-align: left;
+		word-wrap: break-word;
+	}
+	tr + tr {
+		padding-block-start: 1rem;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.table {
+		tr {
+			display: flex;
+			flex-direction: column;
+			gap: .1rem;
+		}
+	}
+}
+
 .Header {
 	padding: .2rem;
 	padding-inline: 1rem;
@@ -165,7 +191,7 @@ a:visited.button {
 	line-height: 36px;
 	margin-bottom: 1rem;
 	background-color: $crust;
-
+	z-index: 100;
 
 	a {
 		font-size: 1.4rem;

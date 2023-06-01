@@ -147,6 +147,24 @@ a:visited.button {
   .programs-grid .program.error {
     background-color: #911; }
 
+.table {
+  padding: .7rem;
+  border-radius: .5rem;
+  background-color: #11111b;
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 1rem .3rem; }
+  .table tr {
+    text-align: left;
+    word-wrap: break-word; }
+  .table tr + tr {
+    padding-block-start: 1rem; }
+
+@media screen and (max-width: 900px) {
+  .table tr {
+    display: flex;
+    flex-direction: column;
+    gap: .1rem; } }
 .Header {
   padding: .2rem;
   padding-inline: 1rem;
@@ -154,7 +172,8 @@ a:visited.button {
   grid-template-columns: auto 1fr;
   line-height: 36px;
   margin-bottom: 1rem;
-  background-color: #11111b; }
+  background-color: #11111b;
+  z-index: 100; }
   .Header a {
     font-size: 1.4rem;
     text-decoration: none;

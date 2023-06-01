@@ -41,7 +41,7 @@ function renderProgram(props) {
 	</div>
 	<div className="program_view-code-wrapper">
 	    <a href="#" className="button">Code</a>
-	    <a href="#" className="button">View</a>
+	    <a href={"/view?p="+props.id} className="button">View</a>
 	</div>
 	</div>);
 }

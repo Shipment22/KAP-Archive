@@ -4,10 +4,11 @@ import Header from './components/header';
 import Footer from './components/footer';
 // Import pages
 import ErrorPage from './pages/error';
-import Home from './pages/home';
-import Add from './pages/add';
-import Browse from './pages/browse';
-import Search from './pages/search';
+import Home      from './pages/home';
+import Add       from './pages/add';
+import Browse    from './pages/browse';
+import Search    from './pages/search';
+import View      from './pages/view';
 // Import library functions for saving and retrieving
 import { saveProgram, savePrograms } from './libs/archivePrograms.jsx';
 import { getProgram, getPrograms, getProgramsNoString, queryPrograms } from './libs/retrievePrograms.jsx';
@@ -232,6 +233,17 @@ export default {
                     title: 'Browse Projects | KAP Archive',
                     stylesheet: '/css/home.css',
                     props: { page }
+                }, request);
+            }
+            // View page
+            if (pathname === "/view") {
+                if (!params.has('p')) return renderError({ status: 500, message: "500 the url param p was given" }, request);
+                const program = getProgram(params.get('p'));
+                return renderPage({
+                    body: View,
+                    stylesheet: '/css/view.css',
+                    title: "Viewing Program \""+program.title+'" | KAP Archive',
+                    props: { program }
                 }, request);
             }
             // GUI 404 page
