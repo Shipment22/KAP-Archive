@@ -6,11 +6,6 @@ To install dependencies:
 bun install
 ```
 
-Development dependencies that wont be installed:
-
-- sass (Ruby Sass 3.7.4)
-- nodemon
-
 To develop:
 
 ```bash
