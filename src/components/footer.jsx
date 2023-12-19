@@ -5,17 +5,19 @@ function Footer() {
 				<h2>Pages</h2>
 				<ul>
 					<li><a href="/">Home</a></li>
-					<li><a href="/browse">Browse</a></li>
-					<li><a href="/search">Search</a></li>
-					<li><a href="/add">Add</a></li>
-					<li><a href="/about">About</a></li>
-					<li><a href="/admin">Admin</a></li>
+					<li><a href="/browse" className="rosewater">Browse</a></li>
+					<li><a href="/search" className="mauve">Search</a></li>
+					<li><a href="/add" className="maroon">Add</a></li>
+					<li><a href="/about" className="yellow">About</a></li>
+					<li><a href="/report" className="red">Report</a></li>
+					<li><a href="/admin" className="blue">Admin</a></li>
 				</ul>
 				<h2>Other similar and cool projects</h2>
 				<ul>
-					<li><a href="https://willard.fun">Willard.fun</a></li>
+					<li><a href="https://willard.fun/">Willard.fun</a></li>
+					<li><a href="https://vxsacademy.org/computer-programming/browse">Vexcess Academy</a></li>
 					<li><a href="https://khanalytics.bhavjit.com/">Khanalytics</a></li>
-					<li><a href="https://kestrogle.tk">Kestrogle</a></li>
+					<li><a href="https://search.kestron.software/">Kestrogle</a></li>
 				</ul>
 				<h2>Credits</h2>
 				<ul>
