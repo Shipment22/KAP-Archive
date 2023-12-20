@@ -111,37 +111,64 @@ a:visited.button {
 }
 
 .programs-grid {
+    margin-inline: auto;
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 	gap: 1rem;
 
 	.program {
 		padding: .7rem;
 		border-radius: .7rem;
 		background-color: $crust;
-		display: grid;
 		word-break: break-all;
+        display: flex;
+        flex-direction: column;
 
 		img {
 			border-radius: .5rem;
 			width: 100%;
 			height: auto;
+            background-color: $base;
 		}
 
 		.program_title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
 			margin-block: .2rem;
 			color: $green;
 			font-size: 1.2rem;
 			font-weight: 700;
 		}
 
-		.program_updated::before, .program_spinoffs::before {
-			content: '-';
-			margin-inline: .2rem;
-		}
+        table {
+            width: 100%;
+            font-size: .8rem;
+            tr {
+                th {
+                    font-weight: 300;
+                    text-align: left;
+                    padding: 0;
+                    color: $blue;
+                    width: 8ch;
+                }
+                td {
+                    background-color: $mantle;
+                    padding: .3em .6em;
+                }
+            }
+            tr:nth-child(1) td:last-child {
+                border-radius: .4em .4em 0 0;
+            }
+            tr:last-child td:last-child {
+                border-radius: 0 0 .4em .4em;
+            }
+        }
 
 		.program_view-code-wrapper {
-			margin-top: .4rem;
+            height: min-content;
+			margin-top: auto;
+			padding-top: .4rem;
 			display: flex;
 			align-items: center;
 			gap: .5rem;
