@@ -28,20 +28,33 @@ function renderProgram(props) {
 	    <img src={props.thumbnail} alt="Program thumbnail" width="200px" height="200px" className="program_thumbnail" />
 	</div>
 	<div>
-	    <div className="program_title">{props.title}</div>
-	    <div className="program_author">Author: {props.author.nick}</div>
-	    <div className="program_created-updated-wrapper">
-	        <span className="program_created" title={created.toUTCString()}>Created: {relativeDate(Date.parse(created))}</span>
-	        <span className="program_updated" title={updated.toUTCString()}>Updated: {relativeDate(Date.parse(updated))}</span>
-	    </div>
-	    <div className="program_votes-spinoffs-wrapper">
-	        <span className="program_votes">Votes: {props.votes}</span>
-	        <span className="program_spinoffs">Spin-Offs: {props.spinoffs}</span>
-	    </div>
+	    <h3 className="program_title" title={props.title}>{props.title}</h3>
+        <table>
+            <tr>
+                <th>Author:</th>
+                <td className="program_author" title={"@"+props.author.name}>{props.author.nick}</td>
+            </tr>
+            <tr>
+                <th>Created:</th>
+	            <td className="program_created" title={created.toUTCString()}>{relativeDate(Date.parse(created))}</td>
+            </tr>
+            <tr>
+                <th>Updated:</th>
+	            <td className="program_updated" title={updated.toUTCString()}>{relativeDate(Date.parse(updated))}</td>
+            </tr>
+            <tr>
+                <th>Votes:</th>
+	            <td className="program_votes">{props.votes}</td>
+            </tr>
+            <tr>
+                <th>Spin-Offs:</th>
+	            <td className="program_spinoffs">{props.spinoffs}</td>
+            </tr>
+        </table>
 	</div>
 	<div className="program_view-code-wrapper">
-	    <a href="#" className="button">Code</a>
-	    <a href={"/view?p="+props.id} className="button">View</a>
+	    <a href="#" className="button">Launch</a>
+	    <a href={"/view?p="+props.id} className="button">Details</a>
 	</div>
 	</div>);
 }
