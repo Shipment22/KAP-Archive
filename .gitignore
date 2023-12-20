@@ -178,3 +178,8 @@ database.sqlite
 .replit
 replit.nix
 replit-bun.cfg
+
+Testing program ids.txt
+src/css/
+bun.lockb
+.gitignore
