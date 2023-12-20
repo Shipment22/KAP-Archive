@@ -8,7 +8,7 @@ function Header(props) {
 	return (
 		<header className="Header">
 			<div>
-				<a href="/" className="green">
+				<a href="/" className="logo-home-link green">
 					<img src={images.logo} alt="KAP Archive Logo" height="48" />
 					KAP Archive
 				</a>
@@ -24,8 +24,8 @@ function Header(props) {
 				</nav>
 			</div>
 			<div> 
-				<a href="/admin" className="blue">
-					{props.loggedIn == "true" ? (
+				<a href="/admin" className="header-admin-link blue">
+					{props.loggedIn === true ? (
 						<span>
 							Admin Menu
 							<img src={images.admin} alt="Admin menu image" width="48" />

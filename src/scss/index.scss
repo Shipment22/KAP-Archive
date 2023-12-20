@@ -211,7 +211,7 @@ a:visited.button {
 }
 
 .Header {
-	padding: .2rem;
+	padding: .35rem;
 	padding-inline: 1rem;
 	display: grid;
 	grid-template-columns: auto 1fr;
@@ -230,6 +230,14 @@ a:visited.button {
 		width: 36px;
 		height: 36px;
 	}
+
+    .logo-home-link img {
+        margin-right: .3em;
+    }
+
+    .header-admin-link img {
+        margin-left: .3em;
+    }
 
 	div:nth-child(1) img {
 		float: left;
