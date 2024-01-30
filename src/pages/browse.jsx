@@ -1,7 +1,7 @@
 import {getProgramsNoString} from '../libs/retrievePrograms';
 import ProgramsGrid from '../components/programsGrid';
 function Browse(props) {
-	const page = Number(props.page);
+	let page = Number(props.page);
 	// Make sure page isn't negative or NaN
 	if (page < 0 || page == NaN) page = 0;
 	// Get the next page's href
