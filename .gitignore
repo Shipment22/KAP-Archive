@@ -183,3 +183,6 @@ Testing program ids.txt
 src/css/
 bun.lockb
 .gitignore
+
+# Build artifacts
+src/server.js
