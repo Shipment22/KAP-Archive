@@ -28,8 +28,8 @@ async function renderPage(page, request) {
             <meta charSet="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <meta name="description"
-              content={ page.description || `KAP Archive is a site for archiving programs from Khan's 
-                       CS section. The programs on Khan's CS section often get 
+              content={ page.description || `KAP Archive is a site for archiving programs from Khan's
+                       CS section. The programs on Khan's CS section often get
                        hidden or deleted even when they follow the Khan Guidelines,
                        that's why KAP Archive is here to save the programs and your time.
                        :)` } />
@@ -47,7 +47,7 @@ async function renderPage(page, request) {
             <Footer />
         </body>
     </html>,
-    ),);
+    ), { headers: { "content-type": "text/html; charset=utf-8" } });
 }
 async function renderError(error, request) {
     const loggedIn = checkLoggedin(request);
@@ -58,7 +58,7 @@ async function renderError(error, request) {
             <meta charSet="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <meta name="description"
-              content={'KAP Archive encountered an error. ' + error.message + 
+              content={'KAP Archive encountered an error. ' + error.message +
               '  If you think there\'s a problem with the site feel free to make an issue on Github.'} />
             <meta name="theme-color" content="#11111A"/>
             <title>{error.message + ' | KAP Archive'}</title>
@@ -70,11 +70,14 @@ async function renderError(error, request) {
             <Footer />
         </body>
     </html>,
-    ), { status: error.status });
+    ), {
+        status: error.status,
+        headers: { "content-type": "text/html; charset=utf-8" }
+    });
 }
 function serveImage(path) {
     // Sends an image with headers based on the provided path
-    return new Response(Bun.file(path), { 
+    return new Response(Bun.file(path), {
         headers: { "content-type": "image/"+path.split('.').reverse()[0] } });
 }
 export default {
@@ -99,13 +102,13 @@ export default {
             }
             // Send the saved data
             return new Response(JSON.stringify(program), {
-                headers: { "content-type": "application/json" }});       
+                headers: { "content-type": "application/json" }});
         }
         // /g/id endpoint
         if (pathname.match(/^\/g\/[a-z0-9-_\/:.]+/i)) {
             // Get the program from the database and send it on it's way
             const program = await getProgram(pathname.split('/').reverse()[0]);
-            return new Response(JSON.stringify(program), { 
+            return new Response(JSON.stringify(program), {
                 headers: { "content-type": "application/json" }});
         }
         // /s/id and /g/id invalid ID catching endpoint
@@ -152,10 +155,10 @@ export default {
         // GET only requests
         if (method === "GET") {
             // Home page
-            if (pathname === "/") return renderPage({ 
-                    title: 'Khan Academy Program Archive', 
-                    stylesheet: '/css/home.css', 
-                    body: Home 
+            if (pathname === "/") return renderPage({
+                    title: 'Khan Academy Program Archive',
+                    stylesheet: '/css/home.css',
+                    body: Home
                 }, request);
             // Any image in the assets folder
             if (pathname.match(/assets\/[a-z0-9-_]+\.(svg|png|jpeg|ico)/i) || pathname.match(/css\/[a-z0-9-_]+\.css/i)) {

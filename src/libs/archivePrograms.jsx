@@ -37,7 +37,7 @@ const saveProgram = async id => {
             "Sec-GPC": "1"
         },
         "referrer": "https://www.khanacademy.org/computer-programming/i/"+id,
-        "body": "{\"operationName\":\"programQuery\",\"query\":\"query programQuery($programId: String!) {\\n  programById(id: $programId) {\\n    byChild\\n    category\\n    created\\n    creatorProfile: author {\\n      id\\n      nickname\\n      profileRoot\\n      profile {\\n        accessLevel\\n        __typename\\n      }\\n      __typename\\n    }\\n    deleted\\n    description\\n    spinoffCount: displayableSpinoffCount\\n    docsUrlPath\\n    flags\\n    flaggedBy: flaggedByKaids\\n    flaggedByUser: isFlaggedByCurrentUser\\n    height\\n    hideFromHotlist\\n    id\\n    imagePath\\n    isProjectOrFork: originIsProject\\n    isOwner\\n    kaid: authorKaid\\n    key\\n    newUrlPath\\n    originScratchpad: originProgram {\\n      deleted\\n      translatedTitle\\n      url\\n      __typename\\n    }\\n    restrictPosting\\n    revision: latestRevision {\\n      id\\n      code\\n      configVersion\\n      created\\n      editorType\\n      folds\\n      __typename\\n    }\\n    slug\\n    sumVotesIncremented\\n    title\\n    topic: parentCurationNode {\\n      id\\n      nodeSlug: slug\\n      relativeUrl\\n      slug\\n      translatedTitle\\n      __typename\\n    }\\n    translatedTitle\\n    url\\n    userAuthoredContentType\\n    upVoted\\n    width\\n    __typename\\n  }\\n}\\n\",\"variables\":{\"programId\":\""+id+"\"}}",
+        "body": "{\"operationName\":\"programQuery\",\"query\":\"query programQuery($programId: String!) {\\n  programById(id: $programId) {\\n    byChild\\n    category\\n    created\\n    creatorProfile: author {\\n      id\\n      nickname\\n      profileRoot\\n      profile {\\n        accessLevel\\n        __typename\\n      }\\n      __typename\\n    }\\n    deleted\\n    description\\n    spinoffCount: displayableSpinoffCount\\n    docsUrlPath\\n    flags\\n    flaggedBy: flaggedByKaids\\n    flaggedByUser: isFlaggedByCurrentUser\\n    height\\n    hideFromHotlist\\n    id\\n    imagePath\\n    isProjectOrFork: originIsProject\\n    isOwner\\n    kaid: authorKaid\\n    key\\n    newUrlPath\\n    originScratchpad: originProgram {\\n      deleted\\n      translatedTitle\\n      url\\n      __typename\\n    }\\n    restrictPosting\\n    revision: latestRevision {\\n      id\\n      code\\n      configVersion\\n      created\\n      editorType\\n      folds\\n      __typename\\n    }\\n    slug\\n    sumVotesIncremented\\n    title\\n    topic: parentCurationNode {\\n      id\\n      nodeSlug: slug\\n      relativeUrl\\n      slug\\n      translatedTitle\\n      __typename\\n    }\\n    translatedTitle\\n    url\\n    userAuthoredContentType\\n    upVoted\\n    width\\n    __typename\\n  }\\n}\",\"variables\":{\"programId\":\""+id+"\"}}",
         "method": "POST",
         "mode": "cors"
     }).then(res => res.json())
@@ -90,7 +90,7 @@ const saveProgram = async id => {
 			    id: p.creatorProfile.kaid,
 			    profileAccess: p.creatorProfile.profile.accessLevel,
 			}
-		}	
+		}
     });
     // If there's an error return
     if (programData.status >= 300) return programData;
@@ -106,7 +106,7 @@ const saveProgram = async id => {
 	        	const d = programData;
 	        	try {
 					var db = new Database('database.sqlite');
-		        	db.run(`UPDATE programs SET 
+		        	db.run(`UPDATE programs SET
 		        		archive__updated = $archive__updated,
 		        		updated = $updated,
 		        		title = $title,
@@ -126,21 +126,21 @@ const saveProgram = async id => {
 		        		author__profile_access = $author__profile_access
 		        		WHERE id = $id`, {
 		        		$id: id,
-			            $archive__updated: d.archive.updated, 
+			            $archive__updated: d.archive.updated,
 			            $updated: d.updated,
-			            $title: d.title, 
-			            $code: String(d.code), 
+			            $title: d.title,
+			            $code: String(d.code),
 			            $folds: String(d.folds),
-			            $thumbnail: d.thumbnail, 
-			            $votes: d.votes, 
+			            $thumbnail: d.thumbnail,
+			            $votes: d.votes,
 			            $spinoffs: d.spinoffs,
-			            $width: d.width, 
-			            $height: d.height, 
+			            $width: d.width,
+			            $height: d.height,
 			            $user_flagged: d.userFlagged,
 			            $hidden_from_hotlist: d.hiddenFromHotlist,
 			            $restricted_posting: d.restrictedPosting,
 			            $origin_scratchpad: d.originScratchpad,
-			            $author__nick: d.author.nick, 
+			            $author__nick: d.author.nick,
 			            $author__name: d.author.name,
 			            $author__profile_access: d.author.profileAccess
 		        	})
@@ -153,7 +153,7 @@ const saveProgram = async id => {
 				if (good) {
 					// Log when a program was updated without errors
 					console.log('Updated program ' + d.title + ' ' + id)
-				}	
+				}
 	        },200);
     	} catch(e) {
     		// Catch any errors
@@ -172,11 +172,11 @@ const saveProgram = async id => {
 	    	// Destructure and insert the data into the database
 		    (d => {
 		    	var db = new Database('database.sqlite');
-		    	db.run(`INSERT INTO programs VALUES (?${',?'.repeat(24)})`,[ 
-		    		d.archive.added, d.archive.updated, d.created, d.updated, d.id, 
-		    		d.title, String(d.code), String(d.folds), d.thumbnail, d.fork, 
-		    		d.key, d.votes, d.spinoffs, d.type, d.width, d.height, 
-		    		d.userFlagged, d.originScratchpad, d.hiddenFromHotlist, 
+		    	db.run(`INSERT INTO programs VALUES (?${',?'.repeat(24)})`,[
+		    		d.archive.added, d.archive.updated, d.created, d.updated, d.id,
+		    		d.title, String(d.code), String(d.folds), d.thumbnail, d.fork,
+		    		d.key, d.votes, d.spinoffs, d.type, d.width, d.height,
+		    		d.userFlagged, d.originScratchpad, d.hiddenFromHotlist,
 		    		d.restrictedPosting, d.byChild, d.author.nick, d.author.name,
 			        d.author.id, d.author.profileAccess
 		    	]);

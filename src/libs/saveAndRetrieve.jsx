@@ -1,14 +1,14 @@
 import { Database } from "bun:sqlite"
 
 let db = new Database('database.sqlite')
-db.run(`CREATE TABLE IF NOT EXISTS programs 
-    (archive__id INTEGER PRIMARY KEY AUTOINCREMENT, 
+db.run(`CREATE TABLE IF NOT EXISTS programs
+    (archive__id INTEGER PRIMARY KEY AUTOINCREMENT,
     archive__added INT,
     archive__updated INT,
     created INT,
-    updated INT, 
-    id TEXT, 
-    title TEXT, 
+    updated INT,
+    id TEXT,
+    title TEXT,
     code BLOB,
     folds BLOB,
     thumbnail BLOB,
@@ -55,10 +55,10 @@ async function getProgramThumbnail(id) {
     })
 }
 const insertProgram = db.prepare(`INSERT INTO programs (${programColumnsListText}) VALUES (${('?'.repeat(programColumnsListText.split(',').length).split('').join(', '))})`),
-      updateProgram = db.prepare(`UPDATE programs SET 
+      updateProgram = db.prepare(`UPDATE programs SET
         archive__updated = $archiveUpdated,
-        updated = $updated, 
-        title = $title, 
+        updated = $updated,
+        title = $title,
         code = $code,
         folds = $folds,
         thumbnail = $thumbnail,
@@ -99,7 +99,7 @@ async function saveProgram(id) {
             "Sec-GPC": "1"
         },
         "referrer": "https://www.khanacademy.org/computer-programming/i/"+id,
-        "body": "{\"operationName\":\"programQuery\",\"query\":\"query programQuery($programId: String!) {\\n  programById(id: $programId) {\\n    byChild\\n    category\\n    created\\n    creatorProfile: author {\\n      id\\n      nickname\\n      profileRoot\\n      profile {\\n        accessLevel\\n        __typename\\n      }\\n      __typename\\n    }\\n    deleted\\n    description\\n    spinoffCount: displayableSpinoffCount\\n    docsUrlPath\\n    flags\\n    flaggedBy: flaggedByKaids\\n    flaggedByUser: isFlaggedByCurrentUser\\n    height\\n    hideFromHotlist\\n    id\\n    imagePath\\n    isProjectOrFork: originIsProject\\n    isOwner\\n    kaid: authorKaid\\n    key\\n    newUrlPath\\n    originScratchpad: originProgram {\\n      deleted\\n      translatedTitle\\n      url\\n      __typename\\n    }\\n    restrictPosting\\n    revision: latestRevision {\\n      id\\n      code\\n      configVersion\\n      created\\n      editorType\\n      folds\\n      __typename\\n    }\\n    slug\\n    sumVotesIncremented\\n    title\\n    topic: parentCurationNode {\\n      id\\n      nodeSlug: slug\\n      relativeUrl\\n      slug\\n      translatedTitle\\n      __typename\\n    }\\n    translatedTitle\\n    url\\n    userAuthoredContentType\\n    upVoted\\n    width\\n    __typename\\n  }\\n}\\n\",\"variables\":{\"programId\":\""+id+"\"}}",
+        "body": "{\"operationName\":\"programQuery\",\"query\":\"query programQuery($programId: String!) {\\n  programById(id: $programId) {\\n    byChild\\n    category\\n    created\\n    creatorProfile: author {\\n      id\\n      nickname\\n      profileRoot\\n      profile {\\n        accessLevel\\n        __typename\\n      }\\n      __typename\\n    }\\n    deleted\\n    description\\n    spinoffCount: displayableSpinoffCount\\n    docsUrlPath\\n    flags\\n    flaggedBy: flaggedByKaids\\n    flaggedByUser: isFlaggedByCurrentUser\\n    height\\n    hideFromHotlist\\n    id\\n    imagePath\\n    isProjectOrFork: originIsProject\\n    isOwner\\n    kaid: authorKaid\\n    key\\n    newUrlPath\\n    originScratchpad: originProgram {\\n      deleted\\n      translatedTitle\\n      url\\n      __typename\\n    }\\n    restrictPosting\\n    revision: latestRevision {\\n      id\\n      code\\n      configVersion\\n      created\\n      editorType\\n      folds\\n      __typename\\n    }\\n    slug\\n    sumVotesIncremented\\n    title\\n    topic: parentCurationNode {\\n      id\\n      nodeSlug: slug\\n      relativeUrl\\n      slug\\n      translatedTitle\\n      __typename\\n    }\\n    translatedTitle\\n    url\\n    userAuthoredContentType\\n    upVoted\\n    width\\n    __typename\\n  }\\n}\",\"variables\":{\"programId\":\""+id+"\"}}",
         "method": "POST",
         "mode": "cors"
     }).then(res => res.json())
@@ -142,7 +142,7 @@ async function saveProgram(id) {
         }
     });
     // Check if the program was found if not return an error message
-    if (programData === 404) return { status: 404, message: 'Program not found', id, severe: true }; 
+    if (programData === 404) return { status: 404, message: 'Program not found', id, severe: true };
     // Check if the program exists in the database and if it does update it
     const oldData = getProgram(id)
     if (typeof oldData === 'object') {
@@ -276,7 +276,7 @@ function formatOutput(sqliteOut) {
     };
 }
 // Create Queries for getting a program by id and getting multiple by index
-const retrieveById = db.query("SELECT * FROM programs WHERE id = $id"), 
+const retrieveById = db.query("SELECT * FROM programs WHERE id = $id"),
       retrievePrograms = db.query("SELECT * FROM programs LIMIT $limit OFFSET $offset");
 function getProgram(id) { return formatOutput(retrieveById.get({ $id: id })); } // Retrieve and return the program by id
 function getProgramsNoString($limit = 50, $offset = 0) {
