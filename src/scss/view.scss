@@ -1,9 +1,5 @@
 @import "index";
-
-.Main {
-	max-width: 1440px;
-	margin-inline: auto;
-}
+@import "standard-width";
 
 .title-and-code-button {
 	margin-block-end: 2rem;
