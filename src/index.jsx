@@ -172,6 +172,8 @@ export default {
             if (pathname === "/favicon-16x16.png")          return serveImage('assets/favicon-16x16.png');
             if (pathname === "/favicon-32x32.png")          return serveImage('assets/favicon-32x32.png');
             if (pathname === "/site.webmanifest")           return new Response(Bun.file('assets/site.webmanifest'));
+            // Javascript
+            if (pathname === "/js/view-page.js")            return new Response(Bun.file("js/view-page.js"),{ headers: { "content-type": "application/javascript" }});
             // Add page
             if (pathname === "/add") {
                 return (async (params, request) => {

@@ -1,16 +1,6 @@
 import relativeDate from '../libs/relativeDate';
 export default function(props) {
-    console.log(props.program);
-    const copyCode = () =>{
-        navigator.clipboard.writeText('${props.program.code}').then(
-            () => {
-                console.log('Clipboard successfully written')
-            },
-            () => {
-                console.log('Clipboard failed to write')
-            }
-        )
-    };
+    //console.log(props.program);
     return (<main className="Main">
         <div className="title-and-code-button">
             <h1>Viewing Program</h1>
@@ -51,27 +41,8 @@ export default function(props) {
                 <tr>
                     <th>Code</th>
                     <td style={{ display: 'flex' }}>
-                        <textarea style={{ resize: 'vertical', flex: 1, minWidth: 0 }} rows="1" className="input" value={props.program.code} readOnly></textarea>
-                        <a className="button copy-button" href="javascript:(() => {
-                            const copyButton = document.getElementsByClassName('copy-button')[0];
-                            navigator.clipboard.writeText('$').then(
-                                () => {
-                                    copyButton.textContent = 'Copied!';
-                                    console.log('Clipboard successfully written');
-                                },
-                                () => {
-                                    copyButton.textContent = 'Failed!';
-                                    copyButton.style.backgroundColor = '#f38ba8';
-                                    console.log('Clipboard failed to write');
-                                }
-                            );
-                            setTimeout(() => {
-                                copyButton.textContent = 'Copy';
-                                copyButton.style.backgroundColor = '#a6e3a1';
-                            }, 1500);
-                        })()">
-                            Copy
-                        </a>
+                        <textarea id="program-code" style={{ resize: 'vertical', flex: 1, minWidth: 0 }} rows="1" className="input" value={props.program.code} readOnly></textarea>
+                        <input id="copy-code-button" className="button" type="button" value="Copy" />
                     </td>
                 </tr>
                 <tr>
@@ -156,5 +127,6 @@ export default function(props) {
                 </tr>
             </table>
         </div>
+        <script src="/js/view-page.js"></script>
     </main>);
 };
