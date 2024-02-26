@@ -6,6 +6,7 @@ export default function(props) {
             <h1>Viewing Program</h1>
             <div className="launch-buttons">
                 <a href={"/launch?p="+props.program.id} className="button" targe="_blank">Launch Editor</a>
+                <a href={"https://khanalytics.bhavjit.com/program/"+props.program.id} className="button" target="_blank">View Khanalytics</a>
             </div>
         </header>
         <div className="surface program-info-surface" style={{
