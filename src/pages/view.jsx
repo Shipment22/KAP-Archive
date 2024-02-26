@@ -2,10 +2,12 @@ import relativeDate from '../libs/relativeDate';
 export default function(props) {
     //console.log(props.program);
     return (<main className="Main">
-        <div className="title-and-code-button">
+        <header className="title-and-launch-buttons">
             <h1>Viewing Program</h1>
-            <a href="#" className="button code-button">View Code in Editor</a>
-        </div>
+            <div className="launch-buttons">
+                <a href={"/launch?p="+props.program.id} className="button" targe="_blank">Launch Editor</a>
+            </div>
+        </header>
         <div className="surface program-info-surface" style={{
             position: 'relative'
         }}>

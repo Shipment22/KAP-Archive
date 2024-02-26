@@ -1,20 +1,20 @@
 @import "index";
 @import "standard-width";
 
-.title-and-code-button {
+.title-and-launch-buttons {
 	margin-block-end: 2rem;
 	z-index: 5;
 	position: relative;
 }
 
 @media screen and (min-width: 900px) {
-	.title-and-code-button {
+	.title-and-launch-buttons {
 		display: grid;
 		grid-template-columns: 1fr auto;
 		align-items: center;
 		transform: translateY(100px);
 	}
-	.code-button {
+	.launch-buttons {
 		position: absolute;
 		top: 0;
 		right: 0;
@@ -25,20 +25,35 @@ h1 {
 	text-shadow: 0 5px 7px #0b0b11;
 }
 
-.code-button, .program-info-thumbnail-wrapper {
+.launch-buttons .button, .program-info-thumbnail-wrapper {
 	box-shadow: 0 5px 7px #0b0b11;
 }
 
 .program-info-surface {
-	margin-block-start: 100px;
+	margin-block-start: 120px;
 	padding-block-start: 25px;
 }
 
 .program-info-thumbnail-wrapper {
 	position: absolute;
-	top: calc(-150px - 1rem);
+	top: calc(-150px - 2.5rem);
 	left: 50%;
 	transform: translateX(-50%);
+    width: 200px;
+    max-width: 100%;
 }
+
+@media screen and (max-width: 899px) and (min-width: 614px) {
+    .program-info-thumbnail-wrapper {
+        left: 75%;
+    }
+}
+
+@media screen and (max-width: 613px)  {
+    .program-info-surface {
+        margin-block-start: 210px;
+    }
+}
+
 
 
