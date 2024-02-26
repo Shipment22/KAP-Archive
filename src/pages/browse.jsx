@@ -29,14 +29,17 @@ function Browse(props) {
 	return (
         <main className="Main">
         	<h1>Browse Programs</h1>
-            <div style={{display: "grid", gridTemplateColumns: "1fr 240px"}}>
-                <h2 style={{margin: 0, padding: 0}}>Page {page || 1}</h2>
+            <div className="surface">
+                <div style={{display: "grid", gridTemplateColumns: "1fr 240px"}}>
+                    <h2 style={{margin: 0, padding: 0}}>Page {page || 1}</h2>
+                    <PageSwitcher />
+                </div>
+                <br />
+        	    <ProgramsGrid programs={getProgramsNoString(programsPerPage, (page-1 ?? 0) * programsPerPage)}/>
+                <br />
                 <PageSwitcher />
-            </div>
-            <br />
-        	<ProgramsGrid programs={getProgramsNoString(programsPerPage, (page-1 ?? 0) * programsPerPage)}/>
-            <br />
-            <PageSwitcher />
+                    
+                </div>
         </main>)
 }
 

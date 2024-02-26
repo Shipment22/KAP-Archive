@@ -29,7 +29,7 @@ function Search(props) {
 		{/* When props.programs.length is less than 0 display a message telling you that */}
 		{props.programs.length > 0 ? (
 			// Display any results found
-			<div>
+			<div className="surface">
 				<h2>Results</h2>
 				<ProgramsGrid programs={props.programs}/>
 			</div>

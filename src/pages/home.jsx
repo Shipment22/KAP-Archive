@@ -16,7 +16,7 @@ function Page() {
             <h2>Add Programs</h2>
             <AddForm />
         </div>
-        <div className="recently-added">
+        <div className="recently-added surface">
             <h2>Recently Added</h2>
             <ProgramsGrid {programs}/>
             <br />
