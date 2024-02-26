@@ -24,7 +24,7 @@ const saveProgram = async id => {
 			id, severe: true
 		};
 	}
-	// Fetch the program data from Khan Academy
+	// Fetch the program data from KACP
 	const programData = await fetch("https://www.khanacademy.org/api/internal/graphql/programQuery?lang=en", {
         "credentials": "include",
         "headers": {

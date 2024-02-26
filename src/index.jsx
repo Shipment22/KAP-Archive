@@ -28,11 +28,9 @@ async function renderPage(page, request) {
             <meta charSet="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <meta name="description"
-              content={ page.description || `KAP Archive is a site for archiving programs from Khan's
-                       CS section. The programs on Khan's CS section often get
-                       hidden or deleted even when they follow the Khan Guidelines,
-                       that's why KAP Archive is here to save the programs and your time.
-                       :)` } />
+              content={ page.description || `KAP Archive is an archival site that focuses on preserving program's from Khan Academy's KACP section;
+              This project is in no way offiliated with or endoresed by Khan Academy.
+              The project exists to preserve code from hidden/deleted programs and banned users on KACP.` } />
             <meta name="theme-color" content="#11111A"/>
             <title>{page.title ?? 'KAP Archive'}</title>
             <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=1" />
@@ -156,7 +154,6 @@ export default {
         if (method === "GET") {
             // Home page
             if (pathname === "/") return renderPage({
-                    title: 'Khan Academy Program Archive',
                     stylesheet: '/css/home.css',
                     body: Home
                 }, request);

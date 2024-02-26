@@ -7,7 +7,7 @@ function Page() {
     const programs = getProgramsNoString(12)
     return (
     <main className="Main">
-        <h1>Khan Academy Program Archive</h1>
+        <h1>KAP Archive</h1>
         <div className="search surface">
             <h2>Search Program</h2>
             <SearchForm />
