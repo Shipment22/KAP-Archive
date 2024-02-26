@@ -295,6 +295,9 @@ a:visited.button {
 }
 
 @media screen and (min-width: 500px) {
+    .Header {
+        padding-inline: 1.5rem;
+    }
     .Main {
         padding: 1.5rem;
     }
@@ -313,9 +316,6 @@ a:visited.button {
 }
 
 @media screen and (min-width: 880px) {
-    body {
-        // padding: 1rem;
-    }
     .Header {
 		position: -webkit-sticky;
 		position: sticky;
