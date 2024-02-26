@@ -265,27 +265,38 @@ a:visited.button {
 
 .Footer {
 	padding: 1rem;
-	background-color: $mantle;
+	background-color: $base;
+    background: linear-gradient(0deg, #0b0b11 35%, $base 100%); 
 
 	.footer_inner-wrapper {
-		max-width: 1000px;
 		margin-inline: auto;
-		column-count: 3;
-		column-width: 200px;
+        padding-inline: 1rem;
+        padding-block: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+
 
 		ul {
-			height: 20vh;
-			padding-left: .4rem;
-			margin-bottom: 4rem;
+            flex-grow: 1;
+            padding: 1em 2em;
+            border-radius: .5rem;
+            background-color: $crust;
+            border: 1px solid $mantle;
 
 			li {
+                padding-inline-start: 1ch;
 				list-style: none;
 				font-size: 1.3rem;
 			}
 
-			a {
+            a {
 				text-decoration: none;
 			}
+
+            a:hover, a:focus {
+                text-decoration: underline;
+            }
 		}
 	}
 	
