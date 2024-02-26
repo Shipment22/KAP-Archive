@@ -44,13 +44,15 @@ export default function(props) {
                 <tr>
                     <th>Code</th>
                     <td style={{ display: 'flex' }}>
-                        <textarea id="program-code" style={{ resize: 'vertical', flex: 1, minWidth: 0 }} rows="1" className="input" value={props.program.code} readOnly></textarea>
+                        <textarea id="program-code" style={{ resize: 'vertical', flex: 1, minWidth: 0, minHeight: '1.5lh', height: '1.5lh' }} className="input" value={props.program.code} readOnly></textarea>
                         <input id="copy-code-button" className="button" type="button" value="Copy" />
                     </td>
                 </tr>
                 <tr>
                     <th>Folds</th>
-                    <td>{props.program.folds}</td>
+                    <td>
+                        <textarea style={{ resize: 'vertical', flex: 1, minWidth: 0, width: '100%', minHeight: '1.5lh', height: '1.5lh' }} className="input" value={props.program.folds} readOnly></textarea>
+                    </td>
                 </tr>
                 <tr>
                     <th>Fork</th>
