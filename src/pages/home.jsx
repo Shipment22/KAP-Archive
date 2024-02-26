@@ -9,7 +9,7 @@ function Page() {
     <main className="Main">
         <h1>KAP Archive</h1>
         <div className="search surface">
-            <h2>Search Program</h2>
+            <h2>Search Programs</h2>
             <SearchForm />
         </div>
         <div className="add surface">
