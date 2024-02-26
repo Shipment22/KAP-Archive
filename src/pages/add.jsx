@@ -8,12 +8,17 @@ import Program from '../components/program';
 function Add(props) {
 	return (
 <main className="Main">
-	<h1>Program Adding Results</h1>
-	<div className="surface">
-		{props.programs?(
+	{props.programs?(
+	    <div className="surface">
+	        <h1>Program Adding Results</h1>
 			<ProgramsGrid programs={props.programs}/>
-		):(<AddForm />)}
-	</div>
+	    </div>
+	):(
+	    <div className="surface">
+	        <h1>Add Programs</h1>
+            <AddForm />
+	    </div>
+    )}
 </main>)
 }
 
