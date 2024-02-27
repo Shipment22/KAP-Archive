@@ -4,10 +4,17 @@ export default function(props) {
     return (<main className="Main">
         <header className="title-and-launch-buttons">
             <h1>Viewing Program</h1>
-            <div className="launch-buttons">
-                <a href={"/launch?p="+props.program.id} className="button" targe="_blank">Launch Editor</a>
-                <a href={"https://khanalytics.bhavjit.com/program/"+props.program.id} className="button" target="_blank">View Khanalytics</a>
-            </div>
+            <nav className="launch-buttons" aria-label="Launch Buttons">
+                <h2 style={{
+                    margin: 0,
+                    padding: ".2rem .4rem",
+                    fontSize: "1rem"
+                }}>View program with</h2>
+                <a href={"/launch?p="+props.program.id} className="button" targe="_blank">Editor</a>
+                <a href={"https://khanalytics.bhavjit.com/program/"+props.program.id} className="button" target="_blank">Khanalytics</a>
+                <a href={"https://www.khanacademy.org/cs/-/"+props.program.id} className="button" target="_blank">Origin*</a>
+                <a href={"/g/"+props.program.id} className="button" target="_blank">JSON</a>
+            </nav>
         </header>
         <div className="surface program-info-surface" style={{
             position: 'relative'
