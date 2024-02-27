@@ -4,7 +4,7 @@ export default function(props) {
     return (<main className="Main">
         <header className="title-and-launch-buttons">
             <h1>Viewing Program</h1>
-            <nav className="launch-buttons" aria-label="Launch Buttons">
+            <nav className="launch-buttons surface" style={{ width: "max-content", maxWidth: "100%" }} aria-label="Launch Buttons">
                 <h2 style={{
                     margin: 0,
                     padding: ".2rem .4rem",
