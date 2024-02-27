@@ -7,7 +7,7 @@
 	position: relative;
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1055px) {
 	.title-and-launch-buttons {
 		display: grid;
 		grid-template-columns: 1fr auto;
@@ -38,14 +38,19 @@
     width: 200px;
     max-width: 100%;
 }
+@media (prefers-reduced-motion: no-preference) {
+    .program-info-thumbnail-wrapper {
+        transition: left 200ms ease;
+    }
+}
 
-@media screen and (max-width: 899px) and (min-width: 614px) {
+@media screen and (max-width: 1054px) and (min-width: 614px) {
     .program-info-thumbnail-wrapper {
         left: 75%;
     }
 }
 
-@media screen and (max-width: 613px)  {
+@media screen and (max-width: 721px)  {
     .program-info-surface {
         margin-block-start: 210px;
     }
