@@ -51,7 +51,7 @@ export default function(props) {
                 <tr>
                     <th>Folds</th>
                     <td>
-                        <textarea style={{ resize: 'vertical', flex: 1, minWidth: 0, width: '100%', minHeight: '1.5lh', height: '1.5lh' }} className="input" value={props.program.folds} readOnly></textarea>
+                        <textarea style={{ resize: 'vertical', flex: 1, minWidth: 0, width: '100%', minHeight: '1.5lh', height: '1.5lh' }} className="input" value={props.program.folds} placeholder="No Ace editor folds were found" readOnly></textarea>
                     </td>
                 </tr>
                 <tr>
