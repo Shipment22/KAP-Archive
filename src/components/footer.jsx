@@ -24,7 +24,14 @@ function Footer() {
 				</ul>
 				<ul>
 				    <h2>Credits</h2>
-					<li><a href="https://iconarchive.com/show/flatastic-1-icons-by-custom-icon-design/information-icon.html">Info Icon</a> (<a href="http://www.customicondesign.com/" className="sapphire">Custom Icon Design</a>)</li>
+                    <li>
+                        <a href="https://pixabay.com/vectors/leaf-blue-green-stylized-gradients-1821763/">Leaf in the Favicon</a> (<a href="https://pixabay.com/users/ptra-359668/" className="sapphire">Author</a>)
+                    </li>
+                    <li>
+                        <a href="https://github.com/microsoft/fluentui-system-icons/tree/master/assets/Building%20Bank/SVG">Building in the Favicon</a> (<a href="https://github.com/microsoft/fluentui-system-icons/tree/master" className="sapphire">Fluent UI System Icons</a>)
+                    </li>
+					<li>
+                        <a href="https://iconarchive.com/show/flatastic-1-icons-by-custom-icon-design/information-icon.html">Info Icon</a> (<a href="http://www.customicondesign.com/" className="sapphire">by Custom Icon Design</a>)</li>
 					<li>
 						<a href="https://iconarchive.com/show/small-n-flat-icons-by-paomedia/sign-error-icon.html">Error Icon</a>
 					</li>
@@ -32,13 +39,11 @@ function Footer() {
 						<a href="https://iconarchive.com/show/small-n-flat-icons-by-paomedia/sign-warning-icon.html">Warning Icon</a>
 					</li>
 					<li>
-						<a href="https://iconarchive.com/show/small-n-flat-icons-by-paomedia/key-icon.html">Key Icon</a>
-				  </li>
-					<li>
-						(<a href="http://www.paomedia.com/" className="sapphire">paomedia</a>, <a href="https://github.com/paomedia" className="sapphire">Github</a>)
-					</li>
-					<li>
-						<a href="https://iconarchive.com/show/papirus-status-icons-by-papirus-team/view-private-icon.html">View private Icon</a> (<a href="https://github.com/PapirusDevelopmentTeam" className="sapphire">Papirus Development Team</a>)</li>
+						<a href="https://iconarchive.com/show/small-n-flat-icons-by-paomedia/key-icon.html">Key Icon</a> (<a href="http://www.paomedia.com/" className="sapphire">paomedia</a>, <a href="https://github.com/paomedia" className="sapphire">Github</a>)
+				    </li>
+				    <li>
+						<a href="https://iconarchive.com/show/papirus-status-icons-by-papirus-team/view-private-icon.html">View private Icon</a> (<a href="https://github.com/PapirusDevelopmentTeam" className="sapphire">Papirus Development Team</a>)
+                    </li>
 				</ul>
 			</div>
 		</footer>

@@ -57,8 +57,12 @@ async function renderError(error, request) {
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <meta name="description"
               content={'KAP Archive encountered an error. ' + error.message +
-              '  If you think there\'s a problem with the site feel free to make an issue on Github.'} />
+              '  If you think there\'s a problem with the site feel free to make an issue on Github. https://github.com/Shipment22/KAP-Archive'} />
             <meta name="theme-color" content="#11111A"/>
+            <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=1" />
+            <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=1" />
+            <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=1" />
+            <link rel="manifest" href="/site.webmanifest" />
             <title>{error.message + ' | KAP Archive'}</title>
             <link rel="stylesheet" href='/css/index.css'/>
         </head>
