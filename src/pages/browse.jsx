@@ -21,8 +21,12 @@ function Browse(props) {
     // Page switcher component
     function PageSwitcher() {
         return (
-        <div style={{display: "flex", gap: ".5em", width: "100%"}}>
+        <div style={{display: "flex", gap: ".5em", width: "auto", minWidth: "min(400px, 100%)" }}>
             {page > 1 ? <a className="button" style={{width: "100%", margin: 0, textAlign:"center"}} href={lastHref}>Last Page</a>:null}
+            <form style={{ display: "flex" }}>
+                <input type="number" name="page" defaultValue={page||1} min="1" max={pagesCount||""} title="Page Number" className="input" style={{ width: "80px", marginBlock:0 }} />
+                <input type="submit" value="Go" className="button" style={{ marginBlock:0 }}/>
+            </form>
             {page < pagesCount ? <a className="button" style={{width: "100%", margin: 0, textAlign:"center"}} href={nextHref}>Next Page</a>:null}
         </div>);
     }
@@ -30,15 +34,14 @@ function Browse(props) {
         <main className="Main">
         	<h1>Browse Programs</h1>
             <div className="surface">
-                <div style={{display: "grid", gridTemplateColumns: "1fr 240px"}}>
-                    <h2 style={{margin: 0, padding: 0}}>Page {page || 1}</h2>
+                <div style={{display: "flex", flexWrap: "wrap", gap: "1rem", gridTemplateColumns: "1fr 400px"}}>
+                    <h2 style={{margin: 0, marginRight: "auto", padding: 0 }}>Page {page || 1} of {pagesCount || "err"}</h2>
                     <PageSwitcher />
                 </div>
                 <br />
         	    <ProgramsGrid programs={getProgramsNoString(programsPerPage, (page-1 ?? 0) * programsPerPage)}/>
                 <br />
                 <PageSwitcher />
-                    
                 </div>
         </main>)
 }
