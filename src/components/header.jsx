@@ -19,7 +19,7 @@ function Header(props) {
 						<li><a href="/browse" className="rosewater">Browse</a></li>
 						<li><a href="/search" className="mauve">Search</a></li>
 						<li><a href="/add" className="maroon">Add Programs</a></li>
-						<li><a href="/about" className="yellow">About</a></li>
+						<li><a href="https://github.com/Shipment22/KAP-Archive" target="_blank" className="yellow">Github Repo</a></li>
 					</ul>
 				</nav>
 			</div>
