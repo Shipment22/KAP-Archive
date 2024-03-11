@@ -100,7 +100,6 @@ a:visited.button {
 	.inputs-wrapper {
 	    display: grid;
 	    width: 100%;
-	    align-items: center;
 	}
 
 	.input {
@@ -219,7 +218,7 @@ a:visited.button {
 
 .Header {
 	padding: .35rem;
-	padding-inline: 1rem;
+	padding-inline: .7rem;
 	display: grid;
 	grid-template-columns: auto 1fr;
 	line-height: 36px;
@@ -268,17 +267,16 @@ a:visited.button {
 }
 
 .Main {
-	padding: 1rem;
+	padding: .7rem;
 }
 
 .Footer {
-	padding: 1rem;
+	padding: .7rem;
 	background-color: $base;
     background: linear-gradient(0deg, #0b0b11 35%, $base 100%); 
 
 	.footer_inner-wrapper {
 		margin-inline: auto;
-        padding-inline: 1rem;
         padding-block: 2rem;
         display: flex;
         flex-wrap: wrap;
@@ -313,28 +311,10 @@ a:visited.button {
 	}
 }
 
-@media screen and (min-width: 500px) {
-    .Header {
+@media screen and (min-width: 1000px) {
+    .Main, .Header, .Footer {
         padding-inline: 1.5rem;
     }
-    .Main {
-        padding: 1.5rem;
-    }
-    .search-form {
-    	.inputs-wrapper {
-	        grid-template-columns: minmax(160px, auto) 1fr;
-	    }
-	    .search_search-raw-search_wrapper {
-		    display: flex;
-		    gap: .5rem;
-		    div {
-		    	flex-grow: 1;
-		    }
-		}
-    }
-}
-
-@media screen and (min-width: 880px) {
     .Header {
 		position: -webkit-sticky;
 		position: sticky;
@@ -364,6 +344,22 @@ a:visited.button {
     .Main {
         margin-inline: auto;
         border-radius: 1rem;
+    }
+    .search-form {
+    	.inputs-wrapper {
+	        grid-template-columns: repeat(3, 1fr);
+            gap: 1em;
+            .inputs-inner-wrapper:first-child {
+                grid-column: 1/4;
+            }
+	    }
+	    .search_search-raw-search_wrapper {
+		    display: flex;
+		    gap: .5rem;
+		    div {
+		    	flex-grow: 1;
+		    }
+		}
     }
 }
 

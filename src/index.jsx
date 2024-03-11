@@ -175,6 +175,7 @@ export default {
             if (pathname === "/site.webmanifest")           return new Response(Bun.file('assets/site.webmanifest'));
             // Javascript
             if (pathname === "/js/view-page.js")            return new Response(Bun.file("js/view-page.js"),{ headers: { "content-type": "application/javascript" }});
+            if (pathname === "/js/searchForm.js")            return new Response(Bun.file("js/searchForm.js"),{ headers: { "content-type": "application/javascript" }});
             // Add page
             if (pathname === "/add") {
                 return (async (params, request) => {
