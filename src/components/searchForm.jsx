@@ -32,7 +32,7 @@ function Form() {
                 <input type="number" name="limit" className="input" placeholder="Maximum results allowed (default: 50)" title="Maximum number of results allowed; Default is 50; Will not effect raw search" />
             </div>
         </div>
-        <button className="button search-form-expander-button">Show Less</button>
+        <button className="button search-form-expander-button" title="Show more fields">Show Less</button>
         <div className="info">
             <img src={infoIcon} alt="Information Icon" width="22px" height="22px" />
             <p>
@@ -42,10 +42,10 @@ function Form() {
         <hr/>
         <div className="search_search-raw-search_wrapper">
             <div className="left">
-                <input type="submit" name="search" value="Search" className="button" />
+                <input type="submit" name="search" value="Search" className="button" title="Search programs graphically" />
             </div>
             <div className="right">
-                <input type="submit" name="raw" value="Raw Search" className="button" />
+                <input type="submit" name="raw" value="Raw Search" className="button" title="Search by raw JSON" />
             </div>
         </div>
         <script src="/js/searchForm.js"></script>
