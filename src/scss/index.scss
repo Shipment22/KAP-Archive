@@ -102,17 +102,13 @@ a:visited.button {
 	    width: 100%;
 	}
 
-	.input {
+	.input, .button {
 	    width: 100%;
 	    margin-inline: 0;
 	}
 
 	textarea {
 		resize: vertical;
-	}
-
-	.button {
-		width: 100%;
 	}
 }
 
