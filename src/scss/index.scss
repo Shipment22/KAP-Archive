@@ -112,6 +112,28 @@ a:visited.button {
 	}
 }
 
+@media (prefers-reduced-motion: no-preference) {
+    .search-form-expanded {
+        animation: search-form-expand 300ms ease-out;
+    }
+    .search-form.unexpanded {
+        .search-form-expanded {
+            animation: search-form-unexpand 300ms ease-in;
+            overflow: hidden;
+            height: 0;
+        }
+    }
+}
+
+@keyframes search-form-unexpand {
+    from { height: auto; }
+    to { transform: translateY(-100%) scale(0); opacity: 0; height: 0; }
+}
+@keyframes search-form-expand {
+    from { transform: translateY(-100%) scale(0); opacity: 0; height: 0; }
+    to {  }
+}
+
 .programs-grid {
     margin-inline: auto;
 	display: grid;
