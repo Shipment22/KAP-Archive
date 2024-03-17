@@ -8,13 +8,17 @@ window.addEventListener("load", e => {
                 if (expandable.style.display !== "") {
                     expandable.style.display = "";
                     this.textContent = "Show Less";
+                    window.localStorage.setItem("searchForm-expanded", 1);
                     return;
                 }
                 expandable.style.display = "none";
                 this.textContent = "Show More";
+                window.localStorage.setItem("searchForm-expanded", 0);
             });
         };
-        expander.click();
+        if (window.localStorage.getItem("searchForm-expanded") == 0) {
+            expander.click();
+        }
     });
     
 });
