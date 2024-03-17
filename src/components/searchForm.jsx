@@ -32,7 +32,7 @@ function Form() {
                 <input type="number" name="limit" className="input" placeholder="Maximum results allowed (default: 50)" title="Maximum number of results allowed; Default is 50; Will not effect raw search" />
             </div>
         </div>
-        <button className="button search-form-expander-button" title="Show more fields" type="button">Show Less</button>
+        <button className="button non-primary-button search-form-expander-button" title="Show more fields" type="button">Show Less</button>
         <div className="info">
             <img src={infoIcon} alt="Information Icon" width="22px" height="22px" />
             <p>

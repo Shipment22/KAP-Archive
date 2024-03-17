@@ -64,6 +64,10 @@ a:visited {
     font-weight: 700;
 	cursor: pointer;
 }
+.button.non-primary-button {
+    background: $surface0;
+    color: $sapphire;
+}
 a.button {
 	display: inline-block;
 	margin-block: .25rem;
