@@ -118,13 +118,15 @@ a:visited.button {
 
 @media (prefers-reduced-motion: no-preference) {
     .search-form-expanded {
-        animation: search-form-expand 300ms ease-out;
+        // animation: search-form-expand 300ms ease-out;
+		display: block;
     }
     .search-form.unexpanded {
         .search-form-expanded {
-            animation: search-form-unexpand 300ms ease-in;
-            overflow: hidden;
-            height: 0;
+            // animation: search-form-unexpand 300ms ease-in;
+            // overflow: hidden;
+            // height: 0;
+			display: none;
         }
     }
 }
