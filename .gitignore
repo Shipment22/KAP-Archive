@@ -186,3 +186,6 @@ bun.lockb
 
 # Build artifacts
 src/server.js
+
+# Workspace files for VSC
+.vscode/
