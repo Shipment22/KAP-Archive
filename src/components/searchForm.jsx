@@ -26,6 +26,34 @@ function Form() {
                 <label htmlFor="spinoffs_max">Maximum Spin-offs</label>
                 <input type="number" name="spinoffs_max" className="input" placeholder="Maximum number of Spin-offs" title="Maximum number of spin-offs a program needs to be listed" />
             </div>
+            <div className="inputs-inner-wrapper search-form-expanded" >
+                <h3>Created</h3>
+                <label htmlFor="created_min">Minimum Created</label>
+                <input type="date" name="created_min" className="input" placeholder="Minimum creation date" title="Oldest creation date allowed for a program to be listed" />
+                <label htmlFor="created_max">Maximum Created</label>
+                <input type="date" name="created_max" className="input" placeholder="Maximum creation date" title="Newest creation date allowed for a program to be listed" />
+            </div>
+            <div className="inputs-inner-wrapper search-form-expanded">
+                <h3>Updated</h3>
+                <label htmlFor="updated_min"> Minimum Updated</label>
+                <input type="date" name="updated_min" className="input" placeholder="Maximum number of Spin-offs" title="Oldest updated date allowed for a program to be listed" />
+                <label htmlFor="updated_max">Maximum Updated</label>
+                <input type="date" name="updated_max" className="input" placeholder="Maximum number of Spin-offs" title="Newest updated date allowed for a program to be listed" />
+            </div>
+            <div className="inputs-inner-wrapper search-form-expanded" >
+                <h3>Archive Added</h3>
+                <label htmlFor="archive_added_min">Minimum Added</label>
+                <input type="date" name="archive_added_min" className="input" placeholder="Minimum archival date" title="Oldest archival date allowed for a program to be listed" />
+                <label htmlFor="archive_added_max">Maximum Added</label>
+                <input type="date" name="archive_added_max" className="input" placeholder="Maximum archival date" title="Newest archival date allowed for a program to be listed" />
+            </div>
+            <div className="inputs-inner-wrapper search-form-expanded">
+                <h3>Archive Updated</h3>
+                <label htmlFor="archive_updated_max"> Minimum Updated</label>
+                <input type="date" name="archive_updated_min" className="input" placeholder="Maximum archive update date" title="Oldest archive updated date allowed for a program to be listed" />
+                <label htmlFor="archive_updated_max">Maximum Updated</label>
+                <input type="date" name="archive_updated_max" className="input" placeholder="Maximum number of Spin-offs" title="Newest archive updated date allowed for a program to be listed" />
+            </div>
             <div className="inputs-inner-wrapper search-form-expanded">
                 <h3>Other Data</h3>
                 <label htmlFor="limit">Limit</label>
@@ -33,10 +61,13 @@ function Form() {
             </div>
         </div>
         <button className="button non-primary-button search-form-expander-button" title="Show more fields" type="button">Show Less</button>
+            <aside style={{float:"right",opacity:".6"}} >
+                <p>I know that this search is too complicated, I will be fixing this later.</p>
+            </aside>
         <div className="info">
             <img src={infoIcon} alt="Information Icon" width="22px" height="22px" />
             <p>
-                <i>Only one field needs to be filled to search</i>
+                <i>Only one field needs to be filled to search.</i>
             </p>
         </div>
         <hr/>
