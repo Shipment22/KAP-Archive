@@ -40,12 +40,22 @@ function queryPrograms(params) {
 		let limit = params.get('limit') || 50;
 		if (limit > 1000) limit = 1000;
 
+		function parseDate(d) {
+			return typeof d === "number" ? d : Date.parse(d);
+		}
+
 		data = db.query(`SELECT * FROM programs 
 			WHERE ($id = "null" OR id LIKE $id) 
 			AND (title LIKE $title) 
 			AND (author__nick LIKE $author OR author__name LIKE $author)
 			AND (votes BETWEEN $votes_min AND $votes_max)
 			AND (spinoffs BETWEEN $spinoffs_min AND $spinoffs_max)
+			
+			AND (created BETWEEN $created_min AND $created_max)
+			AND (updated BETWEEN $updated_min AND $updated_max)
+			AND (archive__added BETWEEN $archive_added_min AND $archive_added_max)
+			AND (archive__updated BETWEEN $archive_updated_min AND $archive_updated_max)
+
 			LIMIT $limit`).all({
 				$id           : params.get('id') || "null",
 				$title        : "%"+params.get('title').split("").join("%")+"%",
@@ -54,6 +64,14 @@ function queryPrograms(params) {
 				$votes_max    : params.get('votes_max') || Infinity,
 				$spinoffs_min : params.get('spinoffs_min') || 0,
 				$spinoffs_max : params.get('spinoffs_max') || Infinity,
+				$created_min : parseDate(params.get('created_min')) || 0,
+				$created_max : parseDate(params.get('created_max')) || Infinity,
+				$updated_min : parseDate(params.get('updated_min')) || 0,
+				$updated_max : parseDate(params.get('updated_max')) || Infinity,
+				$archive_added_min : parseDate(params.get('archive_added_min')) || 0,
+				$archive_added_max : parseDate(params.get('archive_added_max')) || Infinity,
+				$archive_updated_min : parseDate(params.get('archive_updated_min')) || 0,
+				$archive_updated_max : parseDate(params.get('archive_updated_max')) || Infinity,
 				$limit        : limit
 		});
 		// Close the database when done
