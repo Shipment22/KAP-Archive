@@ -12,7 +12,7 @@ export default function(props) {
                 }}>View program with</h2>
                 <a href={"/launch?p="+props.program.id} className="button" targe="_blank" title="View in an Ace editor with a preview">Editor</a>
                 <a href={"https://khanalytics.bhavjit.com/program/"+props.program.id} className="button" target="_blank" title="View with Khanalytics">Khanalytics</a>
-                <a href={"https://www.khanacademy.org/cs/-/"+props.program.id} className="button" target="_blank" title="View program at it's origin location">Origin*</a>
+                <a href={"https://www.khanacademy.org/"+(props.program.type === "PYTHON" ? "python-program" : "computer-programming")+"/-/"+props.program.id} className="button" target="_blank" title="View program at it's origin location">Origin*</a>
                 <a href={"/g/"+props.program.id} className="button" target="_blank" title="View raw JSON">JSON</a>
             </nav>
         </header>
