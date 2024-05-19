@@ -130,17 +130,6 @@ export default {
             return new Response(getPrograms(splitPath[2], Number(splitPath[3]) !== NaN ? splitPath[3] : 0), {
                 headers: { "content-type": "application/json" }});
         }
-        // /query?[params] endpoint
-        // ! CLARIFICATION: this is only for testing purposes
-        // if (pathname === "/query") {
-        //     // Get the query param (to query the SQLite database)
-        //     const query = params.get('q') || params.get("query"),
-        //           // Get format param (wheather to format the JSON after outputting it)
-        //           format = Boolean(params.get("format") !== "false" && params.get("format") !== '0');
-        //     // Run the query and get the programs from the database
-        //     const programs = queryPrograms(query, format ?? true);
-        //     return new Response(JSON.stringify(programs));
-        // }
         // /search?[title,author,created,etc.]
         if (pathname === "/search") {
             const data = queryPrograms(params);
