@@ -23,7 +23,7 @@ function renderProgram(props) {
 		</div>)
 	}
 	// Return grid program
-	return (<div className="program">
+	return (<div className={props.archive.sourceDeleted?"program program-source-deleted":"program"}>
 	<div className="program_thumbnail-wrapper">
 	    <img src={props.thumbnail} alt="Program thumbnail" width="200px" height="200px" className="program_thumbnail" />
 	</div>
