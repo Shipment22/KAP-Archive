@@ -44,11 +44,18 @@ const saveProgram = async id => {
     .then(json => json.data.programById)
     .then(async p => {
     	if (!p) {
+			let existsInDb = false;
+			let db = new Database('database.sqlite');
+			if ((db.query("SELECT id FROM programs WHERE id = $id").all({ $id: id })[0])) {
+				existsInDb = true;
+				db.run(`UPDATE programs SET archive__source_deleted = true WHERE id = $id`, { $id: id });
+			}
+			db.close();
     		// If no data was recieved return an error message
     		return {
     			status: 404,
     			message: 'Program not found',
-    			id, severe: true
+    			id, existsInDb, severe: true
     		};
     	}
     	console.log('Retrieved data from Khan ' + id)
@@ -172,20 +179,20 @@ const saveProgram = async id => {
 	    	// Destructure and insert the data into the database
 		    (d => {
 		    	var db = new Database('database.sqlite');
-		    	db.run(`INSERT INTO programs VALUES (?${',?'.repeat(24)})`,[
+		    	db.run(`INSERT INTO programs VALUES (?${',?'.repeat(25)})`,[
 		    		d.archive.added, d.archive.updated, d.created, d.updated, d.id,
 		    		d.title, String(d.code), String(d.folds), d.thumbnail, d.fork,
 		    		d.key, d.votes, d.spinoffs, d.type, d.width, d.height,
 		    		d.userFlagged, d.originScratchpad, d.hiddenFromHotlist,
 		    		d.restrictedPosting, d.byChild, d.author.nick, d.author.name,
-			        d.author.id, d.author.profileAccess
+			        d.author.id, d.author.profileAccess, 0
 		    	]);
 		    	db.close();
 		    })(programData);
     	} catch(e) {
     		// Catch any errors
     		console.error('Error while saving program. ' + e);
-    		console.log(programData);
+    		//console.log(programData);
     		good = false;
     		return {
     			status: 500,
