@@ -101,6 +101,7 @@ function formatOutput(sqliteOut) {
 	let {
 		archive__added,
 		archive__updated,
+		archive__source_deleted,
 		id,
 		created,
 		updated,
@@ -142,7 +143,8 @@ function formatOutput(sqliteOut) {
 		message: 'Sucessfully formatted the database output',
 		archive: {
 			added: archive__added,
-			updated: archive__updated
+			updated: archive__updated,
+			sourceDeleted: !!archive__source_deleted
 		},
 		id,
 		created,
@@ -151,18 +153,18 @@ function formatOutput(sqliteOut) {
 		code,
 		folds,
 		thumbnail,
-		fork: fork === 1,
+		fork: !!fork,
 		key,
 		votes,
 		spinoffs,
 		type,
 		width,
 		height,
-		userFlagged: user_flagged === 1,
+		userFlagged: !!user_flagged,
 		originScratchpad: origin_scratchpad,
-		hiddenFromHotlist: hidden_from_hotlist === 1,
-		restrictedPosting: restricted_posting === 1,
-		byChild: by_child === 1,
+		hiddenFromHotlist: !!hidden_from_hotlist,
+		restrictedPosting: !!restricted_posting,
+		byChild: !!by_child,
 		author: {
 			nick: author__nick,
 			name: author__name,
