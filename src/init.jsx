@@ -28,6 +28,7 @@ db.run(`CREATE TABLE IF NOT EXISTS programs
     author__id TEXT,
     author__profile_access TEXT
     )`);
+try { db.run(`ALTER TABLE programs ADD archive__source_deleted INT DEFAULT (0)`); } catch(e) {}
 db.run(`CREATE TABLE IF NOT EXISTS users (db__id INTEGER PRIMARY KEY AUTOINCREMENT,
     archive__added INT,
     archive__updated INT,
