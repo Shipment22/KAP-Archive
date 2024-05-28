@@ -3,7 +3,7 @@ export default function(props) {
     //console.log(props.program);
     return (<main className="Main">
         <header className="title-and-launch-buttons">
-            <h1>Viewing Program</h1>
+            <h1>Viewing{props.program.archive.sourceDeleted ? (<span style={{ color: "#ff2222" }} title="Source scratchpad has been deleted or hidden"> Deleted</span>):""} Program</h1>
             <nav className="launch-buttons surface" style={{ width: "max-content", maxWidth: "100%" }} aria-label="Launch Buttons">
                 <h2 style={{
                     margin: 0,
@@ -12,7 +12,11 @@ export default function(props) {
                 }}>View program with</h2>
                 <a href={"/launch?p="+props.program.id} className="button" targe="_blank" title="View in an Ace editor with a preview">Editor</a>
                 <a href={"https://khanalytics.bhavjit.com/program/"+props.program.id} className="button" target="_blank" title="View with Khanalytics">Khanalytics</a>
-                <a href={"https://www.khanacademy.org/"+(props.program.type === "PYTHON" ? "python-program" : "computer-programming")+"/-/"+props.program.id} className="button" target="_blank" title="View program at it's origin location">Origin*</a>
+                {
+                   props.program.archive.sourceDeleted 
+                   ? <span className="button" style={{ backgroundColor: "#ff2222", color: "#eeeeff", cursor: "not-allowed" }} title="Source scratchpad has been deleted or hidden">Source Deleted</span>
+                   : <a href={"https://www.khanacademy.org/"+(props.program.type === "PYTHON" ? "python-program" : "computer-programming")+"/-/"+props.program.id} className="button" target="_blank" title="View program at it's source location if it still exists">Source*</a>
+                }
                 <a href={"/g/"+props.program.id} className="button" target="_blank" title="View raw JSON">JSON</a>
             </nav>
         </header>
@@ -136,6 +140,10 @@ export default function(props) {
                 <tr>
                     <th>Updated</th>
                     <td title={new Date(props.program.archive.updated)}>{relativeDate(props.program.archive.updated)}, {props.program.archive.updated}</td>
+                </tr>
+                <tr>
+                    <th>Source Deleted</th>
+                    <td title={props.program.archive.sourceDeleted?"Source scratchpad has been deleted or hidden":"Source scratchpad may still exist"}>{props.program.archive.sourceDeleted?"true":"unknown"}</td>
                 </tr>
             </table>
         </div>
