@@ -146,7 +146,7 @@ a:visited.button {
 	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 	gap: 1rem;
 
-	.program {
+	.program { 
 		padding: .7rem;
 		border-radius: .7rem;
 		background-color: $crust;
@@ -154,7 +154,30 @@ a:visited.button {
         display: flex;
         flex-direction: column;
 
-		img {
+		// for the ::before on .program-source-deleted
+		position: relative;
+
+		&.program-source-deleted::before {
+			content: "Source Deleted";
+			position: absolute;
+			top: 1rem;
+			left: 1rem;
+			right: 1rem;
+			padding: .5rem;
+			text-align: center;
+			background: #ff3322af;
+			backdrop-filter: blur(5px);
+			font-size: 1.1rem;
+			font-weight: 600;
+			border: 1px solid #dddddd22;
+			border-radius: .5rem;
+			box-shadow: 0 0 10px 2px #22222268;
+			// Even Firefox uses the -webkit- prefix here...
+			-webkit-text-stroke-width: 1px;
+			-webkit-text-stroke-color: #22222268;
+		}
+
+		.program_thumbnail {
 			border-radius: .5rem;
 			width: 100%;
 			height: auto;
