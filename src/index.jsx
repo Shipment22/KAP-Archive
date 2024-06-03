@@ -93,9 +93,18 @@ export default {
         // /s/id endpoint
         if (pathname.match(/^\/s\/[a-z0-9-_\/:.]+/i)) {
             // Save the program
-            const program = await saveProgram(pathname.split('/').reverse()[0]);
+            let program = await saveProgram(pathname.split('/').reverse()[0]);
             // Handle errors
             if (program.status !== 200) {
+                if (program.status === 404) {
+                    program = await getProgram(pathname.split('/').reverse()[0]);
+                    if (program.status === 200) {
+                        program.status = 404;
+                        program.message = "Program was NOT SAVED. This what we have in the database";
+                        return new Response(JSON.stringify(program), {
+                            status: 404, headers: { "content-type": "application/json" }})
+                    }
+                }
                 // GUI error page
                 if (method === 'GET') return renderError(program, request);
                 // Non-GUI error message
@@ -104,6 +113,7 @@ export default {
             }
             // Send the saved data
             return new Response(JSON.stringify(program), {
+                status: 200,
                 headers: { "content-type": "application/json" }});
         }
         // /g/id endpoint
@@ -111,6 +121,7 @@ export default {
             // Get the program from the database and send it on it's way
             const program = await getProgram(pathname.split('/').reverse()[0]);
             return new Response(JSON.stringify(program), {
+                status: program.status, 
                 headers: { "content-type": "application/json" }});
         }
         // /s/id and /g/id invalid ID catching endpoint
