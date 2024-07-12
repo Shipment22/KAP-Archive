@@ -43,4 +43,12 @@ db.run(`CREATE TABLE IF NOT EXISTS users (db__id INTEGER PRIMARY KEY AUTOINCREME
     profile_access TEXT,
     videos_complete INT
     )`);
+
+// This is where we start using some amount of database version managment
+db.run("CREATE TABLE IF NOT EXISTS kap_internal (db_version INTEGER)");
+
+let db_version = db.query("SELECT db_version FROM kap_internal").get()?.db_version;
+if (!db_version) { db.run("INSERT INTO kap_internal VALUES (?)", [1]); db_version = 1; }
+
+console.log("db_version:", db_version);
 db.close();
