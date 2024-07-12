@@ -17,7 +17,7 @@ const saveProgram = async id => {
 	id = id.replace(/\/[^/]+\.png/gi, ''); 		// For things like /latest.png
 	id = id.replace(/\?.+/gi, ''); 	// For URL params
 	if (id.match(/\D/g)) {
-		// If the ID contains anything other than digit return an invalid program error
+		// If the ID contains anything other than digits return an invalid program error
 		return {
 			status: 400,
 			message: 'Invalid program ID',
@@ -64,6 +64,13 @@ const saveProgram = async id => {
     		const id = origin.url.split('/').reverse()[0], official = origin.url.split('/')[1] === 'computing';
     		p.originScratchpad = `${id}\n${origin.translatedTitle}\n${origin.deleted}\n${official}`;
     	}
+
+		// Remove many invisible characters from program title & author nick
+		const invisRegexp =  /[\u0000-\u001F\u007F-\u009F\u200B-\u200F\u2028-\u202E\u2061-\u206F]/g;
+		p.title = p.title.replace(invisRegexp, "");
+		p.creatorProfile.nickname = p.creatorProfile.nickname.replace(invisRegexp, "");
+		
+
 		// Return the program data
 		return {
 			status: 200,
