@@ -1,4 +1,5 @@
 import { renderToReadableStream } from "react-dom/server";
+import { Database } from "bun:sqlite";
 // Import page components
 import Header from './components/header';
 import Footer from './components/footer';
@@ -9,6 +10,7 @@ import Add       from './pages/add';
 import Browse    from './pages/browse';
 import Search    from './pages/search';
 import View      from './pages/view';
+import RequestByCode from './pages/request-by-code';
 // Import library functions for saving and retrieving
 import { saveProgram, savePrograms } from './libs/archivePrograms.jsx';
 import { getProgram, getPrograms, getProgramsNoString, queryPrograms } from './libs/retrievePrograms.jsx';
@@ -156,6 +158,30 @@ export default {
         }
         // GET only requests
         if (method === "GET") {
+            // Program Thumbs
+            if (pathname.match(/\/(thumb)\/\d+\/latest\.png/)) {
+                var db = new Database('database.sqlite', { readonly: true });
+                let $id = pathname.split("/")[2];
+                let thumbURI = db.query("SELECT thumbnail FROM programs WHERE id = $id").get({$id}).thumbnail;
+                db.close();
+                console.log("Getting thumb BLOB from", $id);
+
+                function parseDataURL(url) {
+                    if (url.indexOf(";base64,") == -1) {
+                        let parts = url.split(',');
+                        return new Blob(decodeURIComponent(parts[1]), {type: parts[0].split(':')[1]});
+                    }
+                    let parts = url.split(";base64,");
+                    let raw = atob(parts[1]);
+                    let uInt8Array = new Uint8Array(raw.length);
+                    for (let i = 0; i < raw.length; i++) {
+                        uInt8Array[i] = raw.charCodeAt(i);
+                    }
+                    return new Blob([uInt8Array], {type: parts[0].split(':')[1]})
+                }
+
+                return new Response(parseDataURL(thumbURI), {headers: {"Content-Type": "image/png"}});
+            }
             // Home page
             if (pathname === "/") return renderPage({
                     stylesheet: '/css/home.css',
@@ -252,7 +278,7 @@ export default {
                     title: "Viewing Program \""+program.title+'" | KAP Archive',
                     props: { program }
                 }, request);
-            }
+            } 
             // GUI 404 page
             return renderError({ status: 404, message: '404 Not Found' }, request)
         }
