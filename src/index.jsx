@@ -10,7 +10,6 @@ import Add       from './pages/add';
 import Browse    from './pages/browse';
 import Search    from './pages/search';
 import View      from './pages/view';
-import RequestByCode from './pages/request-by-code';
 // Import library functions for saving and retrieving
 import { saveProgram, savePrograms } from './libs/archivePrograms.jsx';
 import { getProgram, getPrograms, getProgramsNoString, queryPrograms } from './libs/retrievePrograms.jsx';
@@ -123,7 +122,7 @@ export default {
             // Get the program from the database and send it on it's way
             const program = await getProgram(pathname.split('/').reverse()[0]);
             return new Response(JSON.stringify(program), {
-                status: program.status, 
+                status: program.status,
                 headers: { "content-type": "application/json" }});
         }
         // /s/id and /g/id invalid ID catching endpoint
@@ -278,7 +277,7 @@ export default {
                     title: "Viewing Program \""+program.title+'" | KAP Archive',
                     props: { program }
                 }, request);
-            } 
+            }
             // GUI 404 page
             return renderError({ status: 404, message: '404 Not Found' }, request)
         }
