@@ -1,4 +1,4 @@
-import { renderToReadableStream } from "react-dom/server";
+import { renderToReadableStream } from "react-dom/server.browser";
 import { Database } from "bun:sqlite";
 // Import page components
 import Header from './components/header';
