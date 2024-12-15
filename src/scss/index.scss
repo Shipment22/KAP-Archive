@@ -1,4 +1,4 @@
-@import "mocha";
+@use "mocha";
 
 * {
     box-sizing: border-box;
@@ -10,14 +10,14 @@ html, body {
 }
 
 body {
-    background-color: $base;
+    background-color: mocha.$base;
     color: #cdd6f4;
     font-family: Arial, Helvetica, sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
-    color: $green;
+    color: mocha.$green;
     text-shadow: 5px 5px 5px #00000055;
 }
 
@@ -40,7 +40,7 @@ a {
 }
 
 a:visited {
-	color: $peach;
+	color: mocha.$peach;
 }
 
 .input, .button {
@@ -65,8 +65,8 @@ a:visited {
 	cursor: pointer;
 }
 .button.non-primary-button {
-    background: $surface0;
-    color: $sapphire;
+    background: mocha.$surface0;
+    color: mocha.$sapphire;
 }
 a.button {
 	display: inline-block;
@@ -93,8 +93,8 @@ a:visited.button {
 .surface {
     margin-bottom: 1rem;
     padding: 1rem;
-    background-color: $mantle;
-    border: 1px solid $base;
+    background-color: mocha.$mantle;
+    border: 1px solid mocha.$base;
     border-radius: .7rem;
     box-shadow: 0px 7px 5px #00000045;
 }
@@ -149,7 +149,7 @@ a:visited.button {
 	.program { 
 		padding: .7rem;
 		border-radius: .7rem;
-		background-color: $crust;
+		background-color: mocha.$crust;
 		word-break: break-all;
         display: flex;
         flex-direction: column;
@@ -181,7 +181,7 @@ a:visited.button {
 			border-radius: .5rem;
 			width: 100%;
 			height: auto;
-            background-color: $base;
+            background-color: mocha.$base;
 		}
 
 		.program_title {
@@ -189,7 +189,7 @@ a:visited.button {
             overflow: hidden;
             text-overflow: ellipsis;
 			margin-block: .2rem;
-			color: $green;
+			color: mocha.$green;
 			font-size: 1.2rem;
 			font-weight: 700;
 		}
@@ -202,11 +202,11 @@ a:visited.button {
                     font-weight: 300;
                     text-align: left;
                     padding: 0;
-                    color: $blue;
+                    color: mocha.$blue;
                     width: 8ch;
                 }
                 td {
-                    background-color: $mantle;
+                    background-color: mocha.$mantle;
                     padding: .3em .6em;
                 }
             }
@@ -240,7 +240,7 @@ a:visited.button {
 .table {
 	padding: .7rem;
 	border-radius: .5rem;
-	background-color: $crust;
+	background-color: mocha.$crust;
 	width: 100%;
 	table-layout: fixed;
 	border-spacing: 1rem .3rem;
@@ -270,7 +270,7 @@ a:visited.button {
 	grid-template-columns: auto 1fr;
 	line-height: 36px;
 	margin-bottom: 1rem;
-	background-color: $crust;
+	background-color: mocha.$crust;
 	z-index: 100;
 
 	a {
@@ -319,8 +319,8 @@ a:visited.button {
 
 .Footer {
 	padding: .7rem;
-	background-color: $base;
-    background: linear-gradient(0deg, #0b0b11 35%, $base 100%); 
+	background-color: mocha.$base;
+    background: linear-gradient(0deg, #0b0b11 35%, mocha.$base 100%); 
 
 	.footer_inner-wrapper {
 		margin-inline: auto;
@@ -334,8 +334,8 @@ a:visited.button {
             flex-grow: 1;
             padding: 1em 2em;
             border-radius: .5rem;
-            background-color: $crust;
-            border: 1px solid $mantle;
+            background-color: mocha.$crust;
+            border: 1px solid mocha.$mantle;
 
 			li {
                 padding-inline-start: 1ch;
@@ -382,7 +382,7 @@ a:visited.button {
 		div:nth-child(3) {
 			display: block;
 			text-align: right;
-			color: $yellow;
+			color: mocha.$yellow;
 			img {
 				float: right;
 			}
