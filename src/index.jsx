@@ -88,7 +88,7 @@ export default {
         // Get Url and method from request.
         const { url, method } = request;
         // Get Url parameters
-        const params = URLSearchParams(url.split('?')[1]);
+        const params = new URLSearchParams(url.split('?')[1]);
         // Get Pathname form url.
         const { pathname } = new URL(url);
         // /s/id endpoint
