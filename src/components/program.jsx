@@ -13,19 +13,23 @@ function renderProgram(props) {
 		return (<div className="program">
 		<div className="program_thumbnail-wrapper">
 			{props.severe ? (<img src="/assets/error.svg" alt="Error image" width="250px" height="250px" className="program_thumbnail" />) : (
-				<img src="/assets/warning.svg" alt="Warning image" width="250px" height="250px" className="program_thumbnail" />
+				<img src="/assets/warning.svg" alt="Warning image" title="Warning" width="250px" height="250px" className="program_thumbnail" />
 			)}
 		</div>
 		<div>
-		    <div className="program_title">{props.message}</div>
+		    <div className="program_title" title={props.message}>{props.message}</div>
 		    Program ID: <b>{props.id}</b>
 		</div>
 		</div>)
 	}
+    let pid = "pid-"+props.id;
 	// Return grid program
-	return (<div className={props.archive.sourceDeleted?"program program-source-deleted":"program"}>
+	return (<div className={"program"+(props.archive.sourceDeleted?" program-source-deleted ":' ')+pid}>
 	<div className="program_thumbnail-wrapper">
-	    <img src={props.thumbnail} alt="Program thumbnail" width="200px" height="200px" className="program_thumbnail" />
+        {
+            props.lazy ? <img src={`/thumb/${props.id}/latest.png`} className={"program_thumbnail "+pid} alt="Program thumbnail" width="200px" height="200px" loading="lazy" />
+            : <img src={props.thumbnail} className={"program_thumbnail "+pid} alt={"Thumbnail for"+props.title} width="200px" height="200px" />
+        }
 	</div>
 	<div>
 	    <h3 className="program_title" title={props.title}>{props.title}</h3>

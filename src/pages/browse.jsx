@@ -2,9 +2,7 @@ import { Database } from "bun:sqlite"; // Import bun:sqlite
 import {getProgramsNoString} from '../libs/retrievePrograms';
 import ProgramsGrid from '../components/programsGrid';
 function Browse(props) {
-	let page = Number(props.page);
-	// Make sure page isn't negative or NaN
-	if (page < 0 || page == NaN) page = 0; 
+	let page = Math.max(parseInt(props.page)||0, 0);
 
     const programsPerPage = 24;
 
