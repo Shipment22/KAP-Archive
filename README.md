@@ -2,8 +2,8 @@
 
 ## About
 
-[The KAP Archive](https://kap-archive.bhavjit.com/) is an archival site that focuses on preserving program's from [Khan Academy®](https://khanacademy.org/)'s KACP section;
-This project is in no way offiliated with or endoresed by Khan Academy®.
+[The KAP Archive](https://kap-archive.bhavjit.com/) is an archival site that focuses on preserving programs from [Khan Academy®](https://khanacademy.org/)'s KACP section;
+This project is in no way affiliated with or endorsed by Khan Academy®.
 The project exists to preserve code from hidden/deleted programs and banned users on KACP.
 
 ### Why?
