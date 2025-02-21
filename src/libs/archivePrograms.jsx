@@ -68,7 +68,7 @@ const saveProgram = async id => {
 		// Remove many invisible characters from program title & author nick
 		const invisRegexp =  /[\u0000-\u001F\u007F-\u009F\u200B-\u200F\u2028-\u202E\u2061-\u206F]/g;
 		p.title = p.title.replace(invisRegexp, "");
-		p.creatorProfile.nickname = p.creatorProfile.nickname.replace(invisRegexp, "");
+		p.creatorProfile.nickname = p.creatorProfile.nickname?.replace(invisRegexp, "");
 		
 
 		// Return the program data
@@ -100,7 +100,7 @@ const saveProgram = async id => {
 			byChild: p.byChild,
 			author: {
 			    nick: p.creatorProfile.nickname,
-			    name: p.creatorProfile.profileRoot.split('/').reverse()[1],
+			    name: p.creatorProfile.profileRoot?.split('/').reverse()[1],
 			    id: p.creatorProfile.kaid,
 			    profileAccess: p.creatorProfile.profile?.accessLevel,
 			}

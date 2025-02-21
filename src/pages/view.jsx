@@ -128,15 +128,15 @@ export default function(props) {
                 </tr>
                 <tr>
                     <th>Author Nick</th>
-                    <td>{props.program.author.nick}</td>
+                    <td title={props.program.author.id||"In the early days of KACP some users had anonymous profiles. This is an artifact from that era."}>{props.program.author.nick || "anonymous user"}</td>
                 </tr>
                 <tr>
                     <th>Author Name</th>
-                    <td>{props.program.author.name}</td>
+                    <td title={props.program.author.id||"In the early days of KACP some users had anonymous profiles. This is an artifact from that era."}>{props.program.author.name || "anonymous user"}</td>
                 </tr>
                 <tr>
                     <th>Author ID</th>
-                    <td>{props.program.author.id}</td>
+                    <td title={props.program.author.id?props.program.author.name:"In the early days of KACP some users had anonymous profiles. This is an artifact from that era."}>{props.program.author.id || "anonymous user"}</td>
                 </tr>
                 <tr>
                     <th>Author Profile Access</th>
