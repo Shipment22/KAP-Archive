@@ -102,7 +102,7 @@ const saveProgram = async id => {
 			    nick: p.creatorProfile.nickname,
 			    name: p.creatorProfile.profileRoot.split('/').reverse()[1],
 			    id: p.creatorProfile.kaid,
-			    profileAccess: p.creatorProfile.profile.accessLevel,
+			    profileAccess: p.creatorProfile.profile?.accessLevel,
 			}
 		}
     });
