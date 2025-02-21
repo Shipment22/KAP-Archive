@@ -1,6 +1,19 @@
 import relativeDate from '../libs/relativeDate';
 export default function(props) {
     //console.log(props.program);
+    let profileAccessMessage = "";
+    switch(props.program.author.profileAccess) {
+        case null:
+            profileAccessMessage = "Unknown: This is a side effect of old child account programs.";
+            break;
+        case "PUBLIC":
+            profileAccessMessage = "PUBLIC: Visible to everyone.";
+            break;
+        case "COACH":
+            profileAccessMessage = "COACH: Some content is only visible to teachers, parents, and guardians.";
+            break;
+    }
+
     return (<main className="Main">
         <header className="title-and-launch-buttons">
             <h1>Viewing{props.program.archive.sourceDeleted ? (<span style={{ color: "#ff2222" }} title="Source scratchpad has been deleted or hidden"> Deleted</span>):""} Program</h1>
@@ -127,7 +140,7 @@ export default function(props) {
                 </tr>
                 <tr>
                     <th>Author Profile Access</th>
-                    <td>{props.program.author.profileAccess}</td>
+                    <td title={profileAccessMessage}>{props.program.author.profileAccess || "unknown"}</td>
                 </tr>
             </table>
             <br/>
