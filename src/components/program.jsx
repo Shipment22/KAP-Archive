@@ -7,7 +7,8 @@ import relativeDate from '../libs/relativeDate'
 function renderProgram(props) {
 	// Get the crated and updated dates
 	const created = new Date(props.created),
-		  updated = new Date(props.updated);
+		  updated = new Date(props.updated),
+      archiveUpdated = new Date(props.archive.updated);
 	// If the status is not good return an error program
 	if (props.status !== 200) {
 		return (<div className="program">
@@ -40,11 +41,11 @@ function renderProgram(props) {
             </tr>
             <tr>
                 <th>Created:</th>
-	            <td className="program_created" title={created.toUTCString()}>{relativeDate(Date.parse(created))}</td>
+	            <td className="program_created" title={"Program was first created: " + created.toUTCString()}>{relativeDate(Date.parse(created))}</td>
             </tr>
             <tr>
                 <th>Updated:</th>
-	            <td className="program_updated" title={updated.toUTCString()}>{relativeDate(Date.parse(updated))}</td>
+	            <td className="program_updated" title={"Program was last updated*: " + updated.toUTCString()}>{relativeDate(Date.parse(updated))}</td>
             </tr>
             <tr>
                 <th>Votes:</th>
@@ -53,6 +54,10 @@ function renderProgram(props) {
             <tr>
                 <th>Spin-Offs:</th>
 	            <td className="program_spinoffs">{props.spinoffs}</td>
+            </tr>
+            <tr>
+                <th>Archived:</th>
+	            <td className="program_archive_updated" title={"Archive data was last updated: " + archiveUpdated.toUTCString()}>{relativeDate(Date.parse(archiveUpdated))}</td>
             </tr>
         </table>
 	</div>
