@@ -1,13 +1,24 @@
 import { Database } from "bun:sqlite";
 import { getProgram } from "./retrievePrograms";
+import sharp from "sharp";
 
 const getProgramThumbnail = async id => {
 	// Fetch thumbnail turn it into base64 and return it
 	return await fetch("https://www.khanacademy.org/computer-programming/_/" + id + "/latest.png")
-	.then(async response => {return { mime: response.headers.get('content-type'), buffer: await response.arrayBuffer() }})
-    .then(data => {
-        const base64 = Buffer.from(Array.from(new Uint8Array(data.buffer)).map(c => String.fromCharCode(c)).join(''), 'binary').toString('base64')
-        return `data:${data.mime};base64,${base64}`
+	.then(async response => {
+        return { mime: response.headers.get('content-type'), buffer: await response.arrayBuffer() };
+    })
+    .then(async data => {
+        console.log("Converting image from",data.mime,"to WebP");
+        const buffer = Buffer.from(data.buffer);
+        const webpBuffer = await sharp(buffer)
+            .webp({ quality: 18, effort: 6 })
+            .toBuffer();
+        const base64 = webpBuffer.toString('base64');
+        return `data:image/webp;base64,${base64}`;
+    })
+    .catch(error => {
+        console.error('Error converting PNG to WebP:', error);
     });
 };
 const saveProgram = async id => {
