@@ -26,6 +26,64 @@ function getProgramsNoString($limit = 50, $offset = 0) {
 function getPrograms() {
 	return JSON.stringify(getProgramsNoString(...arguments))
 }
+function newQueryPrograms({ limit, id, title, author, votes_min, votes_max, spinoffs_min, spinoffs_max, created_min, created_max, updated_min, updated_max, archive_added_min, archive_added_max, archive_updated_min, archive_updated_max }) {
+    const db = new Database("database.sqlite", { readonly: true });
+
+    limit = Math.min(Math.max(parseInt(limit ?? 50), 1), 1000);
+
+    //console.log(...arguments)
+
+    // !! NOT FINISHED
+
+    // !TODO: Proper fuzzy search
+    // !TODO: Input sanitization
+    // !TODO: Search without all inputs filled (forum auto-fills with nulls)
+    // !TODO: Only request some outputs
+    // !TODO: Sort by options
+    
+    // First create an object to pass to db.query with only necessary keys.
+    //  ^ Validate the data in this step.
+    // Then create a query string based on Object.keys of that object.
+    // Store sort by and max length separate, then add them to the query string.
+    //
+
+    let data = db.query(`SELECT * FROM programs WHERE 
+        ($id = 0 OR $id LIKE id) AND
+        (title LIKE $title) AND
+        (author__nick LIKE $author OR author__name LIKE $author) AND
+        (votes BETWEEN $votes_min AND $votes_max) AND
+        (spinoffs BETWEEN $spinoffs_min AND $spinoffs_max) AND
+        (created BETWEEN $created_min AND $created_max) AND
+		    (updated BETWEEN $updated_min AND $updated_max) AND
+		    (archive__added BETWEEN $archive_added_min AND $archive_added_max) AND
+		    (archive__updated BETWEEN $archive_updated_min AND $archive_updated_max)
+        `)
+        .all({
+            $id: id || 0,
+            $title: "%"+title?.split("").join("%")+"%",
+            $author: "%"+author?.split("").join("%")+"%",
+            $votes_min: +votes_min ?? 0,
+            $votes_max: +votes_max || Infinity,
+            $spinoffs_min: +spinoffs_min ?? 0,
+            $spinoffs_max: parseInt(spinoffs_max) !== 0 ? (+spinoffs_max || Infinity) : 0, // Special treatment becuast of negative spin-off glitch
+            $created_min: Date.parse(created_min) || 0,
+            $created_max: Date.parse(created_max) || Infinity,
+            $updated_min: Date.parse(updated_min) || 0,
+            $updated_max: Date.parse(updated_max) || Infinity,
+            $archive_added_min: Date.parse(archive_added_min) || 0,
+            $archive_added_max: Date.parse(archive_added_max) || Infinity,
+            $archive_updated_min: Date.parse(archive_updated_min) || 0,
+            $archive_updated_max: Date.parse(archive_updated_max) || Infinity,
+        });
+
+    
+	// Restruecture before returning
+	for (let i in data) data[i] = formatOutput(data[i]);
+
+    //console.log("data",data)
+
+    return data;
+}
 // Query programs database (readonly)
 function queryPrograms(params) {
 	let data;
@@ -179,6 +237,7 @@ export {
   getPrograms,
   getProgramsNoString,
   queryPrograms,
+  newQueryPrograms,
   formatOutput as formatProgramFromDatabase
 };
 
