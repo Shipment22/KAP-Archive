@@ -107,7 +107,7 @@ async function newRender({ stylesheet, Main, props, title, description, status=2
                 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=1" />
                 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=1" />
                 <link rel="manifest" href="/site.webmanifest" />
-                <title>Home | KAP Archive</title>
+                <title>{title+" | KAP Archive"}</title>
                 <link rel="stylesheet" href={stylesheet}/>
             </head>
             <body>
@@ -118,8 +118,7 @@ async function newRender({ stylesheet, Main, props, title, description, status=2
         </html>
     ), { headers: { "content-type": "text/html; charset=utf-8" } })
 }
-async function errorPage(args) {
-    let { title, description, status = 0, body } = args;
+async function errorPage({ title, description, status, body }) {
     return new Response(
         await renderToReadableStream(
             <html>
@@ -135,7 +134,7 @@ async function errorPage(args) {
                     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=1" />
                     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=1" />
                     <link rel="manifest" href="/site.webmanifest" />
-                    <title>{title} | KAP Archive</title>
+                    <title>{title+" | KAP Archive"}</title>
                     <link rel="stylesheet" href="/css/index.css" />
                 </head>
                 <body>
@@ -251,7 +250,7 @@ new Elysia()
                 });
             }
 
-            if (id.search(/[\D]/) !== -1) {
+            if (!/^\d+$/.test(id)) {
                 return errorPage({ 
                     title: "Bad Request",
                     description: "Invalid ID. Scratchpad IDs only include digits.", 
@@ -259,10 +258,18 @@ new Elysia()
                 });
             }
 
-            const program = getProgram(req.query.p);
-            console.log(program)
+            const program = getProgram(id);
+            if (!program || (program.status !== 200 && program.severe)) {
+                console.info("[NOT FOUND] Program was not found in database. id:",id);
+                return errorPage({
+                    title: "Program Not Found",
+                    description: "404 Not Found. We couldn't find the program you're looking for.",
+                    status: 404
+                });
+            }
+
             return newRender({
-                title: "Viewing Program \""+program.title+"\" | KAP Archive",
+                title: `Viewing Program ${program.title} | KAP Archive`,
                 stylesheet: "/css/view.css",
                 Main: View,
                 props: { program }
@@ -288,7 +295,7 @@ new Elysia()
             if (ids.length === 0) {
                 return errorPage({
                     title: "Bad Request",
-                    description: "400 Bad Request. No proper program IDs found.",
+                    description: "400 Bad Request. No proper program IDs given.",
                     status: 400
                 });
             }
@@ -313,7 +320,7 @@ new Elysia()
             } catch (e) {
                 console.error("Failed to save programs:", e);
                 return errorPage({
-                    title: "Bad Request",
+                    title: "Server Error",
                     description: "500 Internal Server Error. savePrograms failed.",
                     status: 500
                 });
