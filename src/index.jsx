@@ -90,7 +90,7 @@ function serveImage(path) {
 }
 // #endregion
 
-// #region New Render
+// #region Response Helpers (new)
 async function newRender({ stylesheet, Main, props, title, description, status=200 }) {
     return new Response(await renderToReadableStream(
         <html>
@@ -153,7 +153,14 @@ async function errorPage(args) {
         }
     );
 }
-// #endregion New Render
+
+function jsonResponse (data, status = 200) {
+    return new Response(JSON.stringify(data), {
+        status,
+        headers: { "content-type": "application/json" }
+    });
+}
+// #endregion
 
 function parseDataURL(url) {
     if (url.indexOf(";base64,") == -1) {
@@ -168,6 +175,8 @@ function parseDataURL(url) {
     }
     return new Blob([uInt8Array], {type: parts[0].split(':')[1]})
 }
+
+
 
 const securityMiddleware = () => new Elysia().onAfterHandle(({ set }) => {
     set.headers = {
@@ -193,31 +202,40 @@ new Elysia()
     .all(
         "/s/:id",
         async req => {
-            if (req.params.id.search(/[\D]/) !== -1) return new Response("Invalid ID", { status: 400 })
-            let p = await saveProgram(req.params.id);
+            /**
+             * API returns status message within program object. I don't know how I thought this was a good idea.
+             * This will NOT be a trend going foreward. In fact I might release a breaking change to fix this.
+             */
 
-            if (p.status !== 200) {
-                console.warn("Could not save un-reachable program. id:",req.params.id);
-                const backup = await getProgram(req.params.id);
-                if (backup.status !== 200) {
-                    console.error("Program backup not found. id:",req.params.id);
-                    return new Response("Error: "+p.message, { status: p.status });
-                }
-                backup.status = 404;
-                backup.message = "Program was NOT SAVED. Here is a backup from the database.";
-                return new Response(JSON.stringify(backup), { status: 404, headers: { "content-type": "application/json" }});
+            if (/[\D]/.test(req.params.id)) return new Response("Invalid ID", { status: 400 })
+
+            let p = await saveProgram(req.params.id);
+            if (p.status === 200) return jsonResponse(p);
+
+            console.warn("[SAVE FAIL] Could not save un-reachable program. id:", req.params.id);
+
+            const backup = await getProgram(req.params.id);
+            if (backup.status !== 200) {
+                console.error("[BACKUP FAIL] Program backup not found. id:", req.params.id);
+                return new Response("Error: "+p.message, { status: p.status });
             }
 
-            return new Response(JSON.stringify(p), { status: 200, headers: { "content-type": "application/json" } });
+            console.info("[BACKUP FOUND] id:", req.params.id);
+
+            backup.status = 404;
+            backup.message = "Program was NOT SAVED. Here is a backup from the database.";
+            return jsonResponse(backup, 404);
         }
     )
     .all(
         "/g/:id",
         async req => {
-            if (req.params.id.search(/[\D]/) !== -1) return new Response("Invalid ID", { status: 400 })
+            if (/[\D]/.test(req.params.id)) return new Response("Invalid ID", { status: 400 })
+
             const p = await getProgram(req.params.id);
             if (p.status !== 200) return new Response("Not found", { status: 404 });
-            return new Response(JSON.stringify(p), { status: p.status, headers: { "content-type": "application/json" } });
+
+            return jsonResponse(p);
         }
     )
     .get(
