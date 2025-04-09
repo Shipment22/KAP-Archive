@@ -6,14 +6,15 @@
     "bun-types": "^0.2.0"
   },
   "dependencies": {
+    "@elysiajs/static": "^1.2.0",
     "elysia": "^1.1.23",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.83.0"
   },
   "scripts": {
-    "css": "sass src/scss/:src/css/",
-    "dev": "bun css & cd src/; bun init.jsx; sass -w src/scss/:src/css/ & bun --hot index.jsx",
+    "css": "sass src/scss/:src/public/css/",
+    "dev": "bun css & cd src/; bun init.jsx; sass -w src/scss/:src/public/css/ & bun --hot index.jsx",
     "start": "bun css && cd src/; bun init.jsx; bun index.jsx",
     "build": "bun css && bun build src/index.jsx --target=bun --outfile=src/server.js"
   }

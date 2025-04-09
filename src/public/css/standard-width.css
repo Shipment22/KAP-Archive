@@ -1,0 +1,10 @@
+.Main, .main-width {
+  max-width: 1700px;
+  margin-inline: auto;
+}
+
+.Main {
+  min-height: 80vh;
+}
+
+/*# sourceMappingURL=standard-width.css.map */
