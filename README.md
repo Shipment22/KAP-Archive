@@ -1,5 +1,9 @@
 # kap-archive
 
+## Unavailable Programs
+
+Programs which have been deleted before archival will not be available on KAP Archive. At a later date the ability to add programs that aren't accessible through the API will incorperated into KAP Archive, but for now refer to https://github.com/Shipment22/KACP-backup/tree/main for saving these.
+
 ## About
 
 [The KAP Archive](https://kap-archive.bhavjit.com/) is an archival site that focuses on preserving programs from [Khan Academy®](https://khanacademy.org/)'s KACP section;
