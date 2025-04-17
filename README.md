@@ -2,7 +2,7 @@
 
 ## Unavailable Programs
 
-Programs which have been deleted before archival will not be available on KAP Archive. At a later date the ability to add programs that aren't accessible through the API will incorperated into KAP Archive, but for now refer to https://github.com/Shipment22/KACP-backup/tree/main for saving these.
+Programs which have been deleted before archival will not be available on KAP Archive. At a later date the ability to add programs that aren't accessible through the API will incorperated into KAP Archive, but for now refer to [Shipment22/KACP-Backup](https://github.com/Shipment22/KACP-backup/tree/main) for saving these.
 
 ## About
 
