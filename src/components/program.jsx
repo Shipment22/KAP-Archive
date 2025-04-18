@@ -62,7 +62,7 @@ function renderProgram(props) {
         </table>
 	</div>
 	<div className="program_view-code-wrapper">
-	    <a href="#" className="button">Launch</a>
+	    {/* <a href="#" className="button">Launch</a> */}
 	    <a href={"/view?p="+props.id} className="button">Details</a>
 	</div>
 	</div>);
