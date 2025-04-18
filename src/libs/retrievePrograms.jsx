@@ -14,7 +14,7 @@ function getProgramsNoString($limit = 50, $offset = 0) {
 	// Load the database as readonly
 	var db = new Database('database.sqlite', { readonly: true });
 	// Create Queries for getting a program by id and getting multiple by index
-	const retrievePrograms = db.query("SELECT * FROM programs ORDER BY archive__added DESC LIMIT $limit OFFSET $offset");
+	const retrievePrograms = db.query("SELECT * FROM programs ORDER BY votes DESC LIMIT $limit OFFSET $offset");
 	if ($limit > 1000) $limit = 1000; // Make sure limit is under 1000
 	$limit = Number($limit); $offset = Number($offset); // Make sure the limit and offset are numbers if they aren't return 400
 	if ($limit === NaN || $offset === NaN) return 400;
