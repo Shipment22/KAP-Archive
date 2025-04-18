@@ -28,16 +28,12 @@ function Page() {
                 We have archived <strong>{programsCount}</strong> programs from <strong>{authorsCount}</strong> authors, so far!
             </p>
         </div>
-        <div className="search surface">
-            <h2>Search Programs</h2>
-            <SearchForm />
-        </div>
         <div className="add surface">
             <h2>Add Programs</h2>
             <AddForm />
         </div>
-        <div className="recently-added surface">
-            <h2>Recently Added</h2>
+        <div className="surface">
+            <h2>Most Voted</h2>
             <ProgramsGrid { programs }/>
             <br />
             <a className="button" style={{width: 100+'%',textAlign:'center',margin:'0'}} href="/browse">Browse Programs</a>

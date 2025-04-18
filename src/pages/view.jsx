@@ -23,7 +23,7 @@ export default function(props) {
                     padding: ".2rem .4rem",
                     fontSize: "1rem"
                 }}>View program with</h2>
-                <a href={"/launch?p="+props.program.id} className="button" targe="_blank" title="View in an Ace editor with a preview">Editor</a>
+                {/* <a href={"/launch?p="+props.program.id} className="button" targe="_blank" title="View in an Ace editor with a preview">Editor</a> */}
                 <a href={"https://khanalytics.bhavjit.com/program/"+props.program.id} className="button" target="_blank" title="View with Khanalytics">Khanalytics</a>
                 {
                    props.program.archive.sourceDeleted 
@@ -59,7 +59,7 @@ export default function(props) {
                 </tr>
                 <tr>
                     <th>Created</th>
-                    <td title={new Date(props.program.created)}>{relativeDate(props.program.created)}, {props.program.created}</td>
+                    <td title={props.program.created ? new Date(props.program.created) : null}>{props.program.created ? `${relativeDate(props.program.created)}, ${props.program.created}` : 'Unknown'}</td>
                 </tr>
                 <tr>
                     <th>Updated</th>

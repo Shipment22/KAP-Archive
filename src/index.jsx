@@ -165,6 +165,11 @@ export default {
                 db.close();
                 console.log("Getting thumb BLOB from", $id);
 
+                if (thumbURI === null) {
+                    console.warn("No thumbnail found for", $id);
+                    return new Response(Bun.file('assets/404.png'), { headers: { "content-type": "image/png" }});
+                }
+
                 function parseDataURL(url) {
                     if (url.indexOf(";base64,") == -1) {
                         let parts = url.split(',');

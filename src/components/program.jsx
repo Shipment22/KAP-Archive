@@ -6,7 +6,7 @@
 import relativeDate from '../libs/relativeDate'
 function renderProgram(props) {
 	// Get the crated and updated dates
-	const created = new Date(props.created),
+	const created = props.created ? new Date(props.created) : null,
 		  updated = new Date(props.updated),
       archiveUpdated = new Date(props.archive.updated);
 	// If the status is not good return an error program
@@ -29,7 +29,7 @@ function renderProgram(props) {
 	<div className="program_thumbnail-wrapper">
         {
             props.lazy ? <img src={`/thumb/${props.id}/latest.png`} className={"program_thumbnail "+pid} alt="Program thumbnail" width="200px" height="200px" loading="lazy" />
-            : <img src={props.thumbnail} className={"program_thumbnail "+pid} alt={"Thumbnail for"+props.title} width="200px" height="200px" />
+            : <img src={props.thumbnail ?? "/assets/404.png"} className={"program_thumbnail "+pid} alt={"Thumbnail for "+props.title} width="200px" height="200px" />
         }
 	</div>
 	<div>
@@ -41,7 +41,7 @@ function renderProgram(props) {
             </tr>
             <tr>
                 <th>Created:</th>
-	            <td className="program_created" title={"Program was first created: " + created.toUTCString()}>{relativeDate(Date.parse(created))}</td>
+	            <td className="program_created" title={"Program was first created: " + created?.toUTCString()}>{created ? relativeDate(Date.parse(created)) : 'Unknown'}</td>
             </tr>
             <tr>
                 <th>Updated:</th>
@@ -62,7 +62,7 @@ function renderProgram(props) {
         </table>
 	</div>
 	<div className="program_view-code-wrapper">
-	    <a href="#" className="button">Launch</a>
+	    {/* <a href="#" className="button">Launch</a> */}
 	    <a href={"/view?p="+props.id} className="button">Details</a>
 	</div>
 	</div>);
