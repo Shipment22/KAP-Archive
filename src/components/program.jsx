@@ -29,7 +29,7 @@ function renderProgram(props) {
 	<div className="program_thumbnail-wrapper">
         {
             props.lazy ? <img src={`/thumb/${props.id}/latest.png`} className={"program_thumbnail "+pid} alt="Program thumbnail" width="200px" height="200px" loading="lazy" />
-            : <img src={props.thumbnail} className={"program_thumbnail "+pid} alt={"Thumbnail for"+props.title} width="200px" height="200px" />
+            : <img src={props.thumbnail ?? "/assets/404.png"} className={"program_thumbnail "+pid} alt={"Thumbnail for "+props.title} width="200px" height="200px" />
         }
 	</div>
 	<div>
