@@ -28,10 +28,6 @@ function Page() {
                 We have archived <strong>{programsCount}</strong> programs from <strong>{authorsCount}</strong> authors, so far!
             </p>
         </div>
-        <div className="search surface">
-            <h2>Search Programs</h2>
-            <SearchForm />
-        </div>
         <div className="add surface">
             <h2>Add Programs</h2>
             <AddForm />
