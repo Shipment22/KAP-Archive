@@ -6,7 +6,7 @@
 import relativeDate from '../libs/relativeDate'
 function renderProgram(props) {
 	// Get the crated and updated dates
-	const created = new Date(props.created),
+	const created = props.created ? new Date(props.created) : null,
 		  updated = new Date(props.updated),
       archiveUpdated = new Date(props.archive.updated);
 	// If the status is not good return an error program
@@ -41,7 +41,7 @@ function renderProgram(props) {
             </tr>
             <tr>
                 <th>Created:</th>
-	            <td className="program_created" title={"Program was first created: " + created.toUTCString()}>{relativeDate(Date.parse(created))}</td>
+	            <td className="program_created" title={"Program was first created: " + created?.toUTCString()}>{created ? relativeDate(Date.parse(created)) : 'Unknown'}</td>
             </tr>
             <tr>
                 <th>Updated:</th>

@@ -59,7 +59,7 @@ export default function(props) {
                 </tr>
                 <tr>
                     <th>Created</th>
-                    <td title={new Date(props.program.created)}>{relativeDate(props.program.created)}, {props.program.created}</td>
+                    <td title={props.program.created ? new Date(props.program.created) : null}>{props.program.created ? `${relativeDate(props.program.created)}, ${props.program.created}` : 'Unknown'}</td>
                 </tr>
                 <tr>
                     <th>Updated</th>
